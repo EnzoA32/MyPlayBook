@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>MyPlaybook — Manager Profile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f5f7; --sidebar:#121315; --sidebar-line:#232427;
+    --green:#22c55e; --green-strong:#16a34a; --green-soft:#e6faf0; --green-pill:#3fdc82;
+    --ink:#12141a; --muted:#767b87; --muted-2:#9aa0ab; --card:#ffffff; --border:#e8e9ed;
+    --danger:#ef4444; --radius:16px;
+    --shadow: 0 1px 2px rgba(20,20,30,.04), 0 8px 24px -12px rgba(20,20,30,.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:'Geist', system-ui, -apple-system, sans-serif; -webkit-font-smoothing:antialiased;}
+  .app{display:flex; min-height:100vh;}
+  .side-icons{width:78px; flex:none; background:var(--sidebar); display:flex; flex-direction:column; align-items:center; padding:16px 0 14px; gap:2px; position:sticky; top:0; height:100vh; overflow-y:auto;}
+  .side-logo{width:36px; height:36px; border-radius:11px; background:var(--green); display:flex; align-items:center; justify-content:center; font-weight:900; color:#08210f; font-size:13px; margin-bottom:16px; flex:none;}
+  .side-item{width:58px; padding:8px 2px; border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; color:#8b909a; cursor:pointer; transition:all .12s ease; text-align:center;}
+  .side-item svg{width:17px;height:17px; flex:none;}
+  .side-item span{font-size:8px; font-weight:800; line-height:1.1; letter-spacing:.01em;}
+  .side-item:hover{background:#1d1e21; color:#fff;}
+  .side-item.active{background:var(--green-pill); color:#08210f;}
+  .side-item.accent{color:var(--green-pill);}
+  .side-item.accent:hover{background:#1d1e21; color:var(--green-pill);}
+  .side-sep{width:36px; height:1px; background:var(--sidebar-line); margin:6px 0;}
+  .side-bottom{margin-top:auto; display:flex; flex-direction:column; align-items:center; gap:6px; padding-top:8px;}
+  .side-avatar{width:36px; height:36px; border-radius:11px; background:#1d1e21; border:1.5px solid var(--sidebar-line); display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer;}
+  .plan-pill{font-size:8px; font-weight:800; padding:3px 6px; border-radius:100px; letter-spacing:.02em;}
+  .plan-pill.free{background:#232427; color:#9aa0ab;}
+  .plan-pill.premium{background:var(--green); color:#08210f;}
+  .main{flex:1; min-width:0; padding:28px 34px 60px;}
+  .view{display:none;}
+  .view.active{display:block;}
+  .view-head{display:flex; align-items:flex-start; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:22px;}
+  .h1{font-size:26px; font-weight:800; margin:0; letter-spacing:-.01em;}
+  .h1-sub{color:var(--muted); font-size:13.5px; margin-top:4px; font-weight:500;}
+  .btn{border:none; border-radius:10px; padding:10px 18px; font-weight:800; font-size:13.5px; cursor:pointer;}
+  .btn-ghost{background:#f2f3f5; color:var(--ink);}
+  .btn-danger{background:#fde8e8; color:#d23c3c;}
+  .btn-primary{background:var(--green); color:#08210f;}
+  .btn-dark{background:var(--ink); color:#fff;}
+  .btn-row{display:flex; gap:10px; flex-wrap:wrap;}
+  .btn-new{background:var(--green); color:#08210f; border:none; border-radius:11px; padding:11px 18px; font-weight:800; font-size:14px; cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow:var(--shadow); transition:transform .1s ease, filter .1s ease;}
+  .btn-new:hover{filter:brightness(1.05); transform:translateY(-1px);}
+  .btn-gen{background:linear-gradient(135deg,#12141a,#2b2d33); color:#fff; border:1px solid #3a3c42; border-radius:11px; padding:11px 16px; font-weight:800; font-size:13.5px; cursor:pointer; display:flex; align-items:center; gap:7px; box-shadow:var(--shadow); transition:transform .1s ease, filter .1s ease;}
+  .btn-gen:hover{transform:translateY(-1px); filter:brightness(1.1);}
+  .btn-gen svg{width:14px;height:14px; color:var(--green-pill); flex:none;}
+  .ai-tag{display:inline-flex; align-items:center; gap:4px; background:#12141a; color:var(--green-pill); font-size:10px; font-weight:800; padding:3px 8px; border-radius:100px; letter-spacing:.03em;}
+  .ai-tag svg{width:10px;height:10px;}
+  .dash-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:16px;}
+  .card-box{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow);}
+  .card-box h3{margin:0 0 4px; font-size:14.5px; font-weight:800;}
+  .card-box .sub{font-size:12px; color:var(--muted); margin-bottom:14px;}
+  .profile-hero{display:flex; align-items:center; gap:16px; grid-column:1/-1;}
+  .avatar-big{width:64px;height:64px; border-radius:16px; background:var(--green-soft); display:flex; align-items:center; justify-content:center; font-size:30px; flex:none;}
+  .profile-hero-name{font-size:19px; font-weight:800;}
+  .profile-hero-meta{font-size:12.5px; color:var(--muted); font-weight:600; margin-top:3px;}
+  .profile-hero-tags{display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;}
+  .tagchip{background:#f2f3f5; border-radius:100px; padding:4px 10px; font-size:11px; font-weight:700; color:var(--ink);}
+  .radar-wrap{display:flex; justify-content:center;}
+  .radar-wrap svg{width:100%; max-width:280px; height:auto;}
+  .week-list{display:flex; flex-direction:column; gap:8px;}
+  .week-item{display:flex; align-items:center; justify-content:space-between; background:#fafafb; border:1px solid var(--border); border-radius:10px; padding:9px 12px;}
+  .week-item .name{font-size:12.5px; font-weight:700;}
+  .week-item .cnt{font-size:11px; font-weight:800; color:var(--green-strong); background:var(--green-soft); padding:2px 8px; border-radius:100px;}
+  .reco-item{display:flex; gap:10px; align-items:flex-start; padding:10px 0; border-bottom:1px solid var(--border);}
+  .reco-item:last-child{border-bottom:none;}
+  .reco-ic{width:26px;height:26px;border-radius:8px;background:var(--green-soft);display:flex;align-items:center;justify-content:center;flex:none;}
+  .reco-ic svg{width:13px;height:13px;color:var(--green-strong);}
+  .reco-text{font-size:12.5px; line-height:1.45; color:#2b2d33;}
+  .empty-hint{font-size:12.5px; color:var(--muted); text-align:center; padding:20px 10px;}
+  .cv-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px;}
+  .stat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px;}
+  .stat-box{background:#fafafb; border:1px solid var(--border); border-radius:12px; padding:14px; text-align:center;}
+  .stat-num{font-size:21px; font-weight:800;}
+  .stat-label{font-size:10.5px; color:var(--muted); font-weight:700; margin-top:2px; text-transform:uppercase; letter-spacing:.03em;}
+  .goal-item{display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--border);}
+  .goal-item:last-child{border-bottom:none;}
+  .goal-check{width:20px;height:20px;border-radius:6px; border:1.5px solid var(--border); flex:none; display:flex; align-items:center; justify-content:center; cursor:pointer;}
+  .goal-check.done{background:var(--green); border-color:var(--green);}
+  .goal-check svg{width:12px;height:12px; color:#fff; opacity:0;}
+  .goal-check.done svg{opacity:1;}
+  .goal-text{font-size:13px; font-weight:600; flex:1;}
+  .goal-text.done{text-decoration:line-through; color:var(--muted);}
+  .add-row{display:flex; gap:8px; margin-top:10px;}
+  .add-row input{flex:1; border:1px solid var(--border); border-radius:9px; padding:8px 11px; font-size:12.5px; font-family:inherit; outline:none;}
+  .add-row button{border:none; background:var(--ink); color:#fff; border-radius:9px; padding:0 14px; font-weight:800; font-size:12px; cursor:pointer;}
+  .id-sections{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .id-section{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px;}
+  .id-section h4{margin:0 0 10px; font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:800;}
+  .id-row{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:5px 0; font-size:12.5px;}
+  .id-row .k{color:var(--muted); font-weight:600;}
+  .id-row .v{font-weight:800; text-align:right;}
+  .id-chips{display:flex; gap:6px; flex-wrap:wrap; margin-top:4px;}
+  .id-chip{background:#f2f3f5; border-radius:100px; padding:4px 10px; font-size:11.5px; font-weight:700;}
+  .insp-card{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px; display:flex; flex-direction:column; gap:8px;}
+  .insp-name{font-size:14px; font-weight:800;}
+  .insp-chips{display:flex; gap:6px; flex-wrap:wrap;}
+  .toolbar{display:flex; gap:10px; margin-top:2px; flex-wrap:wrap;}
+  .search-wrap{flex:1; min-width:220px; display:flex; align-items:center; gap:9px; background:#fff; border:1px solid var(--border); border-radius:11px; padding:11px 14px;}
+  .search-wrap svg{width:15px; height:15px; color:var(--muted-2); flex:none;}
+  .search-wrap input{border:none; outline:none; font-size:13.5px; width:100%; background:transparent; font-family:inherit;}
+  select{appearance:none; background:#fff no-repeat right 14px center; border:1px solid var(--border); border-radius:11px; padding:11px 34px 11px 14px; font-size:13.5px; font-family:inherit; font-weight:600; color:var(--ink); cursor:pointer; min-width:170px;}
+  .chip-row{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;}
+  .chip{border:1px solid var(--border); background:#fff; border-radius:100px; padding:7px 14px; font-size:12.5px; font-weight:700; color:var(--muted); cursor:pointer; display:flex; align-items:center; gap:6px; transition:all .12s ease;}
+  .chip:hover{border-color:#c9cbd1;}
+  .chip.active{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(268px,1fr)); gap:16px; margin-top:22px;}
+  .card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:16px; cursor:pointer; position:relative; overflow:hidden; box-shadow:var(--shadow); transition:transform .12s ease, box-shadow .12s ease;}
+  .card:hover{transform:translateY(-2px); box-shadow:0 4px 8px rgba(20,20,30,.06), 0 14px 28px -14px rgba(20,20,30,.16);}
+  .card-top{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .badge{font-size:11px; font-weight:800; padding:4px 10px; border-radius:100px; letter-spacing:.01em;}
+  .badge-duration{font-size:12px; color:var(--muted); font-weight:700;}
+  .card-title{font-size:15.5px; font-weight:800; margin:11px 0 5px; line-height:1.25;}
+  .card-desc{font-size:12.5px; color:var(--muted); line-height:1.45; min-height:34px;}
+  .card-foot{display:flex; align-items:center; gap:12px; margin-top:13px; padding-top:12px; border-top:1px solid var(--border);}
+  .foot-item{display:flex; align-items:center; gap:5px; font-size:12px; color:var(--muted); font-weight:700;}
+  .foot-item svg{width:13px; height:13px; opacity:.7;}
+  .phase-tag{margin-left:auto; font-size:11px; font-weight:800; padding:3px 8px; border-radius:6px;}
+  .phase-plus{background:#eaf3ff; color:#1a63d6;}
+  .phase-minus{background:#fdeeee; color:#d23c3c;}
+  .fav-star{position:absolute; top:12px; right:12px; width:28px; height:28px; border-radius:8px; background:#fff; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:2;}
+  .fav-star svg{width:14px;height:14px; color:var(--muted-2);}
+  .fav-star.on svg{color:#f59e0b; fill:#f59e0b;}
+  .gen-badge-card{position:absolute; top:10px; right:46px; background:#12141a; color:var(--green-pill); font-size:9.5px; font-weight:800; padding:3px 8px; border-radius:100px; display:flex; align-items:center; gap:3px;}
+  .gen-badge-card svg{width:9px;height:9px;}
+  .lock-overlay{position:absolute; inset:0; background:rgba(255,255,255,.72); backdrop-filter:blur(2.5px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; text-align:center; padding:16px;}
+  .lock-icon{width:34px; height:34px; border-radius:50%; background:var(--ink); display:flex; align-items:center; justify-content:center;}
+  .lock-icon svg{width:15px;height:15px; color:#fff;}
+  .lock-text{font-size:12px; font-weight:800; color:var(--ink);}
+  .lock-cta{font-size:11.5px; font-weight:800; color:#08210f; background:var(--green); padding:6px 12px; border-radius:100px;}
+  .empty{text-align:center; padding:70px 20px; color:var(--muted);}
+  .empty svg{width:44px;height:44px; opacity:.35; margin-bottom:10px;}
+  .roadmap-track{display:flex; flex-direction:column; gap:0;}
+  .rm-week{display:flex; gap:14px; cursor:pointer;}
+  .rm-marker{display:flex; flex-direction:column; align-items:center; flex:none;}
+  .rm-num{width:34px;height:34px;border-radius:50%; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; flex:none;}
+  .rm-line{width:2px; flex:1; background:var(--border); min-height:24px;}
+  .rm-card{flex:1; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 16px; margin-bottom:16px; transition:border-color .12s ease, transform .1s ease;}
+  .rm-week:hover .rm-card{border-color:var(--green); transform:translateX(2px);}
+  .rm-phase{font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:800;}
+  .rm-principle{font-size:15px; font-weight:800; margin:4px 0 6px;}
+  .rm-just{font-size:12.5px; color:var(--muted); line-height:1.45;}
+  .rm-cta{font-size:11px; font-weight:800; color:var(--green-strong); margin-top:8px; display:inline-block;}
+  .overlay{position:fixed; inset:0; background:rgba(15,16,20,.5); display:flex; align-items:center; justify-content:center; z-index:100; padding:24px; opacity:0; pointer-events:none; transition:opacity .15s ease;}
+  .overlay.show{opacity:1; pointer-events:auto;}
+  .modal{background:#fff; border-radius:18px; width:100%; max-width:460px; max-height:86vh; overflow:hidden; display:flex; flex-direction:column; transform:translateY(8px) scale(.98); transition:transform .15s ease; box-shadow:0 30px 60px -20px rgba(0,0,0,.35);}
+  .overlay.show .modal{transform:translateY(0) scale(1);}
+  .modal.wide{max-width:720px;}
+  .modal-head{display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border-bottom:1px solid var(--border);}
+  .modal-head h3{margin:0; font-size:17px; font-weight:800;}
+  .x-btn{width:28px;height:28px; border-radius:8px; border:none; background:#f2f3f5; cursor:pointer; display:flex; align-items:center; justify-content:center;}
+  .x-btn svg{width:13px;height:13px;}
+  .modal-body{padding:18px 20px; overflow-y:auto;}
+  .modal-foot{padding:14px 20px; border-top:1px solid var(--border); display:flex; gap:10px; justify-content:flex-end;}
+  .field{margin-bottom:14px;}
+  .field label{display:block; font-size:11px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;}
+  .field input, .field select, .field textarea{width:100%; border:1px solid var(--border); border-radius:10px; padding:10px 12px; font-size:13.5px; font-family:inherit; outline:none; background:#fafafb; transition:border-color .12s ease;}
+  .field input:focus, .field select:focus, .field textarea:focus{border-color:var(--green);}
+  .field textarea{resize:vertical; min-height:64px;}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .upload-box{border:1.5px dashed var(--border); border-radius:10px; padding:16px; text-align:center; cursor:pointer; font-size:12.5px; color:var(--muted-2); font-weight:600; background:#fafafb;}
+  .upload-box:hover{border-color:var(--green);}
+  .upload-box .fname{color:var(--ink); font-weight:700;}
+  .det-badges{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  .det-title{font-size:20px; font-weight:800; margin:10px 0 2px;}
+  .det-meta{display:flex; gap:16px; margin-top:10px; flex-wrap:wrap;}
+  .det-meta .m{display:flex; align-items:center; gap:6px; font-size:12.5px; font-weight:700; color:var(--muted);}
+  .det-meta .m svg{width:14px;height:14px;}
+  .sec{margin-top:20px;}
+  .sec h4{font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:800; margin:0 0 8px;}
+  .sec p{margin:0; font-size:13.5px; line-height:1.55; color:#2b2d33;}
+  .pill-list{display:flex; gap:8px; flex-wrap:wrap;}
+  .pill{background:#f2f3f5; border-radius:100px; padding:5px 11px; font-size:12px; font-weight:700; color:var(--ink);}
+  .pitch-wrap{background:#0f7a3b; border-radius:14px; padding:10px; margin-top:8px;}
+  .pitch-wrap svg{width:100%; height:auto; display:block;}
+  table.vartable{width:100%; border-collapse:collapse; font-size:12.5px; margin-top:4px;}
+  table.vartable th{text-align:left; font-size:10.5px; text-transform:uppercase; color:var(--muted); padding:6px 8px; border-bottom:1px solid var(--border);}
+  table.vartable td{padding:8px; border-bottom:1px solid var(--border); vertical-align:top;}
+  .pdf-row{display:flex; align-items:center; justify-content:space-between; background:#fafafb; border:1px solid var(--border); border-radius:12px; padding:12px 14px; margin-top:8px;}
+  .pdf-row .left{display:flex; align-items:center; gap:10px;}
+  .pdf-ic{width:32px;height:32px; border-radius:8px; background:#fde8e8; display:flex; align-items:center; justify-content:center; flex:none;}
+  .pdf-ic svg{width:15px;height:15px; color:#d23c3c;}
+  .pdf-name{font-size:13px; font-weight:700;}
+  .pdf-sub{font-size:11px; color:var(--muted);}
+  .plans{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+  .plan{border:1.5px solid var(--border); border-radius:14px; padding:16px 14px; display:flex; flex-direction:column; gap:8px; position:relative;}
+  .plan.reco{border-color:var(--green); background:var(--green-soft);}
+  .plan .reco-tag{position:absolute; top:-10px; left:50%; transform:translateX(-50%); background:var(--green); color:#08210f; font-size:10px; font-weight:800; padding:3px 10px; border-radius:100px;}
+  .plan-name{font-weight:800; font-size:13.5px;}
+  .plan-price{font-size:21px; font-weight:800;}
+  .plan-price span{font-size:11px; font-weight:600; color:var(--muted);}
+  .plan ul{list-style:none; margin:4px 0 0; padding:0; display:flex; flex-direction:column; gap:6px; flex:1;}
+  .plan li{font-size:11.5px; color:#3a3c42; display:flex; gap:6px; align-items:flex-start;}
+  .plan li svg{width:12px;height:12px; margin-top:2px; color:var(--green-strong); flex:none;}
+  .plan-btn{margin-top:8px; border:none; border-radius:9px; padding:9px 0; font-weight:800; font-size:12.5px; cursor:pointer;}
+  .toast{position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--ink); color:#fff; padding:12px 20px; border-radius:11px; font-size:13px; font-weight:700; opacity:0; transition:all .2s ease; z-index:200; pointer-events:none; display:flex; align-items:center; gap:8px;}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+  .wiz-progress{display:flex; gap:6px; margin-bottom:18px;}
+  .wiz-dot{flex:1; height:4px; border-radius:4px; background:var(--border);}
+  .wiz-dot.done{background:var(--green);}
+  .wiz-dot.current{background:var(--ink);}
+  .wiz-step-label{font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin-bottom:4px;}
+  .wiz-question{font-size:18px; font-weight:800; margin:0 0 6px; line-height:1.3;}
+  .wiz-hint{font-size:12px; color:var(--muted); margin-bottom:14px; line-height:1.4;}
+  .phase-tabs{display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap;}
+  .phase-tab{border:1.5px solid var(--border); background:#fff; border-radius:100px; padding:7px 13px; font-size:11.5px; font-weight:800; cursor:pointer; color:var(--muted);}
+  .phase-tab.active{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .opt-grid{display:flex; flex-direction:column; gap:8px;}
+  .opt-card{border:1.5px solid var(--border); border-radius:12px; padding:12px 14px; cursor:pointer; font-size:13.5px; font-weight:700; display:flex; align-items:center; justify-content:space-between; gap:10px; transition:all .12s ease; background:#fff;}
+  .opt-card:hover{border-color:#c9cbd1;}
+  .opt-card.selected{border-color:var(--green); background:var(--green-soft); color:#0f5132;}
+  .opt-check{width:18px; height:18px; border-radius:6px; border:1.5px solid var(--border); flex:none; display:flex; align-items:center; justify-content:center;}
+  .opt-card.selected .opt-check{background:var(--green); border-color:var(--green);}
+  .opt-check svg{width:11px;height:11px; color:#fff; opacity:0;}
+  .opt-card.selected .opt-check svg{opacity:1;}
+  .wiz-grid4{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .charge-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .charge-pill{flex:1; min-width:90px; text-align:center; border:1.5px solid var(--border); border-radius:10px; padding:10px 6px; font-size:12px; font-weight:800; cursor:pointer; color:var(--muted);}
+  .charge-pill.selected{border-color:var(--ink); background:var(--ink); color:#fff;}
+  .mat-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+  .mat-item{border:1.5px solid var(--border); border-radius:10px; padding:9px 12px; font-size:12.5px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:8px;}
+  .mat-item.selected{border-color:var(--green); background:var(--green-soft); color:#0f5132;}
+  .chip-cloud{display:flex; flex-wrap:wrap; gap:8px;}
+  .cloud-chip{border:1.5px solid var(--border); border-radius:100px; padding:8px 14px; font-size:12.5px; font-weight:700; cursor:pointer; color:var(--ink); background:#fff;}
+  .cloud-chip.selected{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .cloud-chip.suggested:not(.selected){border-color:var(--green); color:var(--green-strong);}
+  .wiz-summary{background:#fafafb; border:1px solid var(--border); border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:8px;}
+  .wiz-summary-row{display:flex; justify-content:space-between; gap:10px; font-size:12.5px;}
+  .wiz-summary-row .k{color:var(--muted); font-weight:700;}
+  .wiz-summary-row .v{font-weight:700; text-align:right;}
+  .ob-subq{margin-bottom:18px;}
+  .ob-subq .q{font-size:12.5px; font-weight:800; margin-bottom:8px;}
+  .loading-wrap{display:flex; flex-direction:column; align-items:center; justify-content:center; padding:50px 20px; gap:14px; text-align:center;}
+  .spinner{width:34px; height:34px; border-radius:50%; border:3px solid var(--border); border-top-color:var(--green); animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .loading-text{font-size:13.5px; font-weight:700; color:var(--muted);}
+  .gen-head{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:6px;}
+  .gen-title{font-size:19px; font-weight:800; line-height:1.25;}
+  .gen-summary{font-size:13px; color:var(--muted); line-height:1.5; margin-top:6px;}
+  .timeline{margin-top:18px; display:flex; flex-direction:column;}
+  .tl-item{display:flex; gap:12px; position:relative;}
+  .tl-marker{display:flex; flex-direction:column; align-items:center; flex:none;}
+  .tl-dot{width:26px; height:26px; border-radius:50%; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; flex:none;}
+  .tl-line{width:2px; flex:1; background:var(--border); margin-top:2px;}
+  .tl-content{padding-bottom:20px; flex:1; min-width:0;}
+  .tl-etape{font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:800;}
+  .tl-card{border:1px solid var(--border); border-radius:12px; padding:12px 14px; margin-top:5px; background:#fff;}
+  .tl-card-top{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .tl-name{font-size:14px; font-weight:800;}
+  .tl-dur{font-size:11.5px; font-weight:800; color:var(--muted); flex:none;}
+  .tl-note{font-size:12px; color:#5b6472; margin-top:5px; line-height:1.4; font-style:italic;}
+  .tl-details{margin-top:10px; padding-top:10px; border-top:1px solid var(--border); display:none; font-size:12.5px; line-height:1.55; color:#2b2d33;}
+  .tl-details.open{display:block;}
+  .tl-details .dline{margin-bottom:6px;}
+  .tl-details .dline b{font-weight:800;}
+  .tl-actions{display:flex; gap:6px; margin-top:8px;}
+  .tl-actions button{border:none; background:#f2f3f5; border-radius:7px; padding:5px 10px; font-size:11px; font-weight:800; cursor:pointer; color:var(--ink);}
+  .tl-actions button:hover{background:#e8e9ed;}
+  .chat-box{margin-top:8px; border-top:1px solid var(--border); padding-top:16px;}
+  .chat-box h4{font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:800; margin:0 0 10px;}
+  .chat-log{display:flex; flex-direction:column; gap:8px; margin-bottom:10px;}
+  .chat-msg{font-size:12.5px; padding:9px 12px; border-radius:10px; max-width:85%; line-height:1.4;}
+  .chat-msg.user{background:var(--ink); color:#fff; align-self:flex-end; border-bottom-right-radius:2px;}
+  .chat-msg.ai{background:#f2f3f5; color:var(--ink); align-self:flex-start; border-bottom-left-radius:2px;}
+  .chat-suggestions{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px;}
+  .chat-suggestion{border:1px solid var(--border); background:#fff; border-radius:100px; padding:6px 12px; font-size:11.5px; font-weight:700; cursor:pointer; color:var(--muted);}
+  .chat-suggestion:hover{border-color:#c9cbd1; color:var(--ink);}
+  .chat-input-row{display:flex; gap:8px;}
+  .chat-input-row input{flex:1; border:1px solid var(--border); border-radius:10px; padding:10px 13px; font-size:13px; font-family:inherit; outline:none;}
+  .chat-input-row input:focus{border-color:var(--green);}
+  .chat-send{background:var(--green); color:#08210f; border:none; border-radius:10px; padding:0 16px; font-weight:800; font-size:13px; cursor:pointer; flex:none;}
+  .onboarding{position:fixed; inset:0; background:var(--bg); z-index:500; display:flex; align-items:flex-start; justify-content:center; padding:38px 20px; overflow-y:auto;}
+  .onboarding.hidden{display:none;}
+  .ob-card{background:#fff; border-radius:22px; max-width:800px; width:100%; padding:38px 42px 30px; box-shadow:var(--shadow);}
+  .ob-eyebrow{font-size:11px; font-weight:800; color:var(--green-strong); text-transform:uppercase; letter-spacing:.08em; display:flex; align-items:center; gap:8px;}
+  .ob-eyebrow .ob-logo{width:26px;height:26px;border-radius:8px;background:var(--ink);display:flex;align-items:center;justify-content:center;color:var(--green-pill);font-weight:900;font-size:11px;}
+  .ob-title{font-size:25px; font-weight:800; margin:10px 0 22px; letter-spacing:-.01em;}
+  .avatar-grid{display:flex; gap:8px; flex-wrap:wrap;}
+  .avatar-opt{width:46px; height:46px; border-radius:12px; background:#f2f3f5; display:flex; align-items:center; justify-content:center; font-size:21px; cursor:pointer; border:2px solid transparent;}
+  .avatar-opt.selected{border-color:var(--green); background:var(--green-soft);}
+  .coach-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:8px;}
+  .coach-card{border:1.5px solid var(--border); border-radius:12px; padding:12px 8px; text-align:center; font-size:12.5px; font-weight:700; cursor:pointer; position:relative;}
+  .coach-card.selected{border-color:var(--green); background:var(--green-soft); color:#0f5132;}
+  .coach-num{position:absolute; top:-7px; right:-7px; width:20px; height:20px; border-radius:50%; background:var(--ink); color:#fff; font-size:10px; font-weight:800; display:flex; align-items:center; justify-content:center;}
+  .trait-block{border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:12px;}
+  .trait-block h5{margin:0 0 8px; font-size:13px; font-weight:800;}
+  .trait-chip-grid{display:flex; flex-wrap:wrap; gap:6px;}
+  .trait-chip{border:1px solid var(--border); border-radius:100px; padding:6px 12px; font-size:11.5px; font-weight:700; cursor:pointer; color:var(--muted); background:#fff;}
+  .trait-chip.selected{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .ob-foot{display:flex; justify-content:space-between; align-items:center; margin-top:26px; padding-top:18px; border-top:1px solid var(--border);}
+  .ob-progress{display:flex; gap:6px; flex:1; margin-right:20px;}
+  .ob-dot{flex:1; height:4px; border-radius:4px; background:var(--border);}
+  .ob-dot.done{background:var(--green);}
+  .ob-dot.current{background:var(--ink);}
+  .id-card-reveal{background:linear-gradient(160deg,#12141a,#1c1e22); border-radius:18px; padding:26px; color:#fff;}
+  .id-card-reveal .icr-name{font-size:20px; font-weight:800;}
+  .id-card-reveal .icr-sub{font-size:12px; color:#9aa0ab; margin-top:2px; font-weight:600;}
+  .id-card-reveal .icr-tag{display:inline-block; background:var(--green); color:#08210f; font-size:10.5px; font-weight:800; padding:4px 10px; border-radius:100px; margin-top:14px;}
+  .phase-block-title{font-size:13px; font-weight:800; margin:20px 0 10px; padding-top:16px; border-top:1px solid var(--border); display:flex; align-items:center; gap:8px;}
+  .phase-block-title:first-child{margin-top:0; padding-top:0; border-top:none;}
+  .phase-dot{width:8px;height:8px;border-radius:50%; background:var(--green);}
+  @media (max-width:880px){
+    .main{padding:20px;}
+    .plans{grid-template-columns:1fr;}
+    .wiz-grid4{grid-template-columns:1fr;}
+    .mat-grid{grid-template-columns:1fr;}
+    .dash-grid{grid-template-columns:1fr;}
+    .id-sections{grid-template-columns:1fr;}
+    .cv-grid{grid-template-columns:1fr;}
+    .stat-grid{grid-template-columns:repeat(2,1fr);}
+    .coach-grid{grid-template-columns:repeat(2,1fr);}
+    .ob-card{padding:26px 20px 22px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app" id="appRoot" style="display:none;">
+  <aside class="side-icons">
+    <div class="side-logo">PB</div>
+    <div class="side-item" data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/></svg><span>Dashboard</span></div>
+    <div class="side-item" data-view="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.5-4 4.5-6 7.5-6s6 2 7.5 6"/></svg><span>Profile</span></div>
+    <div class="side-item" data-view="model"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="0.6" fill="currentColor"/></svg><span>Modele</span></div>
+    <div class="side-item" data-view="roadmap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg><span>Roadmap</span></div>
+    <div class="side-item accent" id="sideGenBtn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8L12 2z"/></svg><span>Developper</span></div>
+    <div class="side-sep"></div>
+    <div class="side-item" data-view="library"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13Z"/><path d="M4 19.5V6.5"/></svg><span>Bibliotheque</span></div>
+    <div class="side-item" data-view="favorites"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 17.3-6.2 3.3 1.2-6.9L2 8.9l7-1L12 1.5l3 6.4 7 1-5 4.8 1.2 6.9z"/></svg><span>Favoris</span></div>
+    <div class="side-item" data-view="mysessions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg><span>Seances</span></div>
+    <div class="side-bottom">
+      <div class="side-item" data-view="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 0 1-4 0v-.09A1.7 1.7 0 0 0 9 19.36a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 0 1 0-4h.09A1.7 1.7 0 0 0 4.64 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1-1.55V3a2 2 0 0 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.55 1H21a2 2 0 0 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1Z"/></svg><span>Reglages</span></div>
+      <div class="side-avatar" id="sideAvatarBtn">🙂</div>
+      <div class="plan-pill free" id="sidePlanPill">FREE</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="view" id="view-dashboard">
+      <div class="view-head">
+        <div><h1 class="h1">Dashboard</h1><div class="h1-sub" id="dashSubtitle">Vue d'ensemble de ton projet de jeu</div></div>
+        <button class="btn-gen" id="dashGenBtn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8L12 2z"/></svg>Developper un principe</button>
+      </div>
+      <div class="dash-grid" id="dashGrid"></div>
+    </div>
+
+    <div class="view" id="view-profile">
+      <div class="view-head">
+        <div><h1 class="h1">Manager Profile</h1><div class="h1-sub">Ton CV d'entraineur</div></div>
+        <button class="btn btn-dark" id="editProfileBtn">Modifier mon profil</button>
+      </div>
+      <div id="profileBody"></div>
+    </div>
+
+    <div class="view" id="view-model">
+      <div class="view-head"><div><h1 class="h1">Mon modele de jeu</h1><div class="h1-sub">Les principes qui definissent ton identite, par phase de jeu</div></div></div>
+      <div id="modelBody"></div>
+    </div>
+
+    <div class="view" id="view-roadmap">
+      <div class="view-head">
+        <div><h1 class="h1">Roadmap de saison</h1><div class="h1-sub">L'ordre recommande pour enseigner ton projet de jeu</div></div>
+        <button class="btn-gen" id="roadmapGenBtn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8L12 2z"/></svg>Generer ma roadmap</button>
+      </div>
+      <div id="roadmapBody"></div>
+    </div>
+
+    <div class="view" id="view-library">
+      <div class="view-head">
+        <div><h1 class="h1">Bibliotheque de seances</h1><div class="h1-sub" id="countLabel">seances</div></div>
+        <div class="btn-row">
+          <button class="btn-gen" id="genBtn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8L12 2z"/></svg>Developper un principe</button>
+          <button class="btn-new" id="newBtn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>Nouvelle</button>
+        </div>
+      </div>
+      <div class="toolbar">
+        <div class="search-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input id="searchInput" type="text" placeholder="Rechercher un theme, un titre..."></div>
+        <select id="themeSelect"></select>
+      </div>
+      <div class="chip-row" id="phaseChips"></div>
+      <div class="grid" id="grid"></div>
+    </div>
+
+    <div class="view" id="view-favorites">
+      <div class="view-head"><div><h1 class="h1">Favoris</h1><div class="h1-sub">Tes seances marquees d'une etoile</div></div></div>
+      <div class="grid" id="favGrid"></div>
+    </div>
+
+    <div class="view" id="view-mysessions">
+      <div class="view-head">
+        <div><h1 class="h1">Mes seances</h1><div class="h1-sub">Seances creees ou developpees par toi</div></div>
+        <button class="btn-new" id="newBtn2"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>Nouvelle</button>
+      </div>
+      <div class="grid" id="mySessGrid"></div>
+    </div>
+
+    <div class="view" id="view-settings">
+      <div class="view-head"><div><h1 class="h1">Reglages</h1><div class="h1-sub">Abonnement &amp; preferences</div></div></div>
+      <div id="settingsBody"></div>
+    </div>
+  </main>
+</div>
+
+<div class="onboarding" id="onboardingOverlay">
+  <div class="ob-card">
+    <div class="ob-eyebrow"><span class="ob-logo">PB</span>MYPLAYBOOK · MANAGER PROFILE</div>
+    <div class="ob-title" id="obTitle">Creons ton profil d'entraineur</div>
+    <div id="obBody"></div>
+    <div class="ob-foot"><div class="ob-progress" id="obProgress"></div><div class="btn-row" id="obFoot"></div></div>
+  </div>
+</div>
+
+<div class="overlay" id="editOverlay">
+  <div class="modal">
+    <div class="modal-head"><h3 id="editTitleHead">Nouvelle seance</h3><button class="x-btn" data-close="editOverlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <div class="modal-body">
+      <div class="field"><label>Titre</label><input id="f_titre" type="text" placeholder="Ex : Construction courte depuis le gardien"></div>
+      <div class="field-row"><div class="field"><label>Theme</label><select id="f_theme"></select></div><div class="field"><label>Terrain</label><input id="f_terrain" type="text" placeholder="Terrain A"></div></div>
+      <div class="field-row"><div class="field"><label>Duree (min)</label><input id="f_duree" type="number" placeholder="90"></div><div class="field"><label>Nb joueurs</label><input id="f_joueurs" type="number" placeholder="16"></div></div>
+      <div class="field"><label>Materiel</label><input id="f_materiel" type="text" placeholder="Plots, chasubles..."></div>
+      <div class="field"><label>Description</label><textarea id="f_description" placeholder="Objectif de la tache, organisation..."></textarea></div>
+      <div class="field"><label>Notes</label><textarea id="f_notes" placeholder="Consignes, criteres de reussite..."></textarea></div>
+      <div class="field"><label>Fichier PDF ou image (optionnel)</label><div class="upload-box" id="uploadBox"><div id="uploadLabel">Clique pour ajouter un PDF ou une image<br><span style="font-weight:400;">PDF, PNG, JPG · max 4 Mo</span></div></div><input type="file" id="f_file" accept=".pdf,.png,.jpg,.jpeg" style="display:none;"></div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-ghost" data-close="editOverlay">Annuler</button><button class="btn btn-primary" id="saveBtn">Enregistrer</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="detailOverlay">
+  <div class="modal wide">
+    <div class="modal-head"><h3>Detail de la seance</h3><button class="x-btn" data-close="detailOverlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <div class="modal-body" id="detailBody"></div>
+    <div class="modal-foot"><button class="btn btn-ghost" data-close="detailOverlay">Fermer</button><button class="btn btn-dark" id="duplicateBtn">Dupliquer</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="pricingOverlay">
+  <div class="modal wide">
+    <div class="modal-head"><h3>Debloquer MyPlaybook Premium</h3><button class="x-btn" data-close="pricingOverlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <div class="modal-body">
+      <p style="margin:0 0 16px; font-size:13px; color:var(--muted);">Cette seance fait partie du catalogue Premium. Passe a l'un des abonnements ci-dessous pour debloquer l'ensemble de la bibliotheque, l'assistant de developpement et la roadmap de saison.</p>
+      <div class="plans">
+        <div class="plan">
+          <div class="plan-name">Decouverte</div><div class="plan-price">0€ <span>/ mois</span></div>
+          <ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg>1 seance d'exemple</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg>Manager Profile &amp; modele de jeu</li></ul>
+          <button class="plan-btn btn-ghost" disabled style="opacity:.55; cursor:default;">Plan actuel</button>
+        </div>
+        <div class="plan reco">
+          <div class="reco-tag">Populaire</div><div class="plan-name">Coach Pro</div><div class="plan-price">9,90€ <span>/ mois</span></div>
+          <ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg>Bibliotheque illimitee</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg>Assistant de developpement &amp; roadmap de saison</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg>Nouvelles seances chaque semaine</li></ul>
+          <button class="plan-btn btn-primary" id="goPremiumBtn">Passer Premium</button>
+        </div>
+        <div class="plan">
+          <div class="plan-name">Club</div><div class="plan-price">29€ <span>/ mois</span></div>
+          <ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg>Tout Coach Pro</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg>Jusqu'a 10 formateurs</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg>Partage inter-equipes</li></ul>
+          <button class="plan-btn btn-ghost" data-close="pricingOverlay">Nous contacter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="genOverlay">
+  <div class="modal wide">
+    <div class="modal-head"><h3 id="genHeadTitle">Developper un principe</h3><button class="x-btn" data-close="genOverlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <div class="modal-body" id="genBody"></div>
+    <div class="modal-foot" id="genFoot"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+
+/* ================= TAXONOMIE : PRINCIPES DE JEU (4 phases) ================= */
+const OBJECTIFS_PEDAGOGIQUES = ["Conservation","Jeu de position","Superiorite numerique","Progression","Finition","Pressing collectif","Repli defensif","Transition"];
+
+const PRINCIPLE_TREE = {
+  "Avec ballon": [
+    {nom:"Construire depuis le gardien", objectifs:["Conservation","Progression"], competences:["orientation du corps","relance courte","lecture du pressing"]},
+    {nom:"Attirer le pressing", objectifs:["Conservation","Progression"], competences:["patience collective","declenchement de passe","prise de risque calculee"]},
+    {nom:"Creer le joueur libre", objectifs:["Jeu de position"], competences:["demarquage","occupation des intervalles","timing d'appel"]},
+    {nom:"Jouer entre les lignes", objectifs:["Jeu de position"], competences:["orientation du corps","controle oriente","remise en une touche"]},
+    {nom:"Utiliser le troisieme homme", objectifs:["Jeu de position","Progression"], competences:["anticipation","triangulation","vision peripherique"]},
+    {nom:"Changer rapidement le cote", objectifs:["Progression"], competences:["passe longue precise","lecture du cote faible","vitesse d'execution"]},
+    {nom:"Fixer puis renverser", objectifs:["Progression","Jeu de position"], competences:["temporisation","renversement rapide","occupation du cote faible"]},
+    {nom:"Desequilibrer un bloc bas", objectifs:["Superiorite numerique","Finition"], competences:["combinaisons courtes","percussion balle au pied","prise de risque offensive"]},
+    {nom:"Creer des situations de centre", objectifs:["Finition"], competences:["debordement","centre en mouvement","timing d'appel dans la surface"]},
+    {nom:"Creer des situations de finition", objectifs:["Finition"], competences:["prise d'information avant tir","frappe rapide","dernier geste"]}
+  ],
+  "Sans ballon": [
+    {nom:"Defendre vers l'avant", objectifs:["Pressing collectif"], competences:["agressivite","declenchement collectif","couverture"]},
+    {nom:"Presser haut", objectifs:["Pressing collectif"], competences:["coulissement","synchronisation du bloc","intensite"]},
+    {nom:"Bloc median", objectifs:["Pressing collectif","Repli defensif"], competences:["compacite","communication","lecture des trajectoires"]},
+    {nom:"Bloc bas", objectifs:["Repli defensif"], competences:["discipline positionnelle","patience defensive","couverture de l'axe"]},
+    {nom:"Coulisser", objectifs:["Repli defensif"], competences:["lecture du ballon","deplacement lateral","distances entre lignes"]},
+    {nom:"Fermer l'axe", objectifs:["Repli defensif"], competences:["couverture centrale","anticipation","communication defensive"]},
+    {nom:"Defendre les centres", objectifs:["Repli defensif"], competences:["marquage","jeu aerien","timing de sortie"]},
+    {nom:"Defendre la profondeur", objectifs:["Repli defensif"], competences:["lecture de la course","temporisation","couverture dans le dos"]}
+  ],
+  "Transition offensive": [
+    {nom:"Contre-attaquer rapidement", objectifs:["Transition"], competences:["vitesse de decision","course en profondeur","passe verticale"]},
+    {nom:"Sortir de la recuperation", objectifs:["Transition","Conservation"], competences:["premier controle oriente","protection de balle","calme sous pression"]},
+    {nom:"Premiere passe", objectifs:["Transition"], competences:["precision","rapidite d'execution","lecture du meilleur choix"]},
+    {nom:"Occupation des couloirs", objectifs:["Transition","Progression"], competences:["largeur immediate","timing de course","soutien mutuel"]},
+    {nom:"Attaque rapide", objectifs:["Transition","Finition"], competences:["prise de decision rapide","finition en mouvement","combinaisons directes"]}
+  ],
+  "Transition defensive": [
+    {nom:"Contre-pressing", objectifs:["Pressing collectif","Repli defensif"], competences:["reaction immediate","agressivite collective","reduction des espaces"]},
+    {nom:"Repli", objectifs:["Repli defensif"], competences:["vitesse de course","communication","reorganisation collective"]},
+    {nom:"Protection de l'axe", objectifs:["Repli defensif"], competences:["couverture centrale","discipline positionnelle","anticipation"]},
+    {nom:"Ralentir l'adversaire", objectifs:["Repli defensif"], competences:["temporisation individuelle","faute tactique intelligente","gestion du corps"]},
+    {nom:"Reorganisation defensive", objectifs:["Repli defensif"], competences:["communication","lecture collective","replacement rapide"]}
+  ]
+};
+const PHASES_ORDER = ["Avec ballon","Sans ballon","Transition offensive","Transition defensive"];
+function allPrinciples(){ return PHASES_ORDER.flatMap(function(ph){ return PRINCIPLE_TREE[ph].map(function(p){return p.nom;}); }); }
+function principleInfo(nom){
+  for(var i=0;i<PHASES_ORDER.length;i++){
+    var ph = PHASES_ORDER[i];
+    var f = PRINCIPLE_TREE[ph].find(function(p){return p.nom===nom;});
+    if(f) return Object.assign({}, f, {phase:ph});
+  }
+  return null;
+}
+
+const OBSERVATIONS_BY_PRINCIPLE = {
+  "Construire depuis le gardien": ["Le gardien joue trop vite long.","Les defenseurs sont trop statiques.","Le milieu n'offre pas de solution.","Nous perdons le ballon sous pression.","Nous n'arrivons pas a attirer l'adversaire.","Nous cassons rarement une ligne."],
+  "Attirer le pressing": ["L'adversaire ne mord jamais au pressing.","Nous jouons trop vite vers l'avant.","Le premier appui est mal positionne.","Nous manquons de patience dans la circulation."],
+  "Creer le joueur libre": ["Le joueur libre n'est jamais trouve.","Manque de mouvement pour se rendre disponible.","Passe trop previsible vers l'appui libre."],
+  "Jouer entre les lignes": ["Les intervalles ne sont jamais occupes.","Le joueur recoit dos au jeu sans se retourner.","Perte de balle systematique dans l'intervalle."],
+  "Fixer puis renverser": ["Le renversement arrive trop tard.","Le jeu reste trop souvent d'un seul cote.","Manque de joueurs disponibles cote faible."],
+  "Creer des situations de centre": ["Les centres ne trouvent jamais un partenaire.","Manque de timing dans l'appel.","Centre trop souvent contre."],
+  "Creer des situations de finition": ["Peu d'occasions creees.","Manque de joueurs dans la surface au moment du centre.","Derniere passe imprecise."],
+  "Presser haut": ["Le pressing est desynchronise.","Espaces laisses dans le dos du bloc.","Manque d'intensite collective sur les 10 premieres secondes."],
+  "Bloc median": ["Le bloc n'est pas assez compact.","Distances trop grandes entre les lignes.","Difficulte a coulisser ensemble."],
+  "Bloc bas": ["Trop d'espace laisse devant le bloc.","Manque de discipline positionnelle.","Sorties individuelles trop frequentes."],
+  "Repli": ["Le repli est trop lent.","Manque de communication pendant la course arriere.","Les joueurs ne referment pas les espaces centraux."],
+  "Contre-pressing": ["Les joueurs abandonnent le pressing.","Nous reculons trop vite.","Les distances sont trop grandes.","Nous ne recuperons jamais dans les 5 secondes."]
+};
+const GENERIC_OBSERVATIONS = ["Manque de justesse technique dans l'execution.","Le comportement collectif n'est pas synchronise.","Les joueurs manquent de reperes positionnels.","La prise de decision est trop lente.","Le principe n'est pas encore automatise en match.","Aucune observation particuliere."];
+function observationsFor(principe){ return OBSERVATIONS_BY_PRINCIPLE[principe] || GENERIC_OBSERVATIONS; }
+
+const THEMES = {
+  "Pressing a la perte": { color:"#166534", bg:"#dcfce7" },
+  "Construction":        { color:"#1d4ed8", bg:"#dbeafe" },
+  "Infiltration":        { color:"#7c2d12", bg:"#ffedd5" },
+  "Finition":            { color:"#9d174d", bg:"#fce7f3" },
+  "Transition":          { color:"#5b21b6", bg:"#ede9fe" },
+  "Conservation":        { color:"#0f766e", bg:"#ccfbf1" }
+};
+const THEME_NAMES = Object.keys(THEMES);
+
+const AVATAR_OPTIONS = ["🙂","😎","🧑‍💼","👨‍💼","👩‍💼","🦁","🦅","🐺","⚡","🔥","🛡️","🎯","⚽","🧠","🏆"];
+const COACHES = ["Pep Guardiola","Mikel Arteta","Jurgen Klopp","Marcelo Bielsa","Jose Mourinho","Carlo Ancelotti","Hansi Flick","Enzo Maresca","Xabi Alonso","Diego Simeone","Luis Enrique","Thomas Tuchel","Unai Emery","Roberto De Zerbi","Arne Slot"];
+const COMMON_TRAITS = ["Intensite du pressing","Verticalite","Homme contre homme","Intensite mentale","Liberte offensive","Developpement des joueurs","Possession patiente","Bloc bas organise","Transitions rapides","Flexibilite tactique","Discipline defensive","Creativite individuelle"];
+const SYSTEME_OPTIONS = ["4-3-3","4-2-3-1","4-4-2","3-4-3","3-5-2","4-1-4-1","5-3-2","Peu importe"];
+const PIED_OPTIONS = ["Droitier","Gaucher","Ambidextre","Peu importe"];
+
+const CONTEXTE_OPTIONS = [
+  "Il fait partie de mon projet de jeu.",
+  "C'est une priorite de mon cycle actuel.",
+  "Mon equipe progresse difficilement dessus.",
+  "Nous avons rencontre des difficultes en match.",
+  "Je prepare le prochain adversaire.",
+  "Je laisse l'assistant choisir pour moi."
+];
+const MATERIEL_OPTIONS = ["Ballons","Chasubles","Plots","Mini-buts","Grands buts","Echelle de rythme","Mannequins","Piquets"];
+const CHARGE_OPTIONS = ["legere","moyenne","elevee"];
+const CATEGORIE_OPTIONS = ["U9","U10","U11","U12","U13","U14","U15","U16","U17","U18","U19","Seniors"];
+const NIVEAU_OPTIONS = ["Debutant","Intermediaire","Confirme","Elite"];
+const OBJECTIFS_SAISON_SUGGESTIONS = ["Construire depuis l'arriere","Developper le contre-pressing","Augmenter le nombre d'occasions creees","Ameliorer la maitrise du ballon","Stabiliser le bloc defensif","Progresser sur les transitions"];
+
+const EXERCISE_LIBRARY = [
+  {id:"e01", nom:"Reveil musculaire + jonglerie libre", etape:"Activation", objectif_pedagogique:"Conservation", principes:[], joueurs_min:6, joueurs_max:24, duree:8, materiel:["Ballons"], difficulte:"Facile", intensite_physique:"Faible", intensite_cognitive:"Faible", coaching_points:["Amplitude articulaire progressive","Contact ballon varie (pied fort / pied faible)"], erreurs_frequentes:["Rythme trop lent","Manque d'engagement"], variantes:["Par deux, en musique"], surface:"Zone libre 20x20m", mots_cles:["echauffement","mobilite"]},
+  {id:"e02", nom:"Activation en duo avec passes courtes", etape:"Activation", objectif_pedagogique:"Conservation", principes:["Construire depuis le gardien"], joueurs_min:8, joueurs_max:20, duree:10, materiel:["Ballons","Plots"], difficulte:"Facile", intensite_physique:"Moyenne", intensite_cognitive:"Faible", coaching_points:["Qualite de la passe","Orientation du corps avant reception"], erreurs_frequentes:["Passe trop molle","Mauvaise preparation du controle"], variantes:["Ajout d'un defenseur passif"], surface:"15x15m par duo", mots_cles:["passe","activation","technique"]},
+  {id:"e03", nom:"Ateliers techniques de passe et controle oriente", etape:"Exercice technique", objectif_pedagogique:"Conservation", principes:["Jouer entre les lignes","Creer le joueur libre"], joueurs_min:8, joueurs_max:18, duree:15, materiel:["Ballons","Plots"], difficulte:"Moyenne", intensite_physique:"Moyenne", intensite_cognitive:"Moyenne", coaching_points:["Controle oriente vers l'espace libre","Vitesse d'execution"], erreurs_frequentes:["Controle vers l'adversaire","Manque de prise d'information avant reception"], variantes:["Temps limite par atelier"], surface:"4 ateliers de 8x8m", mots_cles:["technique","passe","controle"]},
+  {id:"e04", nom:"Centres et finitions en ateliers", etape:"Exercice technique", objectif_pedagogique:"Finition", principes:["Creer des situations de centre","Creer des situations de finition"], joueurs_min:10, joueurs_max:18, duree:15, materiel:["Ballons","Mini-buts","Plots"], difficulte:"Moyenne", intensite_physique:"Moyenne", intensite_cognitive:"Moyenne", coaching_points:["Qualite du centre (cloche / tendu)","Timing de l'appel dans la surface"], erreurs_frequentes:["Centre trop long","Appel trop tot"], variantes:["Centres en une touche"], surface:"Demi-terrain largeur", mots_cles:["centre","finition","surface"]},
+  {id:"e05", nom:"Rondo 6 contre 2 sous pression", etape:"Jeu reduit", objectif_pedagogique:"Conservation", principes:["Attirer le pressing"], joueurs_min:8, joueurs_max:8, duree:15, materiel:["Ballons","Chasubles","Plots"], difficulte:"Moyenne", intensite_physique:"Moyenne", intensite_cognitive:"Elevee", coaching_points:["Orientation du corps avant reception","Appels a contre-pied du pressing"], erreurs_frequentes:["Passe previsible","Manque de mouvement sans ballon"], variantes:["Une touche de balle imposee"], surface:"12x12m", mots_cles:["conservation","rondo","pressing"]},
+  {id:"e06", nom:"Jeu de position 5v5+3 appuis", etape:"Jeu reduit", objectif_pedagogique:"Jeu de position", principes:["Jouer entre les lignes","Creer le joueur libre","Utiliser le troisieme homme"], joueurs_min:13, joueurs_max:16, duree:18, materiel:["Ballons","Chasubles","Plots"], difficulte:"Elevee", intensite_physique:"Moyenne", intensite_cognitive:"Elevee", coaching_points:["Trouver l'appui libre entre les lignes","Alterner jeu court et changement d'aile"], erreurs_frequentes:["Ballon colle","Absence de bascule du jeu"], variantes:["Zone centrale interdite aux defenseurs"], surface:"30x24m", mots_cles:["possession","position","ligne"]},
+  {id:"e07", nom:"Pressing collectif en superiorite 6v4", etape:"Jeu reduit", objectif_pedagogique:"Pressing collectif", principes:["Presser haut","Defendre vers l'avant"], joueurs_min:10, joueurs_max:12, duree:15, materiel:["Ballons","Chasubles","Plots","Mini-buts"], difficulte:"Elevee", intensite_physique:"Elevee", intensite_cognitive:"Elevee", coaching_points:["Coulissement collectif du bloc","Pression immediate sur le porteur"], erreurs_frequentes:["Pressing desynchronise","Espaces laisses dans le dos"], variantes:["Ajout d'un joker offensif"], surface:"25x20m", mots_cles:["pressing","bloc","recuperation"]},
+  {id:"e08", nom:"Contre-pressing immediat apres perte", etape:"Jeu reduit", objectif_pedagogique:"Transition", principes:["Contre-pressing"], joueurs_min:10, joueurs_max:14, duree:15, materiel:["Ballons","Chasubles","Plots"], difficulte:"Elevee", intensite_physique:"Elevee", intensite_cognitive:"Elevee", coaching_points:["Reaction immediate a la perte (5 secondes)","Fermeture des lignes de passe proches"], erreurs_frequentes:["Reaction trop tardive","Manque d'intensite collective"], variantes:["Limiter a 6 secondes pour recuperer"], surface:"20x20m", mots_cles:["contre-pressing","transition","recuperation"]},
+  {id:"e09", nom:"Construction courte depuis le gardien", etape:"Situation tactique", objectif_pedagogique:"Progression", principes:["Construire depuis le gardien","Attirer le pressing"], joueurs_min:16, joueurs_max:18, duree:20, materiel:["Ballons","Chasubles","Plots","Grands buts"], difficulte:"Moyenne", intensite_physique:"Moyenne", intensite_cognitive:"Elevee", coaching_points:["Largeur maximale des lateraux","Gardien implique comme relais"], erreurs_frequentes:["Relance precipitee","Manque d'appuis entre les lignes"], variantes:["But si progression en moins de 8 passes"], surface:"2/3 de terrain", mots_cles:["construction","relance","gardien"]},
+  {id:"e10", nom:"Progression par les couloirs lateraux", etape:"Situation tactique", objectif_pedagogique:"Progression", principes:["Occupation des couloirs","Changer rapidement le cote"], joueurs_min:14, joueurs_max:18, duree:18, materiel:["Ballons","Chasubles","Plots","Mini-buts"], difficulte:"Moyenne", intensite_physique:"Moyenne", intensite_cognitive:"Moyenne", coaching_points:["Debordement exterieur","Timing de la course en profondeur"], erreurs_frequentes:["Centre non exploite","Manque de soutien dans l'axe"], variantes:["Couloir libre uniquement"], surface:"Terrain complet en largeur", mots_cles:["progression","couloir","debordement"]},
+  {id:"e11", nom:"Fermeture des espaces d'infiltration", etape:"Situation tactique", objectif_pedagogique:"Repli defensif", principes:["Fermer l'axe","Bloc median"], joueurs_min:12, joueurs_max:14, duree:18, materiel:["Ballons","Chasubles","Plots","Mini-buts"], difficulte:"Elevee", intensite_physique:"Moyenne", intensite_cognitive:"Elevee", coaching_points:["Coulissement collectif pour fermer l'axe","Anticipation du depart du ballon"], erreurs_frequentes:["Bloc non compact","Retard sur le coulissement"], variantes:["Surface de jeu augmentee"], surface:"30x20m", mots_cles:["infiltration","axe","coulissement"]},
+  {id:"e12", nom:"Finition en superiorite numerique 3v2", etape:"Situation tactique", objectif_pedagogique:"Finition", principes:["Creer des situations de finition","Desequilibrer un bloc bas"], joueurs_min:10, joueurs_max:14, duree:18, materiel:["Ballons","Chasubles","Plots","Grands buts"], difficulte:"Moyenne", intensite_physique:"Elevee", intensite_cognitive:"Moyenne", coaching_points:["Prise d'information avant controle","Tir cadre rapide"], erreurs_frequentes:["Trop de touches avant le tir","Mauvais choix de passe finale"], variantes:["Passage en 3v3"], surface:"Demi-terrain", mots_cles:["finition","superiorite","tir"]},
+  {id:"e13", nom:"Jeu entre les lignes en 4 zones", etape:"Situation tactique", objectif_pedagogique:"Jeu de position", principes:["Jouer entre les lignes","Utiliser le troisieme homme"], joueurs_min:14, joueurs_max:16, duree:18, materiel:["Ballons","Chasubles","Plots"], difficulte:"Elevee", intensite_physique:"Moyenne", intensite_cognitive:"Elevee", coaching_points:["Appui dos au jeu puis remise","Timing d'entree dans l'intervalle"], erreurs_frequentes:["Entree trop statique dans la zone","Perte de balle sous pression"], variantes:["Zone centrale limitee a 2 joueurs max"], surface:"4 bandes de 8m", mots_cles:["ligne","intervalle","position"]},
+  {id:"e14", nom:"CPA offensifs — coups francs et corners", etape:"Situation tactique", objectif_pedagogique:"Finition", principes:["Creer des situations de finition"], joueurs_min:10, joueurs_max:16, duree:15, materiel:["Ballons","Mannequins","Grands buts"], difficulte:"Moyenne", intensite_physique:"Faible", intensite_cognitive:"Moyenne", coaching_points:["Timing des courses","Zones de replacement offensif"], erreurs_frequentes:["Courses desynchronisees","Manque de variantes de blocs"], variantes:["Corner direct / indirect"], surface:"Surface de reparation", mots_cles:["cpa","corner","coup franc"]},
+  {id:"e15", nom:"CPA defensifs — organisation du marquage", etape:"Situation tactique", objectif_pedagogique:"Repli defensif", principes:["Defendre les centres","Protection de l'axe"], joueurs_min:10, joueurs_max:16, duree:15, materiel:["Ballons","Mannequins","Grands buts"], difficulte:"Moyenne", intensite_physique:"Faible", intensite_cognitive:"Moyenne", coaching_points:["Marquage zone / homme clarifie","Communication avant chaque frappe"], erreurs_frequentes:["Joueur non marque au 2e poteau","Manque de communication"], variantes:["Marquage mixte zone + homme"], surface:"Surface de reparation", mots_cles:["cpa","defense","marquage"]},
+  {id:"e16", nom:"Transition offensive eclair (5 secondes)", etape:"Match dirige", objectif_pedagogique:"Transition", principes:["Contre-attaquer rapidement","Sortir de la recuperation","Premiere passe"], joueurs_min:14, joueurs_max:18, duree:20, materiel:["Ballons","Chasubles","Plots","Grands buts"], difficulte:"Elevee", intensite_physique:"Elevee", intensite_cognitive:"Elevee", coaching_points:["Verticalite immediate apres recuperation","Appel en profondeur instantane"], erreurs_frequentes:["Retour en arriere trop systematique","Appel trop tardif"], variantes:["Reduction du delai a 4 secondes"], surface:"Grand espace / terrain complet", mots_cles:["transition","profondeur","verticalite"]},
+  {id:"e17", nom:"Transitions defensives sous superiorite adverse", etape:"Match dirige", objectif_pedagogique:"Repli defensif", principes:["Repli","Reorganisation defensive","Ralentir l'adversaire"], joueurs_min:14, joueurs_max:18, duree:20, materiel:["Ballons","Chasubles","Plots","Grands buts"], difficulte:"Elevee", intensite_physique:"Elevee", intensite_cognitive:"Elevee", coaching_points:["Replacement rapide et organise","Retard tactique du porteur adverse"], erreurs_frequentes:["Course desordonnee au repli","Manque de communication defensive"], variantes:["Superiorite offensive +1"], surface:"Terrain complet", mots_cles:["transition","repli","defense"]},
+  {id:"e18", nom:"Match dirige — theme libre impose", etape:"Match dirige", objectif_pedagogique:"Jeu de position", principes:["Fixer puis renverser","Desequilibrer un bloc bas"], joueurs_min:12, joueurs_max:22, duree:20, materiel:["Ballons","Chasubles","Grands buts"], difficulte:"Moyenne", intensite_physique:"Elevee", intensite_cognitive:"Moyenne", coaching_points:["Appliquer le theme du jour en match reel","Corriger en arretant le jeu ponctuellement"], erreurs_frequentes:["Retour aux habitudes sans application du theme"], variantes:["Regle bonus liee au theme"], surface:"Terrain complet", mots_cles:["match dirige","application","theme"]},
+  {id:"e19", nom:"Retour au calme — etirements et debrief", etape:"Retour au calme", objectif_pedagogique:"Conservation", principes:[], joueurs_min:6, joueurs_max:24, duree:8, materiel:[], difficulte:"Facile", intensite_physique:"Faible", intensite_cognitive:"Faible", coaching_points:["Etirements actifs","Debrief collectif sur les objectifs du jour"], erreurs_frequentes:["Debrief trop long","Etirements bacles"], variantes:["Debrief individuel court"], surface:"Cercle central", mots_cles:["recuperation","debrief","etirement"]},
+  {id:"e20", nom:"Retour au calme actif avec ballon", etape:"Retour au calme", objectif_pedagogique:"Conservation", principes:["Construire depuis le gardien"], joueurs_min:6, joueurs_max:24, duree:7, materiel:["Ballons"], difficulte:"Facile", intensite_physique:"Faible", intensite_cognitive:"Faible", coaching_points:["Passes lentes en marchant","Respiration controlee"], erreurs_frequentes:["Intensite encore trop elevee"], variantes:["En cercle, une touche"], surface:"Cercle 10m", mots_cles:["recuperation","calme","ballon"]}
+];
+
+const SEED_SESSIONS = [
+  {id:"s1", titre:"Pressing a la perte", theme:"Pressing a la perte", phase:"B-", principe:"P4", duree:90, joueurs:16, terrain:"Terrain A", materiel:"12 ballons, 8 chasubles, 44 plots, 4 petits buts, 1 but amovible", premium:false,
+    description:"Par un bloc compact qui coulisse rapidement et qui accentue la pression sur le porteur du ballon, dans le but de provoquer l'erreur technique de l'adversaire.",
+    objectif:"Faire un pressing positif pour cadrer, controler ou recuperer le ballon.",
+    organisation:"Depart sur une relance du gardien. Les joueurs en B- doivent recuperer le ballon afin de marquer dans le grand but.",
+    consignes:"Ressortir du pressing afin de marquer dans la stop zone.",
+    comportements:"Coulissement des joueurs en B- afin de maintenir une pression haute.",
+    criteres:"Coulissement organise du bloc, recuperation effective du ballon.",
+    variables:[["Suppression d'un attaquant","N+1","Le bloc doit couvrir un espace plus grand."],["Ajout d'un milieu chez les jaunes","N-1","La superiorite numerique facilite la recuperation."]],
+    pdf:"Pressing_a_la_perte_U12U13.pdf", diagram:"pressing"},
+  {id:"s2", titre:"Fermeture des espaces d'infiltration", theme:"Infiltration", phase:"B-", principe:"P5", duree:75, joueurs:14, terrain:"Terrain B", materiel:"6 ballons, 4 chasubles, 16 plots, 4 petits buts", premium:false,
+    description:"Par la fermeture de l'axe et des espaces d'infiltration de l'adversaire.",
+    objectif:"Se positionner entre l'adversaire et le but.",
+    organisation:"L'equipe en B- doit coulisser collectivement pour fermer l'axe et recuperer avant de marquer.",
+    consignes:"Faire tourner le ballon rapidement afin de trouver le joueur central.",
+    comportements:"Coulissement collectif pour empecher toute passe vers l'axe.",
+    criteres:"Nombre de recuperations dans l'axe.",
+    variables:[["Augmentation de la surface","N+1","Plus de surface a couvrir."],["Ajout d'un joueur en B-","N-1","Le coulissement est facilite."]],
+    pdf:"Fermeture_infiltration_U13.pdf", diagram:"infiltration"},
+  {id:"s3", titre:"Construction courte depuis le gardien", theme:"Construction", phase:"B+", principe:"P1", duree:80, joueurs:18, terrain:"Terrain A", materiel:"8 ballons, 12 chasubles, 20 plots, 2 grands buts", premium:true,
+    description:"Construire le jeu depuis le gardien en attirant le pressing adverse.",
+    objectif:"Fixer la premiere ligne de pression adverse par une circulation courte.",
+    organisation:"Relance systematique du gardien. But si progression en moins de 8 passes.",
+    consignes:"Presser des la passe vers le premier defenseur.",
+    comportements:"Appels a contre-mouvement des milieux, largeur maximale des lateraux.",
+    criteres:"Nombre de progressions reussies sans perte de balle.",
+    variables:[["Zone de relance reduite","N+1","La pression adverse est plus immediate."],["Ajout d'un joueur libre cote fort","N-1","Le decalage est plus facile a trouver."]],
+    pdf:"Construction_courte_gardien.pdf", diagram:"construction"},
+  {id:"s4", titre:"Finition en superiorite numerique", theme:"Finition", phase:"B+", principe:"P3", duree:70, joueurs:12, terrain:"Terrain C", materiel:"10 ballons, 6 chasubles, 12 plots, 1 grand but", premium:true,
+    description:"Exploiter une superiorite numerique en zone offensive.",
+    objectif:"Prendre l'information avant de recevoir, accelerer la finition.",
+    organisation:"Sequences de 3 contre 2 a repetition jusqu'au grand but.",
+    consignes:"Retarder la sortie pour obliger une prise de decision rapide.",
+    comportements:"Appels croises, prise d'information avant controle.",
+    criteres:"Nombre de buts marques en moins de 3 touches.",
+    variables:[["Passage en 3 contre 3","N+1","La superiorite disparait."],["Ajout d'un appui supplementaire","N-1","Plus d'options de passes."]],
+    pdf:"Finition_superiorite_numerique.pdf", diagram:"finition"},
+  {id:"s5", titre:"Transition offensive rapide", theme:"Transition", phase:"B+", principe:"P2", duree:60, joueurs:16, terrain:"Terrain B", materiel:"8 ballons, 8 chasubles, 10 plots, 2 grands buts", premium:true,
+    description:"Exploiter les 5 premieres secondes apres recuperation.",
+    objectif:"Jouer vers l'avant des la recuperation.",
+    organisation:"6 secondes pour trouver une passe en profondeur, sinon le ballon est rendu.",
+    consignes:"Se replier immediatement apres la perte.",
+    comportements:"Appel en profondeur immediat d'un attaquant.",
+    criteres:"Nombre de transitions reussies en moins de 6 secondes.",
+    variables:[["Reduction du delai a 4 secondes","N+1","La prise de decision doit etre quasi instantanee."],["Zone de recuperation elargie","N-1","Plus de temps et d'espace."]],
+    pdf:"Transition_offensive_rapide.pdf", diagram:"transition"},
+  {id:"s6", titre:"Conservation sous pression (rondo 6v2)", theme:"Conservation", phase:"B+", principe:"P1", duree:45, joueurs:8, terrain:"Terrain D", materiel:"4 ballons, 2 chasubles, 8 plots", premium:true,
+    description:"Conserver le ballon sous pression.",
+    objectif:"Jouer a une touche de balle quand la pression est haute.",
+    organisation:"Rondo 6 contre 2 dans un carre de 12x12m.",
+    consignes:"Presser en duo pour fermer les 2 angles de passe les plus proches.",
+    comportements:"Orientation du corps avant reception.",
+    criteres:"Nombre de passes consecutives reussies.",
+    variables:[["Une touche de balle imposee","N+1","La vitesse d'execution devient determinante."],["Carre agrandi","N-1","Plus de temps et d'espace."]],
+    pdf:"Conservation_rondo_6v2.pdf", diagram:"conservation"}
+];
+
+/* ================= ETAT GLOBAL ================= */
+let sessions = [];
+let profile = null;
+let favorites = [];
+let isPremium = false;
+let activeThemeFilter = "Tous les themes";
+let activePhaseFilter = "Toutes";
+let searchQuery = "";
+let uploadedFileName = null;
+let wizardState = {};
+let currentGenSession = null;
+let chatHistory = [];
+let obState = {};
+let obStep = 1;
+let obEditMode = false;
+let wizPhaseTab = "Avec ballon";
+let roadmap = null;
+
+async function loadState(){
+  var customSessions = [];
+  try{ var r = await window.storage.get('myplaybook:custom_sessions', false); if(r && r.value) customSessions = JSON.parse(r.value); }catch(e){}
+  try{ var r2 = await window.storage.get('myplaybook:premium', false); if(r2 && r2.value) isPremium = JSON.parse(r2.value) === true; }catch(e){}
+  try{ var r3 = await window.storage.get('myplaybook:favorites', false); if(r3 && r3.value) favorites = JSON.parse(r3.value); }catch(e){}
+  try{ var r4 = await window.storage.get('myplaybook:profile', false); if(r4 && r4.value) profile = JSON.parse(r4.value); }catch(e){ profile = null; }
+  try{ var r5 = await window.storage.get('myplaybook:roadmap', false); if(r5 && r5.value) roadmap = JSON.parse(r5.value); }catch(e){ roadmap = null; }
+  sessions = SEED_SESSIONS.concat(customSessions);
+  if(profile){ migrateProfileShape(); await persistProfile(); }
+}
+/* Repare les profils enregistres avec un ancien schema (avant la refonte identite 4 phases / CV). */
+function migrateProfileShape(){
+  var def = newObState();
+  if(!profile.identity) profile.identity = {};
+  if(!profile.identity.avecBallon) profile.identity.avecBallon = def.identity.avecBallon;
+  if(!profile.identity.transitionOff) profile.identity.transitionOff = def.identity.transitionOff;
+  if(!profile.identity.sansBallon) profile.identity.sansBallon = def.identity.sansBallon;
+  if(!profile.identity.transitionDef) profile.identity.transitionDef = def.identity.transitionDef;
+  if(!profile.systeme) profile.systeme = def.systeme;
+  if(!profile.pied) profile.pied = def.pied;
+  if(profile.entrainementsSemaine === undefined) profile.entrainementsSemaine = def.entrainementsSemaine;
+  if(profile.dureeMoyenne === undefined) profile.dureeMoyenne = def.dureeMoyenne;
+  if(!profile.objectifsSaison) profile.objectifsSaison = [];
+  if(!profile.objectifsSaisonDone) profile.objectifsSaisonDone = {};
+  if(!profile.principesPrioritaires) profile.principesPrioritaires = [];
+  if(!profile.traits) profile.traits = {};
+  if(!profile.coaches) profile.coaches = [];
+}
+async function persistCustomSessions(){ var custom = sessions.filter(function(s){return s.custom;}); try{ await window.storage.set('myplaybook:custom_sessions', JSON.stringify(custom), false); }catch(e){} }
+async function persistPremium(){ try{ await window.storage.set('myplaybook:premium', JSON.stringify(isPremium), false); }catch(e){} }
+async function persistFavorites(){ try{ await window.storage.set('myplaybook:favorites', JSON.stringify(favorites), false); }catch(e){} }
+async function persistProfile(){ try{ await window.storage.set('myplaybook:profile', JSON.stringify(profile), false); }catch(e){} }
+async function persistRoadmap(){ try{ await window.storage.set('myplaybook:roadmap', JSON.stringify(roadmap), false); }catch(e){} }
+
+var toastTimer;
+function showToast(msg){ var t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(function(){t.classList.remove('show');}, 2200); }
+function openOverlay(id){ document.getElementById(id).classList.add('show'); }
+function closeOverlay(id){ document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('[data-close]').forEach(function(btn){ btn.addEventListener('click', function(){ closeOverlay(btn.getAttribute('data-close')); }); });
+document.querySelectorAll('.overlay').forEach(function(ov){ ov.addEventListener('click', function(e){ if(e.target === ov) ov.classList.remove('show'); }); });
+
+const ICONS = {
+  users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6"/><circle cx="18" cy="9" r="2.2"/><path d="M16.5 14.2c2.6.4 4.4 2.3 4.4 5.3"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>',
+  lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>',
+  pdf:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/></svg>',
+  field:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M12 5v14M8 9h1.5v6H8z"/></svg>',
+  empty:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13Z"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 17.3-6.2 3.3 1.2-6.9L2 8.9l7-1L12 1.5l3 6.4 7 1-5 4.8 1.2 6.9z"/></svg>',
+  bulb:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a6 6 0 0 0-3.5 10.9c.5.4.8 1 .8 1.7V16h5.4v-1.4c0-.7.3-1.3.8-1.7A6 6 0 0 0 12 2Z"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg>'
+};
+
+function showView(id){
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+  var el = document.getElementById('view-'+id);
+  if(el) el.classList.add('active');
+  document.querySelectorAll('.side-item[data-view]').forEach(function(it){ it.classList.toggle('active', it.getAttribute('data-view')===id); });
+  if(id==='dashboard') renderDashboard();
+  if(id==='profile') renderProfileView();
+  if(id==='model') renderModelView();
+  if(id==='roadmap') renderRoadmapView();
+  if(id==='library'){ buildThemeSelect(); buildPhaseChips(); renderGrid(); }
+  if(id==='favorites') renderFavoritesView();
+  if(id==='mysessions') renderMySessionsView();
+  if(id==='settings') renderSettingsView();
+}
+document.querySelectorAll('.side-item[data-view]').forEach(function(it){ it.addEventListener('click', function(){ showView(it.getAttribute('data-view')); }); });
+document.getElementById('sideGenBtn').addEventListener('click', function(){ openWizard(); });
+document.getElementById('dashGenBtn').addEventListener('click', function(){ openWizard(); });
+document.getElementById('sideAvatarBtn').addEventListener('click', function(){ showView('profile'); });
+
+function isFav(id){ return favorites.indexOf(id) > -1; }
+async function toggleFavorite(id){
+  var idx = favorites.indexOf(id);
+  if(idx>-1) favorites.splice(idx,1); else favorites.push(id);
+  await persistFavorites();
+  renderGrid(); renderFavoritesView(); renderMySessionsView();
+}
+
+function sc(val, mapping, fallback){ return mapping[val] !== undefined ? mapping[val] : fallback; }
+function computeIdentityScores(id){
+  if(!id || !id.avecBallon) return {"Construction":50,"Position":50,"Pressing":50,"Bloc bas":50,"Transitions":50,"Verticalite":50};
+  var ab = id.avecBallon||{}, to = id.transitionOff||{}, sb = id.sansBallon||{}, td = id.transitionDef||{};
+  var construction = sc(ab.relance,{"Courte":85,"Mixte":58,"Longue":25},50);
+  var position = (sc(ab.interieurOuLargeur,{"Jeu interieur":75,"Largeur":45},55) + sc(ab.troisiemeHomme,{"Oui":75,"Non":40},55))/2;
+  var pressing = (sc(sb.blocDefensif,{"Haut":85,"Median":55,"Bas":25},55) + sc(ab.attirerPressing,{"Oui":65,"Non":40},50) + sc(td.perte,{"Contre-pressing immediat":80,"Repli":35},55))/3;
+  var blocBas = sc(sb.blocDefensif,{"Bas":85,"Median":55,"Haut":25},55);
+  var transitions = (sc(to.style,{"Contre-attaquer immediatement":85,"Conserver le ballon":35},55) + sc(td.priorite,{"Recuperer le ballon vite":75,"Ralentir l'adversaire":40},55))/2;
+  var verticalite = (sc(ab.profondeurOuPatience,{"Rechercher la profondeur rapidement":85,"Progresser patiemment":30},55) + sc(to.verticalite,{"Jeu vertical":80,"Jeu horizontal / securise":35},55))/2;
+  return {"Construction":Math.round(construction),"Position":Math.round(position),"Pressing":Math.round(pressing),"Bloc bas":Math.round(blocBas),"Transitions":Math.round(transitions),"Verticalite":Math.round(verticalite)};
+}
+function radarSVG(scores){
+  var labels = Object.keys(scores);
+  var n = labels.length, cx=150, cy=150, R=100;
+  function angle(i){ return (Math.PI*2*i/n) - Math.PI/2; }
+  function pt(i,r){ var a = angle(i); return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; }
+  var rings=''; [0.25,0.5,0.75,1].forEach(function(f){ var pts=[]; for(var i=0;i<n;i++){ var p=pt(i,R*f); pts.push(p[0]+','+p[1]); } rings += '<polygon points="'+pts.join(' ')+'" fill="none" stroke="#e5e7eb" stroke-width="1"/>'; });
+  var axes=''; labels.forEach(function(l,i){ var p=pt(i,R); axes += '<line x1="'+cx+'" y1="'+cy+'" x2="'+p[0]+'" y2="'+p[1]+'" stroke="#e5e7eb" stroke-width="1"/>'; var lp=pt(i,R+26); axes += '<text x="'+lp[0]+'" y="'+lp[1]+'" font-size="10" font-weight="700" fill="#6b7280" text-anchor="middle" dominant-baseline="middle">'+l+'</text>'; });
+  var dataPts=[], dots=''; labels.forEach(function(l,i){ var val = Math.max(4,Math.min(100,scores[l]))/100; var p=pt(i,R*val); dataPts.push(p[0]+','+p[1]); dots += '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3.5" fill="#16a34a"/>'; });
+  var poly = '<polygon points="'+dataPts.join(' ')+'" fill="#22c55e" fill-opacity="0.28" stroke="#16a34a" stroke-width="2.5"/>';
+  return '<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">'+rings+axes+poly+dots+'</svg>';
+}
+
+function newObState(){
+  return {
+    prenom:'', nom:'', avatar:'🙂', club:'', categorie:'U13', niveau:'Intermediaire',
+    systeme:'4-3-3', pied:'Peu importe', entrainementsSemaine:3, dureeMoyenne:75,
+    coaches:[], traits:{},
+    identity:{
+      avecBallon:{relance:'Peu importe', attirerPressing:'Peu importe', profondeurOuPatience:'Peu importe', lateralHaut:'Peu importe', troisiemeHomme:'Peu importe', interieurOuLargeur:'Peu importe', changementsAile:'Peu importe', liberteOuStructure:'Peu importe'},
+      transitionOff:{style:'Peu importe', renversement:'Peu importe', verticalite:'Peu importe'},
+      sansBallon:{blocDefensif:'Peu importe', pressingType:'Peu importe', typeDefense:'Peu importe', orientation:'Peu importe', declencheur:'Peu importe'},
+      transitionDef:{perte:'Peu importe', fautesTactiques:'Peu importe', protectionAxe:'Peu importe', priorite:'Peu importe'}
+    },
+    objectifsSaison: [],
+    objectifsSaisonDone: {},
+    principesPrioritaires: []
+  };
+}
+function startOnboarding(edit){
+  obEditMode = !!edit;
+  obState = edit && profile ? JSON.parse(JSON.stringify(profile)) : newObState();
+  if(!obState.objectifsSaison) obState.objectifsSaison = [];
+  if(!obState.principesPrioritaires) obState.principesPrioritaires = [];
+  if(!obState.objectifsSaisonDone) obState.objectifsSaisonDone = {};
+  obStep = 1;
+  document.getElementById('onboardingOverlay').classList.remove('hidden');
+  renderOnboarding();
+}
+function finishOnboarding(){ document.getElementById('onboardingOverlay').classList.add('hidden'); document.getElementById('appRoot').style.display = 'flex'; }
+function obStepLabel(n){ return ["Ton avatar","Tes inspirations","Ton identite de jeu","Objectifs & principes","Carte d'identite"][n-1]; }
+
+function pillRow(groupObj, field, options, small){
+  return '<div class="charge-row">' + options.map(function(o){
+    return '<div class="charge-pill ' + (groupObj[field]===o?'selected':'') + '" data-group-field="'+field+'" data-val="'+o+'" ' + (small?'style="font-size:10.5px;"':'') + '>' + o + '</div>';
+  }).join('') + '</div>';
+}
+
+function renderOnboarding(){
+  document.getElementById('obTitle').textContent = obEditMode ? "Modifier ton profil" : "Creons ton profil d'entraineur";
+  var dots=''; for(var i=1;i<=5;i++){ dots += '<div class="ob-dot ' + (i<obStep?'done':(i===obStep?'current':'')) + '"></div>'; }
+  document.getElementById('obProgress').innerHTML = dots;
+  var body = document.getElementById('obBody');
+  var html='';
+
+  if(obStep===1){
+    html += '<div class="ob-subq"><div class="q">Choisis ton avatar</div><div class="avatar-grid">' + AVATAR_OPTIONS.map(function(a){ return '<div class="avatar-opt ' + (obState.avatar===a?'selected':'') + '" data-av="'+a+'">'+a+'</div>'; }).join('') + '</div></div>'
+    + '<div class="field-row"><div class="field"><label>Prenom</label><input id="ob_prenom" type="text" value="'+obState.prenom+'" placeholder="Enzo"></div><div class="field"><label>Nom</label><input id="ob_nom" type="text" value="'+obState.nom+'" placeholder="Moreaux"></div></div>'
+    + '<div class="field-row"><div class="field"><label>Club</label><input id="ob_club" type="text" value="'+obState.club+'" placeholder="FC Jeunesse"></div><div class="field"><label>Categorie</label><select id="ob_cat">' + CATEGORIE_OPTIONS.map(function(c){return '<option '+(obState.categorie===c?'selected':'')+'>'+c+'</option>';}).join('') + '</select></div></div>'
+    + '<div class="field-row"><div class="field"><label>Niveau</label><select id="ob_niv">' + NIVEAU_OPTIONS.map(function(c){return '<option '+(obState.niveau===c?'selected':'')+'>'+c+'</option>';}).join('') + '</select></div><div class="field"><label>Systeme prefere</label><select id="ob_sys">' + SYSTEME_OPTIONS.map(function(c){return '<option '+(obState.systeme===c?'selected':'')+'>'+c+'</option>';}).join('') + '</select></div></div>'
+    + '<div class="field-row"><div class="field"><label>Pied directeur (optionnel)</label><select id="ob_pied">' + PIED_OPTIONS.map(function(c){return '<option '+(obState.pied===c?'selected':'')+'>'+c+'</option>';}).join('') + '</select></div><div class="field"><label>Entrainements / semaine</label><input id="ob_ent" type="number" value="'+obState.entrainementsSemaine+'"></div></div>'
+    + '<div class="field"><label>Duree moyenne d\'une seance (min)</label><input id="ob_dur" type="number" value="'+obState.dureeMoyenne+'"></div>';
+  } else if(obStep===2){
+    html += '<div class="ob-subq"><div class="q">Choisis les 3 entraineurs qui t\'inspirent le plus</div><div class="coach-grid">' + COACHES.map(function(c){ var idx = obState.coaches.indexOf(c); return '<div class="coach-card ' + (idx>-1?'selected':'') + '" data-coach="'+c+'">'+c+(idx>-1?'<div class="coach-num">'+(idx+1)+'</div>':'')+'</div>'; }).join('') + '</div></div>';
+    obState.coaches.forEach(function(c){
+      var sel = obState.traits[c] || [];
+      html += '<div class="trait-block"><h5>Qu\'est-ce qui t\'inspire chez '+c+' ?</h5><div class="trait-chip-grid">' + COMMON_TRAITS.map(function(t){ return '<div class="trait-chip ' + (sel.indexOf(t)>-1?'selected':'') + '" data-coach="'+c+'" data-trait="'+t+'">'+t+'</div>'; }).join('') + '</div></div>';
+    });
+  } else if(obStep===3){
+    var ab = obState.identity.avecBallon, to = obState.identity.transitionOff, sb = obState.identity.sansBallon, td = obState.identity.transitionDef;
+    html += '<div class="phase-block-title"><span class="phase-dot"></span>Avec ballon</div>'
+    + '<div class="ob-subq"><div class="q">Comment souhaites-tu relancer ?</div>' + pillRow(ab,'relance',["Courte","Longue","Mixte","Peu importe"]) + '</div>'
+    + '<div class="ob-subq"><div class="q">Cherches-tu a attirer le pressing adverse ?</div>' + pillRow(ab,'attirerPressing',["Oui","Non","Peu importe"]) + '</div>'
+    + '<div class="ob-subq"><div class="q">Rechercher la profondeur rapidement ou progresser patiemment ?</div>' + pillRow(ab,'profondeurOuPatience',["Rechercher la profondeur rapidement","Progresser patiemment","Peu importe"],true) + '</div>'
+    + '<div class="ob-subq"><div class="q">Utiliser les lateraux tres hauts ?</div>' + pillRow(ab,'lateralHaut',["Oui","Non","Peu importe"]) + '</div>'
+    + '<div class="ob-subq"><div class="q">Chercher le troisieme homme ?</div>' + pillRow(ab,'troisiemeHomme',["Oui","Non","Peu importe"]) + '</div>'
+    + '<div class="ob-subq"><div class="q">Priorite au jeu interieur ou a la largeur ?</div>' + pillRow(ab,'interieurOuLargeur',["Jeu interieur","Largeur","Peu importe"]) + '</div>'
+    + '<div class="ob-subq"><div class="q">Beaucoup de changements d\'aile ?</div>' + pillRow(ab,'changementsAile',["Beaucoup","Peu","Peu importe"]) + '</div>'
+    + '<div class="ob-subq"><div class="q">Liberte creative ou structure stricte ?</div>' + pillRow(ab,'liberteOuStructure',["Liberte creative","Structure stricte","Peu importe"],true) + '</div>'
+    + '<div class="phase-block-title"><span class="phase-dot"></span>Transition offensive (apres recuperation)</div>'
+    + '<div class="ob-subq"><div class="q">Contre-attaquer immediatement ou conserver le ballon ?</div>' + pillRow(to,'style',["Contre-attaquer immediatement","Conserver le ballon","Peu importe"],true) + '</div>'
+    + '<div class="ob-subq"><div class="q">Renverser rapidement ou securiser la possession ?</div>' + pillRow(to,'renversement',["Renverser rapidement","Securiser la possession","Peu importe"],true) + '</div>'
+    + '<div class="ob-subq"><div class="q">Jeu vertical ou jeu horizontal securise ?</div>' + pillRow(to,'verticalite',["Jeu vertical","Jeu horizontal / securise","Peu importe"],true) + '</div>'
+    + '<div class="phase-block-title"><span class="phase-dot"></span>Sans ballon</div>'
+    + '<div class="ob-subq"><div class="q">Ou souhaites-tu defendre ?</div>' + pillRow(sb,'blocDefensif',["Haut","Median","Bas","Peu importe"]) + '</div>'
+    + '<div class="ob-subq"><div class="q">Pressing individuel ou collectif ?</div>' + pillRow(sb,'pressingType',["Individuel","Collectif","Peu importe"]) + '</div>'
+    + '<div class="ob-subq"><div class="q">Defense de zone ou orientee homme ?</div>' + pillRow(sb,'typeDefense',["Zone","Orientee homme","Peu importe"]) + '</div>'
+    + '<div class="ob-subq"><div class="q">Forcer l\'adversaire vers l\'exterieur ou l\'interieur ?</div>' + pillRow(sb,'orientation',["Vers l'exterieur","Vers l'interieur","Peu importe"],true) + '</div>'
+    + '<div class="ob-subq"><div class="q">Declencheur de pressing prefere ?</div>' + pillRow(sb,'declencheur',["Passe laterale","Passe arriere","Controle oriente","Reception dos au jeu","Peu importe"],true) + '</div>'
+    + '<div class="phase-block-title"><span class="phase-dot"></span>Transition defensive (apres perte)</div>'
+    + '<div class="ob-subq"><div class="q">Que veux-tu apres une perte de balle ?</div>' + pillRow(td,'perte',["Contre-pressing immediat","Repli","Peu importe"],true) + '</div>'
+    + '<div class="ob-subq"><div class="q">Acceptes-tu la faute tactique ?</div>' + pillRow(td,'fautesTactiques',["Oui, j'accepte la faute tactique","Non, jamais","Peu importe"],true) + '</div>'
+    + '<div class="ob-subq"><div class="q">Priorite a la protection de l\'axe ou des couloirs ?</div>' + pillRow(td,'protectionAxe',["Priorite a l'axe","Priorite aux couloirs","Peu importe"],true) + '</div>'
+    + '<div class="ob-subq"><div class="q">Priorite : ralentir l\'adversaire ou recuperer vite ?</div>' + pillRow(td,'priorite',["Ralentir l'adversaire","Recuperer le ballon vite","Peu importe"],true) + '</div>';
+  } else if(obStep===4){
+    html += '<div class="ob-subq"><div class="q">Tes objectifs de saison</div><div class="chip-cloud">' + OBJECTIFS_SAISON_SUGGESTIONS.map(function(o){ return '<div class="cloud-chip ' + (obState.objectifsSaison.indexOf(o)>-1?'selected':'') + '" data-goal="'+o+'">'+o+'</div>'; }).join('') + '</div><div class="add-row"><input type="text" id="ob_goal_custom" placeholder="Ajouter un objectif personnalise..."><button id="ob_add_goal">Ajouter</button></div></div>'
+    + '<div class="ob-subq"><div class="q">Tes principes prioritaires cette saison (5 a 10)</div><div class="wiz-hint">Selectionnes parmi les 4 phases de ton modele de jeu.</div>'
+    + PHASES_ORDER.map(function(ph){ return '<div style="margin-bottom:10px;"><div style="font-size:11px;font-weight:800;color:var(--muted);margin-bottom:6px;">'+ph+'</div><div class="chip-cloud">' + PRINCIPLE_TREE[ph].map(function(p){ return '<div class="cloud-chip ' + (obState.principesPrioritaires.indexOf(p.nom)>-1?'selected':'') + '" data-principle="'+p.nom+'">'+p.nom+'</div>'; }).join('') + '</div></div>'; }).join('')
+    + '</div>';
+  } else if(obStep===5){
+    html += '<div class="wiz-hint" style="margin-bottom:16px;">Voici la carte d\'identite generee automatiquement a partir de tes reponses.</div>';
+    html += renderIdentityCardReveal(obState);
+  }
+  body.innerHTML = html;
+  attachOnboardingListeners();
+  renderOnboardingFoot();
+}
+
+function renderIdentityCardReveal(p){
+  var scores = computeIdentityScores(p.identity);
+  var style = (scores.Construction>65 && scores.Pressing>60) ? 'possession haute pression' : (scores.Pressing>60 ? 'pressing intense' : (scores.Construction>65 ? 'construction patiente' : 'direct & pragmatique'));
+  return '<div class="id-card-reveal"><div style="display:flex; align-items:center; gap:14px;"><div class="avatar-big" style="background:#1d1e21;">'+p.avatar+'</div><div><div class="icr-name">'+(p.prenom||'Coach')+' '+(p.nom||'')+'</div><div class="icr-sub">'+(p.club||'Club non renseigne')+' · '+p.categorie+' · '+p.niveau+' · '+(p.systeme||'—')+'</div></div></div>'
+  + '<div class="icr-tag">Style '+style+'</div>'
+  + '<div style="margin-top:16px; display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:11.5px; color:#c3c6cc;">'
+  + '<div>Relance : <b style="color:#fff;">'+p.identity.avecBallon.relance+'</b></div>'
+  + '<div>Bloc defensif : <b style="color:#fff;">'+p.identity.sansBallon.blocDefensif+'</b></div>'
+  + '<div>Transition off. : <b style="color:#fff;">'+p.identity.transitionOff.style+'</b></div>'
+  + '<div>A la perte : <b style="color:#fff;">'+p.identity.transitionDef.perte+'</b></div>'
+  + '</div></div>';
+}
+
+function attachOnboardingListeners(){
+  document.querySelectorAll('#obBody .avatar-opt').forEach(function(el){ el.addEventListener('click', function(){ obState.avatar = el.getAttribute('data-av'); renderOnboarding(); }); });
+  var map = {ob_prenom:'prenom', ob_nom:'nom', ob_club:'club'};
+  Object.keys(map).forEach(function(id){ var el = document.getElementById(id); if(el) el.addEventListener('input', function(e){ obState[map[id]]=e.target.value; }); });
+  var selMap = {ob_cat:'categorie', ob_niv:'niveau', ob_sys:'systeme', ob_pied:'pied'};
+  Object.keys(selMap).forEach(function(id){ var el = document.getElementById(id); if(el) el.addEventListener('change', function(e){ obState[selMap[id]]=e.target.value; }); });
+  var ent = document.getElementById('ob_ent'); if(ent) ent.addEventListener('input', function(e){ obState.entrainementsSemaine=parseInt(e.target.value)||0; });
+  var dur = document.getElementById('ob_dur'); if(dur) dur.addEventListener('input', function(e){ obState.dureeMoyenne=parseInt(e.target.value)||0; });
+
+  document.querySelectorAll('#obBody .coach-card').forEach(function(el){
+    el.addEventListener('click', function(){
+      var c = el.getAttribute('data-coach'); var idx = obState.coaches.indexOf(c);
+      if(idx>-1){ obState.coaches.splice(idx,1); delete obState.traits[c]; }
+      else{ if(obState.coaches.length>=3){ showToast("Tu peux choisir 3 entraineurs maximum."); return; } obState.coaches.push(c); obState.traits[c] = []; }
+      renderOnboarding();
+    });
+  });
+  document.querySelectorAll('#obBody .trait-chip').forEach(function(el){
+    el.addEventListener('click', function(){
+      var c = el.getAttribute('data-coach'), t = el.getAttribute('data-trait');
+      obState.traits[c] = obState.traits[c] || [];
+      var idx = obState.traits[c].indexOf(t);
+      if(idx>-1) obState.traits[c].splice(idx,1); else obState.traits[c].push(t);
+      renderOnboarding();
+    });
+  });
+  document.querySelectorAll('#obBody .charge-pill[data-group-field]').forEach(function(el){
+    el.addEventListener('click', function(){
+      var field = el.getAttribute('data-group-field'), val = el.getAttribute('data-val');
+      var groups = ['avecBallon','transitionOff','sansBallon','transitionDef'];
+      var target=null;
+      groups.forEach(function(g){ if(field in obState.identity[g]) target = obState.identity[g]; });
+      if(target) target[field] = val;
+      renderOnboarding();
+    });
+  });
+  document.querySelectorAll('#obBody .cloud-chip[data-goal]').forEach(function(el){
+    el.addEventListener('click', function(){
+      var v = el.getAttribute('data-goal'); var idx = obState.objectifsSaison.indexOf(v);
+      if(idx>-1) obState.objectifsSaison.splice(idx,1); else obState.objectifsSaison.push(v);
+      renderOnboarding();
+    });
+  });
+  var addGoalBtn = document.getElementById('ob_add_goal');
+  if(addGoalBtn) addGoalBtn.addEventListener('click', function(){
+    var input = document.getElementById('ob_goal_custom'); var v = input.value.trim();
+    if(v){ obState.objectifsSaison.push(v); renderOnboarding(); }
+  });
+  document.querySelectorAll('#obBody .cloud-chip[data-principle]').forEach(function(el){
+    el.addEventListener('click', function(){
+      var v = el.getAttribute('data-principle'); var idx = obState.principesPrioritaires.indexOf(v);
+      if(idx>-1) obState.principesPrioritaires.splice(idx,1);
+      else{ if(obState.principesPrioritaires.length>=10){ showToast("10 principes prioritaires maximum."); return; } obState.principesPrioritaires.push(v); }
+      renderOnboarding();
+    });
+  });
+}
+
+function obCanProceed(){
+  if(obStep===1) return obState.prenom.trim() && obState.nom.trim();
+  if(obStep===2) return obState.coaches.length===3;
+  return true;
+}
+function renderOnboardingFoot(){
+  var foot = document.getElementById('obFoot');
+  var html='';
+  if(obStep>1) html += '<button class="btn btn-ghost" id="obPrev">Precedent</button>';
+  if(obStep<5){ html += '<button class="btn btn-dark" id="obNext" ' + (obCanProceed()?'':'disabled style="opacity:.5;cursor:not-allowed;"') + '>Continuer</button>'; }
+  else{ html += '<button class="btn btn-primary" id="obFinish">' + (obEditMode ? 'Enregistrer mon profil' : 'Entrer dans MyPlaybook') + '</button>'; }
+  foot.innerHTML = html;
+  var prev = document.getElementById('obPrev'); if(prev) prev.addEventListener('click', function(){ obStep--; renderOnboarding(); });
+  var next = document.getElementById('obNext'); if(next) next.addEventListener('click', function(){ if(obCanProceed()){ obStep++; renderOnboarding(); } });
+  var fin = document.getElementById('obFinish');
+  if(fin) fin.addEventListener('click', async function(){
+    profile = JSON.parse(JSON.stringify(obState));
+    await persistProfile();
+    finishOnboarding();
+    showView('dashboard');
+    showToast(obEditMode ? "Profil mis a jour." : "Bienvenue dans MyPlaybook, "+profile.prenom+" !");
+  });
+}
+
+/* ================= DASHBOARD ================= */
+function generatedSessionsList(){ return sessions.filter(function(s){ return s.type==='generated' && s.wizardAnswers; }); }
+function weekPrinciplesFromSessions(){
+  var counts = {};
+  generatedSessionsList().forEach(function(s){ (s.wizardAnswers.principes||[]).forEach(function(o){ counts[o] = (counts[o]||0)+1; }); });
+  return Object.entries(counts).sort(function(a,b){return b[1]-a[1];}).slice(0,5);
+}
+function recommendationsFromProfile(){
+  if(!profile) return [];
+  var ab = profile.identity.avecBallon, sb = profile.identity.sansBallon, td = profile.identity.transitionDef;
+  var recos = [];
+  if(ab.attirerPressing==='Oui') recos.push("Ton identite vise a attirer le pressing : travaille regulierement la construction courte depuis le gardien pour fixer la premiere ligne adverse.");
+  if(td.perte==='Contre-pressing immediat') recos.push("Tu privilegies le contre-pressing : programme un bloc de contre-pressing immediat apres perte a chaque cycle.");
+  if(sb.blocDefensif==='Haut') recos.push("Bloc haut assume : verifie regulierement le pressing collectif en superiorite pour garder la synchronisation du bloc.");
+  if((profile.principesPrioritaires||[]).length) recos.push("Tu as " + profile.principesPrioritaires.length + " principe(s) prioritaire(s) pour la saison. Consulte ta roadmap pour savoir lequel developper cette semaine.");
+  if(recos.length===0) recos.push("Complete ton modele de jeu pour recevoir des recommandations personnalisees.");
+  return recos.slice(0,4);
+}
+function renderDashboard(){
+  var grid = document.getElementById('dashGrid');
+  document.getElementById('dashSubtitle').textContent = profile ? ("Bon retour, " + profile.prenom + " · " + (profile.club||'ton club')) : "Vue d'ensemble de ton projet de jeu";
+  var scores = computeIdentityScores(profile ? profile.identity : null);
+  var week = weekPrinciplesFromSessions();
+  var recos = recommendationsFromProfile();
+
+  grid.innerHTML = ''
+    + '<div class="card-box profile-hero"><div class="avatar-big">' + (profile?profile.avatar:'🙂') + '</div><div>'
+    + '<div class="profile-hero-name">' + (profile?profile.prenom+' '+profile.nom:'Coach') + '</div>'
+    + '<div class="profile-hero-meta">' + (profile?(profile.club||'—'):'—') + ' · ' + (profile?profile.categorie:'—') + ' · ' + (profile?profile.niveau:'—') + '</div>'
+    + '<div class="profile-hero-tags">' + (profile?profile.coaches:[]).map(function(c){return '<span class="tagchip">'+c+'</span>';}).join('') + '</div></div></div>'
+    + '<div class="card-box"><h3>Identite de jeu</h3><div class="sub">Radar genere a partir de ton modele de jeu</div><div class="radar-wrap">' + radarSVG(scores) + '</div></div>'
+    + '<div class="card-box"><h3>Principes travailles cette semaine</h3><div class="sub">Issus de tes seances developpees recemment</div>'
+    + (week.length ? ('<div class="week-list">' + week.map(function(w){return '<div class="week-item"><span class="name">'+w[0]+'</span><span class="cnt">'+w[1]+'×</span></div>';}).join('') + '</div>') : '<div class="empty-hint">Developpe ta premiere seance pour voir apparaitre tes principes travailles ici.</div>')
+    + '</div>'
+    + '<div class="card-box" style="grid-column:1/-1;"><h3>Recommandations de l\'assistant</h3><div class="sub">Basees sur ton modele de jeu</div>' + recos.map(function(r){return '<div class="reco-item"><div class="reco-ic">'+ICONS.bulb+'</div><div class="reco-text">'+r+'</div></div>';}).join('') + '</div>';
+}
+
+/* ================= MANAGER PROFILE (CV) ================= */
+function computeTrainingStats(){
+  var gs = generatedSessionsList();
+  var total = sessions.filter(function(s){return s.custom;}).length;
+  var principesSet = {};
+  gs.forEach(function(s){ (s.wizardAnswers.principes||[]).forEach(function(p){ principesSet[p]=(principesSet[p]||0)+1; }); });
+  var uniquePrincipes = Object.keys(principesSet).length;
+  var goals = (profile && profile.objectifsSaison) || [];
+  var done = profile && profile.objectifsSaisonDone ? Object.values(profile.objectifsSaisonDone).filter(Boolean).length : 0;
+  var pct = goals.length ? Math.round((done/goals.length)*100) : 0;
+  var sorted = Object.entries(principesSet).sort(function(a,b){return b[1]-a[1];});
+  return { total: total, uniquePrincipes: uniquePrincipes, pct: pct, plus: sorted[0]?sorted[0][0]:'—', moins: sorted.length?sorted[sorted.length-1][0]:'—' };
+}
+function renderProfileView(){
+  var el = document.getElementById('profileBody');
+  if(!profile){ el.innerHTML = '<div class="empty-hint">Aucun profil trouve.</div>'; return; }
+  var stats = computeTrainingStats();
+  el.innerHTML = ''
+    + '<div class="dash-grid" style="margin-bottom:16px;">'
+    + '<div class="card-box profile-hero"><div class="avatar-big">'+profile.avatar+'</div><div><div class="profile-hero-name">'+profile.prenom+' '+profile.nom+'</div><div class="profile-hero-meta">'+(profile.club||'—')+' · '+profile.categorie+' · '+profile.niveau+'</div></div></div>'
+    + '<div class="card-box"><h3>Ton identite en un coup d\'oeil</h3><div class="sub">Style dominant</div><div class="radar-wrap">'+radarSVG(computeIdentityScores(profile.identity))+'</div></div>'
+    + '</div>'
+    + '<div class="cv-grid">'
+    + '<div class="card-box"><h3>Mon identite</h3><div class="sub">Infos generales</div>'
+    + '<div class="id-row"><span class="k">Club actuel</span><span class="v">'+(profile.club||'—')+'</span></div>'
+    + '<div class="id-row"><span class="k">Categorie</span><span class="v">'+profile.categorie+'</span></div>'
+    + '<div class="id-row"><span class="k">Niveau</span><span class="v">'+profile.niveau+'</span></div>'
+    + '<div class="id-row"><span class="k">Systeme prefere</span><span class="v">'+(profile.systeme||'—')+'</span></div>'
+    + '<div class="id-row"><span class="k">Pied directeur</span><span class="v">'+(profile.pied||'—')+'</span></div>'
+    + '<div class="id-row"><span class="k">Entrainements / semaine</span><span class="v">'+(profile.entrainementsSemaine||'—')+'</span></div>'
+    + '<div class="id-row"><span class="k">Duree moyenne seance</span><span class="v">'+(profile.dureeMoyenne||'—')+' min</span></div>'
+    + '</div>'
+    + '<div class="card-box"><h3>Mes statistiques d\'entrainement</h3><div class="sub">Suivi automatique</div>'
+    + '<div class="stat-grid">'
+    + '<div class="stat-box"><div class="stat-num">'+stats.total+'</div><div class="stat-label">Seances</div></div>'
+    + '<div class="stat-box"><div class="stat-num">'+stats.uniquePrincipes+'</div><div class="stat-label">Principes travailles</div></div>'
+    + '<div class="stat-box"><div class="stat-num">'+stats.pct+'%</div><div class="stat-label">Objectifs atteints</div></div>'
+    + '<div class="stat-box"><div class="stat-num" style="font-size:12px; line-height:1.3;">'+stats.plus+'</div><div class="stat-label">Plus travaille</div></div>'
+    + '</div></div>'
+    + '<div class="card-box"><h3>Mes objectifs de saison</h3><div class="sub">Coche-les au fur et a mesure</div>'
+    + '<div id="goalsList">' + ((profile.objectifsSaison||[]).map(function(g){ var d = profile.objectifsSaisonDone && profile.objectifsSaisonDone[g]; return '<div class="goal-item"><div class="goal-check '+(d?'done':'')+'" data-goal="'+g+'">'+ICONS.check+'</div><div class="goal-text '+(d?'done':'')+'">'+g+'</div></div>'; }).join('') || '<div class="empty-hint">Aucun objectif defini. Modifie ton profil pour en ajouter.</div>') + '</div>'
+    + '</div>'
+    + '<div class="card-box"><h3>Mes principes prioritaires</h3><div class="sub">Ce que tu enseignes cette saison</div>'
+    + '<div class="id-chips">' + ((profile.principesPrioritaires||[]).map(function(p){return '<span class="id-chip">'+p+'</span>';}).join('') || '<span class="id-chip">—</span>') + '</div>'
+    + '</div>'
+    + '</div>'
+    + '<h3 style="font-size:14.5px; margin:18px 0 10px;">Tes inspirations</h3>'
+    + '<div class="id-sections">' + profile.coaches.map(function(c){ return '<div class="insp-card"><div class="insp-name">'+c+'</div><div class="insp-chips">' + ((profile.traits[c]||[]).map(function(t){return '<span class="id-chip">'+t+'</span>';}).join('') || '<span class="id-chip">—</span>') + '</div></div>'; }).join('') + '</div>';
+
+  el.querySelectorAll('.goal-check').forEach(function(chk){
+    chk.addEventListener('click', async function(){
+      var g = chk.getAttribute('data-goal');
+      profile.objectifsSaisonDone = profile.objectifsSaisonDone || {};
+      profile.objectifsSaisonDone[g] = !profile.objectifsSaisonDone[g];
+      await persistProfile();
+      renderProfileView();
+    });
+  });
+}
+document.getElementById('editProfileBtn').addEventListener('click', function(){ startOnboarding(true); });
+
+/* ================= MON MODELE DE JEU (4 phases) ================= */
+function renderModelView(){
+  var el = document.getElementById('modelBody');
+  if(!profile){ el.innerHTML = '<div class="empty-hint">Complete ton Manager Profile pour voir ton modele de jeu.</div>'; return; }
+  var id = profile.identity;
+  var sections = {
+    "Avec ballon": [["Relance",id.avecBallon.relance],["Attirer le pressing",id.avecBallon.attirerPressing],["Profondeur / patience",id.avecBallon.profondeurOuPatience],["Lateraux hauts",id.avecBallon.lateralHaut],["Troisieme homme",id.avecBallon.troisiemeHomme],["Interieur / largeur",id.avecBallon.interieurOuLargeur],["Changements d'aile",id.avecBallon.changementsAile],["Liberte / structure",id.avecBallon.liberteOuStructure]],
+    "Transition offensive": [["Style",id.transitionOff.style],["Renversement",id.transitionOff.renversement],["Verticalite",id.transitionOff.verticalite]],
+    "Sans ballon": [["Bloc defensif",id.sansBallon.blocDefensif],["Pressing",id.sansBallon.pressingType],["Type de defense",id.sansBallon.typeDefense],["Orientation",id.sansBallon.orientation],["Declencheur",id.sansBallon.declencheur]],
+    "Transition defensive": [["A la perte",id.transitionDef.perte],["Fautes tactiques",id.transitionDef.fautesTactiques],["Protection",id.transitionDef.protectionAxe],["Priorite",id.transitionDef.priorite]]
+  };
+  el.innerHTML = ''
+    + '<div class="dash-grid" style="grid-template-columns:1fr 1.1fr; margin-bottom:18px;"><div class="card-box"><h3>Radar d\'identite</h3><div class="radar-wrap">' + radarSVG(computeIdentityScores(id)) + '</div></div>' + renderIdentityCardReveal(profile) + '</div>'
+    + '<div class="id-sections">' + PHASES_ORDER.map(function(ph){ return '<div class="id-section"><h4>'+ph+'</h4>' + sections[ph].map(function(r){return '<div class="id-row"><span class="k">'+r[0]+'</span><span class="v">'+r[1]+'</span></div>';}).join('') + '</div>'; }).join('') + '</div>'
+    + '<div class="card-box" style="margin-top:14px;"><h3>Principes prioritaires de la saison</h3><div class="id-chips">' + ((profile.principesPrioritaires||[]).map(function(p){return '<span class="id-chip">'+p+'</span>';}).join('') || '<span class="id-chip">Aucun principe prioritaire defini</span>') + '</div></div>';
+}
+
+/* ================= ROADMAP DE SAISON ================= */
+function renderRoadmapView(){
+  var el = document.getElementById('roadmapBody');
+  if(!profile || !(profile.principesPrioritaires||[]).length){
+    el.innerHTML = '<div class="empty-hint">Ajoute des principes prioritaires a ton Manager Profile pour generer ta roadmap de saison.</div>';
+    return;
+  }
+  if(!roadmap){
+    el.innerHTML = '<div class="empty-hint">Aucune roadmap generee pour l\'instant. Clique sur « Generer ma roadmap » pour que l\'assistant propose un ordre d\'enseignement sur la saison.</div>';
+    return;
+  }
+  el.innerHTML = '<div class="roadmap-track">' + roadmap.map(function(w,i){
+    var info = principleInfo(w.principe);
+    return '<div class="rm-week" data-idx="'+i+'">'
+      + '<div class="rm-marker"><div class="rm-num">S'+(w.semaine||(i+1))+'</div>' + (i<roadmap.length-1?'<div class="rm-line"></div>':'') + '</div>'
+      + '<div class="rm-card"><div class="rm-phase">'+(info?info.phase:'')+'</div><div class="rm-principle">'+w.principe+'</div><div class="rm-just">'+(w.justification||'')+'</div><span class="rm-cta">Developper ce principe →</span></div>'
+      + '</div>';
+  }).join('') + '</div>';
+  el.querySelectorAll('.rm-week').forEach(function(w){
+    w.addEventListener('click', function(){
+      var idx = parseInt(w.getAttribute('data-idx'));
+      var principe = roadmap[idx].principe;
+      openWizard([principe]);
+    });
+  });
+}
+document.getElementById('roadmapGenBtn').addEventListener('click', async function(){
+  if(!isPremium){ openOverlay('pricingOverlay'); return; }
+  if(!profile || !(profile.principesPrioritaires||[]).length){ showToast("Ajoute d'abord des principes prioritaires a ton profil."); return; }
+  var el = document.getElementById('roadmapBody');
+  el.innerHTML = '<div class="loading-wrap"><div class="spinner"></div><div class="loading-text">Construction de ta roadmap de saison...</div></div>';
+  var sys = "Tu es un assistant pedagogique pour entraineurs de football au sein de MyPlaybook. Le coach t'a donne une liste de principes prioritaires pour sa saison. Construis une roadmap semaine par semaine (une entree par semaine, dans l'ordre le plus logique pedagogiquement : construction/conservation avant finition, principes offensifs et defensifs equilibres) qui couvre tous ces principes, avec une justification courte (1 phrase) par semaine expliquant pourquoi ce principe vient a ce moment. Reponds UNIQUEMENT avec un tableau JSON strict, sans texte avant/apres, au format : [{\"semaine\":1,\"principe\":\"...\",\"justification\":\"...\"}]";
+  var userMsg = "Principes prioritaires du coach : " + profile.principesPrioritaires.join(', ') + ".\nObjectifs de saison : " + ((profile.objectifsSaison||[]).join(', ')||'non precise') + ".\nIdentite de jeu resumee : " + profileContextSummary() + "\nConstruis la roadmap maintenant (une semaine par principe, dans l'ordre pedagogique le plus coherent).";
+  try{
+    var text = await callClaude(sys, [{role:"user", content: userMsg}], 1000);
+    var parsed = JSON.parse(text.replace(/```json|```/g,'').trim());
+    roadmap = parsed;
+    await persistRoadmap();
+    renderRoadmapView();
+    showToast("Roadmap generee !");
+  }catch(e){
+    console.error(e);
+    el.innerHTML = '<div class="empty-hint">Une erreur est survenue. Reessaie dans quelques instants.</div>';
+  }
+});
+
+/* ================= LIBRARY / FAVORITES / MY SESSIONS ================= */
+function isLocked(s){ return s.premium && !isPremium; }
+function cardHTML(s){
+  var th = THEMES[s.theme] || {color:"#333",bg:"#eee"};
+  var locked = isLocked(s);
+  var phaseClass = s.phase === "B+" ? "phase-plus" : "phase-minus";
+  return '<div class="card" data-id="'+s.id+'">'
+    + '<div class="fav-star '+(isFav(s.id)?'on':'')+'" data-fav="'+s.id+'">'+ICONS.star+'</div>'
+    + (s.type==='generated' ? ('<div class="gen-badge-card"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8L12 2z"/></svg>IA</div>') : '')
+    + '<div class="card-top"><span class="badge" style="background:'+th.bg+';color:'+th.color+';">'+s.theme+'</span><span class="badge-duration">'+s.duree+' min</span></div>'
+    + '<div class="card-title">'+s.titre+'</div>'
+    + '<div class="card-desc">'+((s.description||"Aucune description.").slice(0,90))+(((s.description||"").length>90)?"…":"")+'</div>'
+    + '<div class="card-foot"><span class="foot-item">'+ICONS.users+s.joueurs+'</span><span class="phase-tag '+phaseClass+'">'+s.phase+'</span></div>'
+    + (locked ? ('<div class="lock-overlay"><div class="lock-icon">'+ICONS.lock+'</div><div class="lock-text">Contenu Premium</div><div class="lock-cta">Debloquer</div></div>') : '')
+    + '</div>';
+}
+function wireCards(containerEl){
+  containerEl.querySelectorAll('.fav-star').forEach(function(star){ star.addEventListener('click', function(e){ e.stopPropagation(); toggleFavorite(star.getAttribute('data-fav')); }); });
+  containerEl.querySelectorAll('.card').forEach(function(card){
+    card.addEventListener('click', function(){
+      var s = sessions.find(function(x){return x.id === card.getAttribute('data-id');});
+      if(isLocked(s)){ openOverlay('pricingOverlay'); }
+      else if(s.type === 'generated'){ openGeneratedView(s); }
+      else{ openDetail(s); }
+    });
+  });
+}
+function buildThemeSelect(){
+  var sel = document.getElementById('themeSelect');
+  sel.innerHTML = '<option>Tous les themes</option>' + THEME_NAMES.map(function(t){return '<option>'+t+'</option>';}).join('');
+  sel.onchange = function(){ activeThemeFilter = sel.value; renderGrid(); };
+  var fsel = document.getElementById('f_theme');
+  fsel.innerHTML = THEME_NAMES.map(function(t){return '<option>'+t+'</option>';}).join('');
+}
+document.getElementById('searchInput').addEventListener('input', function(e){ searchQuery = e.target.value.trim().toLowerCase(); renderGrid(); });
+function buildPhaseChips(){
+  var wrap = document.getElementById('phaseChips');
+  var options = ["Toutes","B+","B-"];
+  wrap.innerHTML = options.map(function(o){return '<button class="chip '+(o===activePhaseFilter?'active':'')+'" data-phase="'+o+'">'+(o==="Toutes"?"Toutes phases":o)+'</button>';}).join('');
+  wrap.querySelectorAll('.chip').forEach(function(chip){ chip.addEventListener('click', function(){ activePhaseFilter = chip.getAttribute('data-phase'); buildPhaseChips(); renderGrid(); }); });
+}
+function renderGrid(){
+  var grid = document.getElementById('grid');
+  var list = sessions.filter(function(s){
+    if(activeThemeFilter !== "Tous les themes" && s.theme !== activeThemeFilter) return false;
+    if(activePhaseFilter !== "Toutes" && s.phase !== activePhaseFilter) return false;
+    if(searchQuery){ var hay = (s.titre+" "+s.theme+" "+(s.description||"")).toLowerCase(); if(hay.indexOf(searchQuery)===-1) return false; }
+    return true;
+  });
+  document.getElementById('countLabel').textContent = sessions.length + (sessions.length>1 ? " seances" : " seance");
+  if(list.length === 0){ grid.innerHTML = '<div class="empty" style="grid-column:1/-1;">'+ICONS.empty+'<div>Aucune seance ne correspond a ta recherche.</div></div>'; return; }
+  grid.innerHTML = list.map(cardHTML).join('');
+  wireCards(grid);
+}
+function renderFavoritesView(){
+  var grid = document.getElementById('favGrid');
+  var list = sessions.filter(function(s){return isFav(s.id);});
+  if(list.length===0){ grid.innerHTML = '<div class="empty" style="grid-column:1/-1;">'+ICONS.empty+'<div>Aucun favori pour l\'instant.</div></div>'; return; }
+  grid.innerHTML = list.map(cardHTML).join(''); wireCards(grid);
+}
+function renderMySessionsView(){
+  var grid = document.getElementById('mySessGrid');
+  var list = sessions.filter(function(s){return s.custom;});
+  if(list.length===0){ grid.innerHTML = '<div class="empty" style="grid-column:1/-1;">'+ICONS.empty+'<div>Tu n\'as pas encore cree ou developpe de seance.</div></div>'; return; }
+  grid.innerHTML = list.map(cardHTML).join(''); wireCards(grid);
+}
+
+/* ================= SETTINGS VIEW ================= */
+var logoutConfirmPending = false;
+function renderSettingsView(){
+  logoutConfirmPending = false;
+  var el = document.getElementById('settingsBody');
+  el.innerHTML = '<div class="dash-grid">'
+    + '<div class="card-box"><h3>Abonnement</h3><div class="sub">Statut actuel : <b>'+(isPremium?'Premium actif':'Gratuit')+'</b></div>'
+    + '<div class="btn-row"><button class="btn '+(isPremium?'btn-ghost':'btn-primary')+'" id="settingsPremiumToggle">'+(isPremium?'Repasser en Gratuit (demo)':'Simuler Premium')+'</button><button class="btn btn-dark" id="settingsPricingBtn">Voir les abonnements</button></div>'
+    + '</div>'
+    + '<div class="card-box"><h3>Manager Profile</h3><div class="sub">Identite, club, principes prioritaires...</div><div class="btn-row"><button class="btn btn-ghost" id="settingsEditProfile">Modifier mon profil</button></div></div>'
+    + '<div class="card-box" style="grid-column:1/-1;"><h3>Compte</h3><div class="sub">Connecte en tant que '+(profile?profile.prenom+' '+profile.nom:'—')+'</div>'
+    + '<div class="btn-row"><button class="btn btn-danger" id="settingsLogoutBtn">Se deconnecter</button><button class="btn btn-ghost" id="settingsLogoutCancelBtn" style="display:none;">Annuler</button></div>'
+    + '<div class="empty-hint" style="text-align:left; padding:10px 0 0;" id="logoutHint">Cree un nouveau Manager Profile a la reconnexion. Ta bibliotheque, tes favoris et ton abonnement sont conserves.</div>'
+    + '</div>'
+    + '</div>';
+  document.getElementById('settingsPremiumToggle').addEventListener('click', async function(){ isPremium = !isPremium; await persistPremium(); refreshPremiumUI(); renderGrid(); renderSettingsView(); showToast(isPremium ? "Mode Premium active (simulation)" : "Retour en mode Gratuit"); });
+  document.getElementById('settingsPricingBtn').addEventListener('click', function(){ openOverlay('pricingOverlay'); });
+  document.getElementById('settingsEditProfile').addEventListener('click', function(){ startOnboarding(true); });
+  document.getElementById('settingsLogoutBtn').addEventListener('click', function(){
+    var btn = document.getElementById('settingsLogoutBtn');
+    if(!logoutConfirmPending){
+      logoutConfirmPending = true;
+      btn.textContent = "Confirmer la deconnexion";
+      document.getElementById('settingsLogoutCancelBtn').style.display = 'inline-block';
+      document.getElementById('logoutHint').textContent = "Cette action va effacer ton Manager Profile actuel et te ramener a l'ecran de creation de profil.";
+      return;
+    }
+    logout();
+  });
+  document.getElementById('settingsLogoutCancelBtn').addEventListener('click', function(){ renderSettingsView(); });
+}
+async function logout(){
+  profile = null;
+  roadmap = null;
+  try{ await window.storage.delete('myplaybook:profile', false); }catch(e){}
+  try{ await window.storage.delete('myplaybook:roadmap', false); }catch(e){}
+  document.getElementById('appRoot').style.display = 'none';
+  activeThemeFilter = "Tous les themes";
+  activePhaseFilter = "Toutes";
+  searchQuery = '';
+  startOnboarding(false);
+}
+function refreshPremiumUI(){
+  var pill = document.getElementById('sidePlanPill');
+  pill.textContent = isPremium ? 'PREMIUM' : 'FREE';
+  pill.classList.toggle('free', !isPremium);
+  pill.classList.toggle('premium', isPremium);
+}
+document.getElementById('goPremiumBtn').addEventListener('click', async function(){ isPremium = true; await persistPremium(); refreshPremiumUI(); renderGrid(); closeOverlay('pricingOverlay'); showToast("Bienvenue dans MyPlaybook Premium !"); });
+
+/* ================= PITCH DIAGRAM GENERATOR ================= */
+function pitchSVG(kind){
+  var W=640,H=360;
+  function player(x,y,fill,label){ return '<circle cx="'+x+'" cy="'+y+'" r="11" fill="'+fill+'" stroke="#fff" stroke-width="2"/>' + (label?('<text x="'+x+'" y="'+(y+4)+'" font-size="10" font-weight="800" fill="#fff" text-anchor="middle">'+label+'</text>'):''); }
+  function arrow(x1,y1,x2,y2,color){ return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+color+'" stroke-width="2.5" marker-end="url(#arr-'+color.replace('#','')+')"/>'; }
+  function dashed(x1,y1,x2,y2,color){ return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+color+'" stroke-width="2" stroke-dasharray="5,5"/>'; }
+  var content = ''; var markers = {};
+  function markerDef(color){ var id = 'arr-'+color.replace('#',''); markers[id] = '<marker id="'+id+'" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6Z" fill="'+color+'"/></marker>'; return id; }
+  if(kind==="pressing"){
+    markerDef("#facc15"); markerDef("#ffffff");
+    content += player(150,180,"#dc2626")+player(210,120,"#dc2626")+player(210,240,"#dc2626")+player(280,180,"#dc2626","K");
+    content += player(340,160,"#facc15")+player(340,220,"#facc15")+player(420,120,"#facc15")+player(420,240,"#facc15");
+    content += arrow(340,160,300,175,"#facc15")+arrow(340,220,300,205,"#facc15");
+    content += dashed(300,60,300,300,"#ffffff33");
+    content += '<text x="300" y="45" fill="#ffffffaa" font-size="12" text-anchor="middle" font-weight="700">Bloc coulissant</text>';
+  } else if(kind==="infiltration"){
+    markerDef("#60a5fa");
+    content += player(500,90,"#dc2626")+player(500,270,"#dc2626")+player(560,180,"#dc2626","K");
+    content += player(300,180,"#dc2626","C");
+    content += player(180,120,"#3b82f6")+player(180,240,"#3b82f6")+player(260,180,"#3b82f6");
+    content += arrow(260,180,300,180,"#60a5fa");
+    content += dashed(240,60,240,300,"#ffffff33");
+  } else if(kind==="construction"){
+    markerDef("#4ade80");
+    content += player(90,180,"#facc15","K")+player(170,110,"#facc15")+player(170,250,"#facc15")+player(260,180,"#facc15");
+    content += player(350,90,"#facc15")+player(350,270,"#facc15");
+    content += player(430,140,"#dc2626")+player(430,220,"#dc2626");
+    content += arrow(90,180,170,110,"#4ade80")+arrow(170,110,260,180,"#4ade80")+arrow(260,180,350,90,"#4ade80");
+  } else if(kind==="finition"){
+    markerDef("#f472b6");
+    content += player(150,180,"#facc15")+player(220,120,"#facc15")+player(220,240,"#facc15");
+    content += player(340,140,"#dc2626")+player(340,220,"#dc2626");
+    content += player(560,180,"#dc2626","K");
+    content += arrow(150,180,220,120,"#f472b6")+arrow(220,120,420,150,"#f472b6")+dashed(420,150,540,175,"#ffffffaa");
+  } else if(kind==="transition"){
+    markerDef("#a78bfa");
+    content += player(150,180,"#facc15")+player(560,180,"#dc2626","K");
+    content += player(260,120,"#facc15")+player(260,240,"#facc15");
+    content += player(400,90,"#dc2626")+player(400,270,"#dc2626");
+    content += arrow(150,180,260,120,"#a78bfa")+arrow(260,120,480,150,"#a78bfa");
+    content += '<text x="320" y="45" fill="#ffffffaa" font-size="12" text-anchor="middle" font-weight="700">Recuperation → verticalite</text>';
+  } else {
+    markerDef("#38bdf8");
+    var cx=320, cy=180, r=110;
+    for(var i=0;i<6;i++){ var a = (Math.PI*2/6)*i - Math.PI/2; content += player(cx+r*Math.cos(a), cy+r*Math.sin(a), "#facc15"); }
+    content += player(cx-30,cy,"#dc2626")+player(cx+30,cy,"#dc2626");
+    content += '<rect x="'+(cx-r-20)+'" y="'+(cy-r-20)+'" width="'+(2*(r+20))+'" height="'+(2*(r+20))+'" fill="none" stroke="#ffffff55" stroke-width="2"/>';
+  }
+  var markerDefs = Object.keys(markers).map(function(k){return markers[k];}).join('');
+  return '<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg"><defs>'+markerDefs+'</defs>'
+    + '<rect x="0" y="0" width="'+W+'" height="'+H+'" fill="#0f7a3b"/><rect x="14" y="14" width="'+(W-28)+'" height="'+(H-28)+'" fill="none" stroke="#ffffff55" stroke-width="2"/>'
+    + '<line x1="'+(W/2)+'" y1="14" x2="'+(W/2)+'" y2="'+(H-14)+'" stroke="#ffffff40" stroke-width="2"/><circle cx="'+(W/2)+'" cy="'+(H/2)+'" r="45" fill="none" stroke="#ffffff40" stroke-width="2"/>'+content+'</svg>';
+}
+
+/* ================= DETAIL MODAL ================= */
+function openDetail(s){
+  var th = THEMES[s.theme] || {color:"#333",bg:"#eee"};
+  var phaseClass = s.phase === "B+" ? "phase-plus" : "phase-minus";
+  var body = document.getElementById('detailBody');
+  var varsRows = (s.variables||[]).map(function(v){return '<tr><td><strong>'+v[0]+'</strong></td><td>'+v[1]+'</td><td>'+v[2]+'</td></tr>';}).join('');
+  body.innerHTML = ''
+    + '<div class="det-badges"><span class="badge" style="background:'+th.bg+';color:'+th.color+';">'+s.theme+'</span><span class="phase-tag '+phaseClass+'">'+s.phase+'</span>' + (s.principe ? ('<span class="pill">'+s.principe+'</span>') : '') + '</div>'
+    + '<div class="det-title">'+s.titre+'</div>'
+    + '<div class="det-meta"><span class="m">'+ICONS.clock+s.duree+' min</span><span class="m">'+ICONS.users+s.joueurs+' joueurs</span><span class="m">'+ICONS.field+(s.terrain||"—")+'</span></div>'
+    + '<div class="pitch-wrap">'+pitchSVG(s.diagram||"conservation")+'</div>'
+    + '<div class="sec"><h4>Objectif de la tache</h4><p>'+(s.objectif||s.description||"—")+'</p></div>'
+    + '<div class="sec"><h4>Organisation / Description</h4><p>'+(s.organisation||"—")+'</p></div>'
+    + (s.consignes ? ('<div class="sec"><h4>Consignes a l\'adversaire</h4><p>'+s.consignes+'</p></div>') : '')
+    + (s.comportements ? ('<div class="sec"><h4>Comportements attendus</h4><p>'+s.comportements+'</p></div>') : '')
+    + (s.criteres ? ('<div class="sec"><h4>Criteres de reussite</h4><p>'+s.criteres+'</p></div>') : '')
+    + (varsRows ? ('<div class="sec"><h4>Variables d\'evolution</h4><table class="vartable"><thead><tr><th>Variable</th><th>Niveau</th><th>Justification</th></tr></thead><tbody>'+varsRows+'</tbody></table></div>') : '')
+    + '<div class="sec"><h4>Materiel</h4><div class="pill-list">' + ((s.materiel||"").split(',').filter(Boolean).map(function(m){return '<span class="pill">'+m.trim()+'</span>';}).join('') || '<span class="pill">—</span>') + '</div></div>'
+    + (s.pdf ? ('<div class="sec"><h4>Fiche PDF</h4><div class="pdf-row"><div class="left"><div class="pdf-ic">'+ICONS.pdf+'</div><div><div class="pdf-name">'+s.pdf+'</div><div class="pdf-sub">'+(isLocked(s) ? "Reserve aux abonnes Premium" : "Fiche complete prete a imprimer")+'</div></div></div>' + (isLocked(s) ? ('<button class="btn btn-primary" id="unlockPdfBtn">'+ICONS.lock+' Debloquer</button>') : ('<button class="btn btn-ghost" id="viewPdfBtn">Voir le PDF</button>')) + '</div></div>') : '');
+  var unlockBtn = document.getElementById('unlockPdfBtn'); if(unlockBtn){ unlockBtn.addEventListener('click', function(){ closeOverlay('detailOverlay'); openOverlay('pricingOverlay'); }); }
+  var viewBtn = document.getElementById('viewPdfBtn'); if(viewBtn){ viewBtn.addEventListener('click', function(){ showToast("Fiche PDF « "+s.pdf+" » (demo) — pas de fichier reel attache."); }); }
+  document.getElementById('duplicateBtn').onclick = async function(){
+    var copy = Object.assign({}, s, {id:'c'+Date.now(), titre: s.titre + " (copie)", custom:true, premium:false});
+    sessions.unshift(copy); await persistCustomSessions(); renderGrid(); renderMySessionsView(); closeOverlay('detailOverlay');
+    showToast("Seance dupliquee dans ta bibliotheque.");
+  };
+  openOverlay('detailOverlay');
+}
+
+/* ================= CREATE / EDIT MODAL ================= */
+function openNewSessionModal(){
+  document.getElementById('editTitleHead').textContent = "Nouvelle seance";
+  document.getElementById('f_titre').value=''; document.getElementById('f_theme').value=THEME_NAMES[0];
+  document.getElementById('f_terrain').value=''; document.getElementById('f_duree').value='';
+  document.getElementById('f_joueurs').value=''; document.getElementById('f_materiel').value='';
+  document.getElementById('f_description').value=''; document.getElementById('f_notes').value='';
+  uploadedFileName = null;
+  document.getElementById('uploadLabel').innerHTML = 'Clique pour ajouter un PDF ou une image<br><span style="font-weight:400;">PDF, PNG, JPG · max 4 Mo</span>';
+  openOverlay('editOverlay');
+}
+document.getElementById('newBtn').addEventListener('click', openNewSessionModal);
+document.getElementById('newBtn2').addEventListener('click', openNewSessionModal);
+document.getElementById('genBtn').addEventListener('click', function(){ openWizard(); });
+document.getElementById('uploadBox').addEventListener('click', function(){ document.getElementById('f_file').click(); });
+document.getElementById('f_file').addEventListener('change', function(e){
+  var f = e.target.files[0]; if(!f) return;
+  if(f.size > 4*1024*1024){ showToast("Fichier trop volumineux (max 4 Mo)"); e.target.value=''; return; }
+  uploadedFileName = f.name;
+  document.getElementById('uploadLabel').innerHTML = '<span class="fname">'+f.name+'</span><br><span style="font-weight:400;">Fichier pret a etre enregistre</span>';
+});
+document.getElementById('saveBtn').addEventListener('click', async function(){
+  var titre = document.getElementById('f_titre').value.trim();
+  if(!titre){ showToast("Merci d'indiquer un titre."); return; }
+  var theme = document.getElementById('f_theme').value;
+  var terrain = document.getElementById('f_terrain').value.trim();
+  var duree = parseInt(document.getElementById('f_duree').value) || 0;
+  var joueurs = parseInt(document.getElementById('f_joueurs').value) || 0;
+  var materiel = document.getElementById('f_materiel').value.trim();
+  var description = document.getElementById('f_description').value.trim();
+  var notes = document.getElementById('f_notes').value.trim();
+  var diagramKeys = {"Pressing a la perte":"pressing","Construction":"construction","Infiltration":"infiltration","Finition":"finition","Transition":"transition","Conservation":"conservation"};
+  var newSession = { id: 'c'+Date.now(), titre: titre, theme: theme, phase:"B+", principe:"", duree: duree, joueurs: joueurs, terrain: terrain, materiel: materiel, description: description, objectif:description, organisation:notes, consignes:"", comportements:"", criteres: notes, variables:[], pdf: uploadedFileName || null, premium:false, custom:true, diagram: diagramKeys[theme] || "conservation" };
+  sessions.unshift(newSession); await persistCustomSessions(); renderGrid(); renderMySessionsView(); closeOverlay('editOverlay');
+  showToast("Seance enregistree dans ta bibliotheque.");
+});
+
+/* ================= ASSISTANT : DEVELOPPER UN PRINCIPE ================= */
+function resetWizard(prefill){
+  var suggested = profile ? (profile.principesPrioritaires||[]) : [];
+  wizardState = {step:1, principes: prefill||[], suggested: suggested, contexte:null, weakness:null, nbJoueurs:'', categorie: profile?profile.categorie:'U13', niveau: profile?profile.niveau:'Intermediaire', duree: profile?String(profile.dureeMoyenne||''):'', materiel:[], charge:'moyenne'};
+  wizPhaseTab = "Avec ballon";
+}
+function openWizard(prefill){
+  resetWizard(prefill);
+  document.getElementById('genHeadTitle').textContent = "Developper un principe";
+  renderWizard();
+  openOverlay('genOverlay');
+}
+function wizTotalSteps(){ return wizardState.contexte==="Nous avons rencontre des difficultes en match." ? 6 : 5; }
+function wizStepLabel(n){
+  var withWeak = ["Modele de jeu","Contexte","Quelle difficulte ?","Groupe","Validation"];
+  var noWeak = ["Modele de jeu","Contexte","Groupe","Validation"];
+  return wizTotalSteps()===6 ? withWeak[n-1] : noWeak[n-1];
+}
+function renderWizard(){
+  var body = document.getElementById('genBody');
+  var total = wizTotalSteps();
+  var dots=''; for(var i=1;i<=total;i++){ dots += '<div class="wiz-dot ' + (i<wizardState.step?'done':(i===wizardState.step?'current':'')) + '"></div>'; }
+  var html = '<div class="wiz-progress">'+dots+'</div><div class="wiz-step-label">Etape '+wizardState.step+' / '+total+' · '+wizStepLabel(wizardState.step)+'</div>';
+
+  if(wizardState.step===1){
+    html += '<div class="wiz-question">Quel comportement collectif souhaites-tu developper ?</div>'
+    + '<div class="wiz-hint">Selectionne un ou plusieurs principes qui font partie du meme comportement collectif.' + (wizardState.suggested.length?' Les principes en vert sont tes principes prioritaires.':'') + '</div>'
+    + '<div class="phase-tabs">' + PHASES_ORDER.map(function(ph){return '<div class="phase-tab '+(wizPhaseTab===ph?'active':'')+'" data-tab="'+ph+'">'+ph+'</div>';}).join('') + '</div>'
+    + '<div class="chip-cloud">' + PRINCIPLE_TREE[wizPhaseTab].map(function(p){ return '<div class="cloud-chip ' + (wizardState.principes.indexOf(p.nom)>-1?'selected':'') + ' ' + (wizardState.suggested.indexOf(p.nom)>-1?'suggested':'') + '" data-val="'+p.nom+'">'+p.nom+'</div>'; }).join('') + '</div>';
+  } else if(wizardState.step===2){
+    html += '<div class="wiz-question">Pourquoi travailles-tu ce comportement aujourd\'hui ?</div>'
+    + '<div class="opt-grid">' + CONTEXTE_OPTIONS.map(function(o){return '<div class="opt-card '+(wizardState.contexte===o?'selected':'')+'" data-val="'+o+'">'+o+'<span class="opt-check">'+ICONS.check+'</span></div>';}).join('') + '</div>';
+  } else if(wizardState.step===3 && total===6){
+    var p = wizardState.principes[0] || '';
+    html += '<div class="wiz-question">Quelle difficulte as-tu rencontree ?</div>'
+    + '<div class="wiz-hint">Reponses filtrees selon le principe « '+p+' ».</div>'
+    + '<div class="opt-grid">' + observationsFor(p).map(function(o){return '<div class="opt-card multi '+(wizardState.weakness===o?'selected':'')+'" data-val="'+o+'">'+o+'<span class="opt-check">'+ICONS.check+'</span></div>';}).join('') + '</div>';
+  } else if(wizardState.step===(total-1)){
+    html += '<div class="wiz-question">Parle-moi de ton groupe</div>'
+      + '<div class="wiz-grid4">'
+      + '<div class="field"><label>Nombre de joueurs presents</label><input type="number" id="w_nb" value="'+(wizardState.nbJoueurs||'')+'" placeholder="16"></div>'
+      + '<div class="field"><label>Categorie</label><select id="w_cat">' + CATEGORIE_OPTIONS.map(function(c){return '<option '+(wizardState.categorie===c?'selected':'')+'>'+c+'</option>';}).join('') + '</select></div>'
+      + '<div class="field"><label>Niveau</label><select id="w_niv">' + NIVEAU_OPTIONS.map(function(c){return '<option '+(wizardState.niveau===c?'selected':'')+'>'+c+'</option>';}).join('') + '</select></div>'
+      + '<div class="field"><label>Duree de la seance (min)</label><input type="number" id="w_duree" value="'+(wizardState.duree||'')+'" placeholder="90"></div>'
+      + '</div>'
+      + '<div class="field"><label>Materiel disponible</label><div class="mat-grid">' + MATERIEL_OPTIONS.map(function(m){return '<div class="mat-item '+(wizardState.materiel.indexOf(m)>-1?'selected':'')+'" data-mat="'+m+'">'+m+'</div>';}).join('') + '</div></div>'
+      + '<div class="field"><label>Charge souhaitee</label><div class="charge-row">' + CHARGE_OPTIONS.map(function(c){return '<div class="charge-pill '+(wizardState.charge===c?'selected':'')+'" data-charge="'+c+'">'+c+'</div>';}).join('') + '</div></div>';
+  } else if(wizardState.step===total){
+    html += '<div class="wiz-question">Recapitulatif</div>'
+      + '<div class="wiz-summary">'
+      + '<div class="wiz-summary-row"><span class="k">Comportement a developper</span><span class="v">'+(wizardState.principes.length?wizardState.principes.join(', '):'—')+'</span></div>'
+      + '<div class="wiz-summary-row"><span class="k">Contexte</span><span class="v">'+(wizardState.contexte||'—')+'</span></div>'
+      + (wizardState.weakness ? ('<div class="wiz-summary-row"><span class="k">Difficulte observee</span><span class="v">'+wizardState.weakness+'</span></div>') : '')
+      + '<div class="wiz-summary-row"><span class="k">Joueurs presents</span><span class="v">'+(wizardState.nbJoueurs||'—')+'</span></div>'
+      + '<div class="wiz-summary-row"><span class="k">Categorie / Niveau</span><span class="v">'+wizardState.categorie+' · '+wizardState.niveau+'</span></div>'
+      + '<div class="wiz-summary-row"><span class="k">Duree</span><span class="v">'+(wizardState.duree||'—')+' min</span></div>'
+      + '<div class="wiz-summary-row"><span class="k">Materiel</span><span class="v">'+(wizardState.materiel.length?wizardState.materiel.join(', '):'—')+'</span></div>'
+      + '<div class="wiz-summary-row"><span class="k">Charge souhaitee</span><span class="v">'+wizardState.charge+'</span></div>'
+      + '</div>'
+      + (!isPremium ? '<p style="font-size:12px; color:var(--muted); margin-top:14px; line-height:1.5;">🔒 L\'assistant de developpement est une fonctionnalite <strong>Premium</strong> de MyPlaybook.</p>' : '');
+  }
+  body.innerHTML = html;
+  attachWizardListeners();
+  renderWizardFoot();
+}
+
+function attachWizardListeners(){
+  document.querySelectorAll('#genBody .phase-tab').forEach(function(el){ el.addEventListener('click', function(){ wizPhaseTab = el.getAttribute('data-tab'); renderWizard(); }); });
+  document.querySelectorAll('#genBody .cloud-chip').forEach(function(el){
+    el.addEventListener('click', function(){
+      var val = el.getAttribute('data-val'); var idx = wizardState.principes.indexOf(val);
+      if(idx>-1) wizardState.principes.splice(idx,1); else wizardState.principes.push(val);
+      renderWizard();
+    });
+  });
+  document.querySelectorAll('#genBody .opt-card:not(.multi)').forEach(function(el){ el.addEventListener('click', function(){ wizardState.contexte = el.getAttribute('data-val'); wizardState.weakness=null; renderWizard(); }); });
+  document.querySelectorAll('#genBody .opt-card.multi').forEach(function(el){ el.addEventListener('click', function(){ wizardState.weakness = el.getAttribute('data-val'); renderWizard(); }); });
+  document.querySelectorAll('#genBody .mat-item').forEach(function(el){
+    el.addEventListener('click', function(){
+      var val = el.getAttribute('data-mat'); var idx = wizardState.materiel.indexOf(val);
+      if(idx>-1) wizardState.materiel.splice(idx,1); else wizardState.materiel.push(val);
+      renderWizard();
+    });
+  });
+  document.querySelectorAll('#genBody .charge-pill').forEach(function(el){ el.addEventListener('click', function(){ wizardState.charge = el.getAttribute('data-charge'); renderWizard(); }); });
+  var wnb = document.getElementById('w_nb'); if(wnb) wnb.addEventListener('input', function(e){ wizardState.nbJoueurs=e.target.value; });
+  var wcat = document.getElementById('w_cat'); if(wcat) wcat.addEventListener('change', function(e){ wizardState.categorie=e.target.value; });
+  var wniv = document.getElementById('w_niv'); if(wniv) wniv.addEventListener('change', function(e){ wizardState.niveau=e.target.value; });
+  var wdur = document.getElementById('w_duree'); if(wdur) wdur.addEventListener('input', function(e){ wizardState.duree=e.target.value; });
+}
+
+function wizCanProceed(){
+  var total = wizTotalSteps();
+  if(wizardState.step===1) return wizardState.principes.length>0;
+  if(wizardState.step===2) return !!wizardState.contexte;
+  if(wizardState.step===3 && total===6) return !!wizardState.weakness;
+  if(wizardState.step===(total-1)) return wizardState.nbJoueurs && wizardState.duree;
+  return true;
+}
+function renderWizardFoot(){
+  var foot = document.getElementById('genFoot');
+  var total = wizTotalSteps();
+  var html='';
+  if(wizardState.step>1) html += '<button class="btn btn-ghost" id="wizPrev">Precedent</button>';
+  if(wizardState.step<total){ html += '<button class="btn btn-dark" id="wizNext" ' + (wizCanProceed()?'':'disabled style="opacity:.5;cursor:not-allowed;"') + '>Suivant</button>'; }
+  else{ html += '<button class="btn btn-primary" id="wizGenerate">' + (isPremium ? 'Developper cette seance' : '🔒 Debloquer') + '</button>'; }
+  foot.innerHTML = html;
+  var prev = document.getElementById('wizPrev'); if(prev) prev.addEventListener('click', function(){ wizardState.step--; renderWizard(); });
+  var next = document.getElementById('wizNext'); if(next) next.addEventListener('click', function(){ if(wizCanProceed()){ wizardState.step++; renderWizard(); } });
+  var gen = document.getElementById('wizGenerate');
+  if(gen) gen.addEventListener('click', function(){ if(!isPremium){ closeOverlay('genOverlay'); openOverlay('pricingOverlay'); return; } runGeneration(); });
+}
+
+function slimLibrary(){
+  return EXERCISE_LIBRARY.map(function(e){ return { id:e.id, nom:e.nom, etape:e.etape, objectif_pedagogique:e.objectif_pedagogique, principes:e.principes, joueurs_min:e.joueurs_min, joueurs_max:e.joueurs_max, duree_indicative:e.duree, materiel:e.materiel, difficulte:e.difficulte, intensite_physique:e.intensite_physique, intensite_cognitive:e.intensite_cognitive, mots_cles:e.mots_cles }; });
+}
+async function callClaude(system, messages, maxTokens){
+  var response = await fetch("https://api.anthropic.com/v1/messages", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ model:"claude-sonnet-4-6", max_tokens: maxTokens||1000, system: system, messages: messages }) });
+  var data = await response.json();
+  if(data.error){ throw new Error(data.error.message || 'Erreur API'); }
+  return (data.content||[]).map(function(b){return b.text||"";}).join("\n");
+}
+function parseJSONResponse(text){ return JSON.parse(text.replace(/```json|```/g,'').trim()); }
+function mapPrincipeToTheme(principe){
+  var info = principleInfo(principe);
+  if(!info) return "Conservation";
+  var objs = info.objectifs;
+  if(objs.indexOf("Finition")>-1) return "Finition";
+  if(objs.indexOf("Pressing collectif")>-1) return "Pressing a la perte";
+  if(objs.indexOf("Repli defensif")>-1) return "Infiltration";
+  if(objs.indexOf("Transition")>-1) return "Transition";
+  if(objs.indexOf("Progression")>-1) return "Construction";
+  return "Conservation";
+}
+function guessPhase(principes){
+  var bMinus = ["Sans ballon","Transition defensive"];
+  return principes.some(function(p){ var i = principleInfo(p); return i && bMinus.indexOf(i.phase)>-1; }) ? "B-" : "B+";
+}
+function profileContextSummary(){
+  if(!profile) return "Aucun Manager Profile renseigne.";
+  var id = profile.identity;
+  return "Relance " + id.avecBallon.relance + ", " + (id.avecBallon.attirerPressing==='Oui'?'cherche a attirer le pressing':'ne cherche pas specialement a attirer le pressing') + ", bloc defensif " + id.sansBallon.blocDefensif + ", a la perte : " + id.transitionDef.perte + ", transition offensive : " + id.transitionOff.style + ". Principes prioritaires de la saison : " + ((profile.principesPrioritaires||[]).join(', ')||'non precise') + ". Inspirations : " + ((profile.coaches||[]).join(', ')) + ".";
+}
+
+async function runGeneration(){
+  var foot = document.getElementById('genFoot');
+  var body = document.getElementById('genBody');
+  document.getElementById('genHeadTitle').textContent = "Developpement en cours";
+  foot.innerHTML='';
+  body.innerHTML = '<div class="loading-wrap"><div class="spinner"></div><div class="loading-text" id="loadingText">Analyse de ton modele de jeu...</div></div>';
+  var steps = ["Analyse de ton modele de jeu...","Identification des competences a developper...","Selection des exercices dans la bibliotheque...","Construction de la progression pedagogique..."];
+  var i=0;
+  var loadingTimer = setInterval(function(){ i=(i+1)%steps.length; var el=document.getElementById('loadingText'); if(el) el.textContent = steps[i]; }, 1100);
+
+  var principesInfo = wizardState.principes.map(function(p){ var info = principleInfo(p); return p + " (objectifs pedagogiques associes : " + (info?info.objectifs.join(', '):'') + " ; competences : " + (info?info.competences.join(', '):'') + ")"; }).join(' / ');
+
+  var sys = "Tu es un assistant pedagogique pour entraineurs de football au sein de MyPlaybook.\n"
+    + "REGLE ABSOLUE : tu ne dois JAMAIS inventer d'exercice. Tu dois uniquement selectionner des exercices parmi la bibliotheque JSON fournie, en te basant sur leur \"id\".\n"
+    + "Le coach pense en COMPORTEMENTS COLLECTIFS, pas en exercices. Il a choisi un ou plusieurs principes de jeu qui, selon lui, font partie du meme comportement. Chaque principe est associe a des objectifs pedagogiques (niveau intermediaire de la hierarchie Principe -> Objectif -> Exercice) et a des competences individuelles a developper (lecture, reaction, coordination, etc.). Utilise ces objectifs pedagogiques pour filtrer les exercices pertinents dans la bibliotheque (champ \"objectif_pedagogique\" et \"principes\").\n"
+    + "Compose la seance en respectant autant que possible cet ordre : Activation -> Exercice technique -> Jeu reduit -> Situation tactique -> Match dirige -> Retour au calme (tu peux omettre une etape si aucun exercice pertinent n'est disponible).\n"
+    + "Tiens compte du modele de jeu du coach et, si une difficulte a ete identifiee, adapte particulierement les notes des exercices pour y repondre.\n"
+    + "Respecte au mieux la duree totale, le nombre de joueurs, le materiel disponible, la charge souhaitee.\n"
+    + "Reponds UNIQUEMENT avec un objet JSON strict, sans texte avant ni apres, sans balises markdown, au format exact suivant :\n"
+    + "{\"titre\":\"...\", \"resume_coach\":\"2-3 phrases expliquant la logique de la seance, les competences travaillees et comment elle articule les principes choisis\", \"duree_totale\":90, \"blocs\":[{\"exercise_id\":\"e01\",\"duree_allouee\":10,\"note_adaptation\":\"phrase courte expliquant une adaptation eventuelle\"}]}";
+
+  var userMsg = "Bibliotheque d'exercices disponibles (JSON) :\n" + JSON.stringify(slimLibrary())
+    + "\n\nModele de jeu du coach : " + profileContextSummary()
+    + "\n\nComportement collectif a developper : " + principesInfo
+    + "\nContexte : " + wizardState.contexte + (wizardState.weakness ? (" — Difficulte identifiee : " + wizardState.weakness) : "")
+    + "\nNombre de joueurs presents : " + wizardState.nbJoueurs
+    + "\nCategorie : " + wizardState.categorie
+    + "\nNiveau : " + wizardState.niveau
+    + "\nDuree de la seance souhaitee : " + wizardState.duree + " minutes"
+    + "\nMateriel disponible : " + (wizardState.materiel.length ? wizardState.materiel.join(', ') : 'non precise')
+    + "\nCharge souhaitee : " + wizardState.charge
+    + "\n\nCompose la seance maintenant.";
+
+  try{
+    var text = await callClaude(sys, [{role:"user", content: userMsg}], 1000);
+    var parsed = parseJSONResponse(text);
+    clearInterval(loadingTimer);
+    buildGeneratedSession(parsed);
+  }catch(e){
+    clearInterval(loadingTimer);
+    console.error(e);
+    document.getElementById('genHeadTitle').textContent = "Developper un principe";
+    body.innerHTML = '<div class="loading-wrap"><div class="loading-text">Une erreur est survenue. Reessaie dans quelques instants.</div></div>';
+    foot.innerHTML = '<button class="btn btn-ghost" id="wizRetry">Reessayer</button>';
+    document.getElementById('wizRetry').addEventListener('click', runGeneration);
+  }
+}
+
+async function buildGeneratedSession(parsed){
+  var blocks = (parsed.blocs||[]).map(function(b){ var ex = EXERCISE_LIBRARY.find(function(x){return x.id===b.exercise_id;}); return ex ? { exercise_id: b.exercise_id, duree_allouee: b.duree_allouee, note_adaptation: b.note_adaptation, exercise: ex } : null; }).filter(Boolean);
+  var dominantTheme = mapPrincipeToTheme(wizardState.principes[0]);
+  var totalDuree = blocks.reduce(function(s,b){return s+(b.duree_allouee||0);},0) || parsed.duree_totale || parseInt(wizardState.duree)||0;
+
+  currentGenSession = {
+    id: 'g'+Date.now(), titre: parsed.titre || ("Seance · " + wizardState.principes.join(' + ')),
+    theme: dominantTheme, phase: guessPhase(wizardState.principes), principe:"Developpee par l'assistant MyPlaybook",
+    duree: totalDuree, joueurs: parseInt(wizardState.nbJoueurs)||0, terrain:"A definir selon les infrastructures",
+    materiel: wizardState.materiel.length ? wizardState.materiel.join(', ') : 'Selon exercices selectionnes',
+    premium: true, custom: true, type: 'generated', description: parsed.resume_coach || "", resume_coach: parsed.resume_coach || "",
+    blocks: blocks, wizardAnswers: Object.assign({}, wizardState), chatHistory: [], pdf: null
+  };
+  chatHistory = [];
+  sessions.unshift(currentGenSession);
+  await persistCustomSessions();
+  renderGrid(); renderMySessionsView(); renderDashboard();
+  showToast("Seance developpee avec succes !");
+  openGeneratedView(currentGenSession);
+}
+
+function openGeneratedView(s){
+  currentGenSession = s;
+  chatHistory = s.chatHistory || [];
+  document.getElementById('genHeadTitle').textContent = "Seance developpee";
+  renderGeneratedBody();
+  document.getElementById('genFoot').innerHTML = '<button class="btn btn-ghost" id="genCloseBtn">Fermer</button>';
+  document.getElementById('genCloseBtn').addEventListener('click', function(){ closeOverlay('genOverlay'); });
+  openOverlay('genOverlay');
+}
+
+function renderGeneratedBody(){
+  var s = currentGenSession;
+  var body = document.getElementById('genBody');
+  var totalDur = s.blocks.reduce(function(sum,b){return sum+(b.duree_allouee||0);},0);
+  var timelineHtml = s.blocks.map(function(b,idx){
+    var ex = b.exercise; var isLast = idx === s.blocks.length-1;
+    return '<div class="tl-item"><div class="tl-marker"><div class="tl-dot">'+(idx+1)+'</div>'+(isLast?'':'<div class="tl-line"></div>')+'</div>'
+      + '<div class="tl-content"><div class="tl-etape">'+ex.etape+'</div>'
+      + '<div class="tl-card"><div class="tl-card-top"><div class="tl-name">'+ex.nom+'</div><div class="tl-dur">'+(b.duree_allouee||'—')+' min</div></div>'
+      + (b.note_adaptation ? ('<div class="tl-note">💡 '+b.note_adaptation+'</div>') : '')
+      + '<div class="tl-details" id="tldetails-'+idx+'">'
+      + '<div class="dline"><b>Joueurs :</b> '+ex.joueurs_min+'–'+ex.joueurs_max+'</div>'
+      + '<div class="dline"><b>Materiel :</b> '+((ex.materiel||[]).join(', ')||'—')+'</div>'
+      + '<div class="dline"><b>Coaching points :</b> '+((ex.coaching_points||[]).join(' · '))+'</div>'
+      + (ex.erreurs_frequentes && ex.erreurs_frequentes.length ? ('<div class="dline"><b>Erreurs frequentes :</b> '+ex.erreurs_frequentes.join(' · ')+'</div>') : '')
+      + (ex.variantes && ex.variantes.length ? ('<div class="dline"><b>Variantes :</b> '+ex.variantes.join(' · ')+'</div>') : '')
+      + '<div class="dline"><b>Surface :</b> '+(ex.surface||'—')+'</div>'
+      + '</div>'
+      + '<div class="tl-actions"><button class="tl-toggle" data-idx="'+idx+'">Voir le detail</button></div>'
+      + '</div></div></div>';
+  }).join('');
+  var chatMsgsHtml = chatHistory.map(function(m){return '<div class="chat-msg '+(m.role==='user'?'user':'ai')+'">'+m.text+'</div>';}).join('');
+
+  body.innerHTML = ''
+    + '<div class="ai-tag"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8L12 2z"/></svg>Developpee par l\'assistant MyPlaybook</div>'
+    + '<div class="gen-head"><div><div class="gen-title">'+s.titre+'</div><div class="gen-summary">'+(s.resume_coach||'')+'</div></div></div>'
+    + '<div class="det-meta" style="margin-top:12px;"><span class="m">'+ICONS.clock+totalDur+' min</span><span class="m">'+ICONS.users+(s.joueurs||'—')+' joueurs</span></div>'
+    + '<div class="timeline">'+timelineHtml+'</div>'
+    + '<div class="chat-box"><h4>Ajuster cette seance</h4>'
+    + '<div class="chat-suggestions">'
+    + '<button class="chat-suggestion" data-msg="Remplace le deuxieme exercice.">Remplace le 2e exercice</button>'
+    + '<button class="chat-suggestion" data-msg="Je n\'ai que 12 joueurs.">Je n\'ai que 12 joueurs</button>'
+    + '<button class="chat-suggestion" data-msg="Je veux une seance plus intensive.">Seance plus intensive</button>'
+    + '<button class="chat-suggestion" data-msg="Reduis la seance a 70 minutes.">Reduire a 70 min</button>'
+    + '</div>'
+    + '<div class="chat-log" id="chatLog">'+chatMsgsHtml+'</div>'
+    + '<div class="chat-input-row"><input type="text" id="chatInput" placeholder="Ex : Remplace le deuxieme exercice..."><button class="chat-send" id="chatSendBtn">Envoyer</button></div>'
+    + '</div>';
+
+  body.querySelectorAll('.tl-toggle').forEach(function(btn){
+    btn.addEventListener('click', function(){ var idx = btn.getAttribute('data-idx'); var det = document.getElementById('tldetails-'+idx); det.classList.toggle('open'); btn.textContent = det.classList.contains('open') ? 'Masquer le detail' : 'Voir le detail'; });
+  });
+  body.querySelectorAll('.chat-suggestion').forEach(function(btn){ btn.addEventListener('click', function(){ sendChatRefine(btn.getAttribute('data-msg')); }); });
+  document.getElementById('chatSendBtn').addEventListener('click', function(){ var input = document.getElementById('chatInput'); var val = input.value.trim(); if(!val) return; input.value=''; sendChatRefine(val); });
+  document.getElementById('chatInput').addEventListener('keydown', function(e){ if(e.key==='Enter'){ document.getElementById('chatSendBtn').click(); } });
+  var log = document.getElementById('chatLog'); if(log) log.scrollTop = log.scrollHeight;
+}
+
+async function sendChatRefine(instruction){
+  var s = currentGenSession;
+  chatHistory.push({role:'user', text:instruction});
+  chatHistory.push({role:'ai', text:'…'});
+  renderGeneratedBody();
+  var sys = "Tu es un assistant pedagogique qui ajuste une seance de football deja composee, au sein de MyPlaybook.\n"
+    + "REGLE ABSOLUE : tu ne dois JAMAIS inventer d'exercice, uniquement selectionner parmi la bibliotheque JSON fournie par leur \"id\".\n"
+    + "Modifie UNIQUEMENT les parties concernees par la demande du coach et conserve le reste identique autant que possible, en respectant la progression pedagogique Activation -> Exercice technique -> Jeu reduit -> Situation tactique -> Match dirige -> Retour au calme.\n"
+    + "Reponds UNIQUEMENT avec un objet JSON strict, sans texte avant/apres ni balises markdown, au format exact suivant :\n"
+    + "{\"titre\":\"...\", \"resume_coach\":\"...\", \"duree_totale\":90, \"blocs\":[{\"exercise_id\":\"e01\",\"duree_allouee\":10,\"note_adaptation\":\"...\"}], \"reponse_coach\":\"1-2 phrases expliquant ce que tu as change\"}";
+  var userMsg = "Bibliotheque d'exercices disponibles (JSON) :\n" + JSON.stringify(slimLibrary())
+    + "\n\nModele de jeu du coach : " + profileContextSummary()
+    + "\n\nSeance actuelle (JSON) :\n" + JSON.stringify({titre:s.titre, resume_coach:s.resume_coach, duree_totale: s.duree, blocs: s.blocks.map(function(b){return {exercise_id:b.exercise_id, duree_allouee:b.duree_allouee, note_adaptation:b.note_adaptation};})})
+    + "\n\nPrincipes initiaux du coach : " + ((s.wizardAnswers && s.wizardAnswers.principes) ? s.wizardAnswers.principes.join(', ') : '')
+    + ".\nNouvelle demande du coach : \"" + instruction + "\"\nAjuste la seance maintenant.";
+  try{
+    var text = await callClaude(sys, [{role:"user", content: userMsg}], 1000);
+    var parsed = parseJSONResponse(text);
+    var blocks = (parsed.blocs||[]).map(function(b){ var ex = EXERCISE_LIBRARY.find(function(x){return x.id===b.exercise_id;}); return ex ? { exercise_id: b.exercise_id, duree_allouee: b.duree_allouee, note_adaptation: b.note_adaptation, exercise: ex } : null; }).filter(Boolean);
+    s.titre = parsed.titre || s.titre; s.resume_coach = parsed.resume_coach || s.resume_coach; s.description = s.resume_coach;
+    s.blocks = blocks.length ? blocks : s.blocks; s.duree = blocks.reduce(function(sum,b){return sum+(b.duree_allouee||0);},0) || s.duree;
+    chatHistory[chatHistory.length-1] = {role:'ai', text: parsed.reponse_coach || "Seance mise a jour."};
+    s.chatHistory = chatHistory;
+    await persistCustomSessions();
+    renderGrid(); renderMySessionsView();
+    renderGeneratedBody();
+  }catch(e){
+    console.error(e);
+    chatHistory[chatHistory.length-1] = {role:'ai', text: "Desole, une erreur est survenue. Reessaie ta demande."};
+    renderGeneratedBody();
+  }
+}
+
+/* ================= INIT ================= */
+(async function init(){
+  await loadState();
+  refreshPremiumUI();
+  buildThemeSelect();
+  buildPhaseChips();
+  renderGrid();
+  if(!profile){
+    document.getElementById('onboardingOverlay').classList.remove('hidden');
+    obState = newObState(); obStep = 1; obEditMode = false;
+    renderOnboarding();
+  } else {
+    document.getElementById('onboardingOverlay').classList.add('hidden');
+    document.getElementById('appRoot').style.display = 'flex';
+    document.getElementById('sideAvatarBtn').textContent = profile.avatar;
+    showView('dashboard');
+  }
+})();
+
+})();
+</script>
+</body>
+</html>
