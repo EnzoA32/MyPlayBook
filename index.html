@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
 <style>
   :root{
     --bg:#eef0ef; --sidebar:#ffffff; --sidebar-line:var(--border);
@@ -27,7 +28,7 @@
     padding:22px;
   }
   .shell{
-    max-width:1440px; margin:0 auto; background:#fff; border-radius:var(--shell-radius); border:1px solid var(--border);
+    max-width:none; width:100%; margin:0 auto; background:#fff; border-radius:var(--shell-radius); border:1px solid var(--border);
     box-shadow:0 30px 60px -30px rgba(20,30,25,.22); overflow:hidden; display:flex; flex-direction:column;
     min-height:calc(100vh - 44px);
   }
@@ -44,26 +45,27 @@
   .pill-badge.user{background:var(--forest); color:#fff; cursor:pointer;}
   .pill-badge.user .pb-ic{background:rgba(255,255,255,.15);}
   .app{display:flex; flex:1; min-height:0;}
-  .side-icons{width:216px; flex:none; background:#fff; border-right:1px solid var(--border); display:flex; flex-direction:column; padding:18px 14px 18px;}
+  .side-icons{width:224px; flex:none; background:#fff; border-right:1px solid var(--border); display:flex; flex-direction:column; padding:18px 14px 18px;}
   .side-badge{width:38px; height:38px; border-radius:11px; background:var(--green-soft); display:flex; align-items:center; justify-content:center; font-size:15px; color:var(--green-strong); margin-bottom:14px; flex:none; cursor:pointer;}
-  .side-item{display:flex; align-items:center; gap:11px; width:100%; height:42px; padding:0 12px; border-radius:12px; color:var(--muted); cursor:pointer; transition:all .14s ease; flex:none; font-size:14px; font-weight:600;}
-  .side-item i{width:16px; text-align:center; font-size:14.5px; flex:none;}
-  .side-item span{display:inline; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-  .side-item:hover{background:#f5f6f6; color:var(--ink);}
-  .side-item.active{background:var(--green-soft); color:var(--ink); font-weight:800;}
-  .side-item.active i{color:var(--green-strong);}
-  .side-item.accent{color:var(--green-strong); font-weight:800;}
-  .side-item.accent:hover{background:var(--green-soft);}
-  .side-sep{height:1px; background:var(--border); margin:8px 4px;}
+  .side-item{display:flex; align-items:center; gap:12px; width:100%; height:42px; padding:0 12px; border-radius:12px; color:var(--ink); cursor:pointer; transition:all .12s ease; flex:none; font-size:14px; font-weight:400;}
+  .side-item i{width:17px; text-align:center; font-size:17px; flex:none; color:var(--ink); transition:color .12s ease;}
+  .side-item span{display:inline; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:400;}
+  .side-item:hover{background:var(--forest); color:#fff;}
+  .side-item:hover i{color:#fff;}
+  .side-item.active{background:var(--green); color:#111113; font-weight:600;}
+  .side-item.active i{color:#111113;}
+  .side-item.accent{color:var(--ink);}
+  .side-sep{height:1px; background:var(--border); margin:10px 6px;}
   .side-spacer{flex:1; min-height:10px;}
-  .side-group{background:#fafbfa; border:1px solid var(--border); border-radius:16px; padding:5px; display:flex; flex-direction:column; gap:2px; margin:4px 0 10px;}
-  .side-bottom{display:flex; flex-direction:column; gap:4px; padding-top:8px; border-top:1px solid var(--border); margin-top:6px;}
-  .side-bottom .side-item{color:#fff; background:var(--forest);}
-  .side-bottom .side-item:hover{background:var(--forest-light); color:#fff;}
+  .side-bottom{display:flex; flex-direction:column; gap:2px; padding-top:10px; border-top:1px solid var(--border); margin-top:6px;}
+  .side-item.premium{color:var(--green-strong); font-weight:600;}
+  .side-item.premium i{color:var(--green-strong);}
+  .side-item.premium:hover{background:var(--green); color:#111113;}
+  .side-item.premium:hover i{color:#111113;}
   .plan-pill{font-size:10px; font-weight:800; padding:6px 12px; border-radius:100px; letter-spacing:.03em;}
   .plan-pill.free{background:#f2f3f5; color:var(--muted);}
   .plan-pill.premium{background:var(--yellow); color:#3d3100;}
-  .main{flex:1; min-width:0; padding:28px 34px 60px;}
+  .main{flex:1; min-width:0; padding:28px 34px 60px; background:#E4E5E7;}
   .view{display:none;}
   .view.active{display:block;}
   .view-head{display:flex; align-items:flex-start; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:22px;}
@@ -78,9 +80,9 @@
   .btn-row{display:flex; gap:10px; flex-wrap:wrap;}
   .btn-new{background:var(--green); color:#08210f; border:none; border-radius:11px; padding:11px 18px; font-weight:800; font-size:14px; cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow:var(--shadow); transition:transform .1s ease, filter .1s ease;}
   .btn-new:hover{filter:brightness(1.05); transform:translateY(-1px);}
-  .btn-gen{background:linear-gradient(135deg,#1A5140,#24704f); color:#fff; border:1px solid #3a3c42; border-radius:11px; padding:11px 16px; font-weight:800; font-size:13.5px; cursor:pointer; display:flex; align-items:center; gap:7px; box-shadow:var(--shadow); transition:transform .1s ease, filter .1s ease;}
-  .btn-gen:hover{transform:translateY(-1px); filter:brightness(1.1);}
-  .btn-gen i{font-size:13px; color:var(--green); flex:none;}
+  .btn-gen{background:var(--green); color:#111113; border:none; border-radius:11px; padding:11px 16px; font-weight:700; font-size:13.5px; cursor:pointer; display:flex; align-items:center; gap:7px; box-shadow:var(--shadow); transition:transform .1s ease, filter .1s ease;}
+  .btn-gen:hover{transform:translateY(-1px); filter:brightness(1.05);}
+  .btn-gen i{font-size:13px; color:#111113; flex:none;}
   .ai-tag{display:inline-flex; align-items:center; gap:4px; background:var(--forest); color:var(--green-pill); font-size:10px; font-weight:800; padding:3px 8px; border-radius:100px; letter-spacing:.03em;}
   .ai-tag i{font-size:10px;}
   .dash-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:16px;}
@@ -105,16 +107,19 @@
   .quick-row:hover{transform:translateY(-1px);}
   .quick-row.light{background:var(--glass); backdrop-filter:blur(14px); border:1px solid var(--glass-border);}
   .quick-row.dark{background:var(--green); color:#0d2818;}
-  .quick-ic{width:38px;height:38px;border-radius:50%; display:flex; align-items:center; justify-content:center; flex:none;}
-  .quick-row.light .quick-ic{background:var(--green-soft); color:var(--green-strong);}
-  .quick-row.dark .quick-ic{background:rgba(13,40,24,.14); color:#0d2818;}
+  .quick-ic{width:38px;height:38px;border-radius:50%; display:flex; align-items:center; justify-content:center; flex:none; position:relative; background:#fff; color:#111113; box-shadow:0 2px 6px rgba(0,0,0,.08);}
+  .quick-ic::before{content:''; position:absolute; width:38px; height:38px; border-radius:50%; background:var(--green); top:5px; left:5px; z-index:-1;}
+  .quick-row.light .quick-ic{background:#fff; color:#111113;}
+  .quick-row.dark .quick-ic{background:#fff; color:#111113;}
+  .quick-row.dark .quick-ic::before{background:#0d2818;}
   .quick-ic i{font-size:16px;}
   .quick-label{font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; opacity:.7;}
   .quick-value{font-size:14px; font-weight:700; margin-top:1px;}
   .obj-card{grid-column:1/-1; background:#fff; border:1px solid var(--border); border-radius:24px; padding:24px 28px; box-shadow:var(--shadow);}
   .obj-top{display:flex; align-items:center; gap:10px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--muted);}
-  .obj-ic{width:26px;height:26px;border-radius:50%; background:var(--green-soft); display:flex; align-items:center; justify-content:center;}
-  .obj-ic i{font-size:12px; color:var(--green-strong);}
+  .obj-ic{width:26px;height:26px;border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; position:relative; box-shadow:0 2px 6px rgba(0,0,0,.08);}
+  .obj-ic::before{content:''; position:absolute; width:26px; height:26px; border-radius:50%; background:var(--green); top:4px; left:4px; z-index:-1;}
+  .obj-ic i{font-size:12px; color:#111113;}
   .obj-value{font-size:30px; font-weight:800; margin-top:8px; color:var(--ink);}
   .obj-value .of{font-size:16px; font-weight:500; color:var(--muted);}
   .progress-track{height:8px; border-radius:100px; background:var(--border); margin-top:14px; overflow:hidden;}
@@ -412,21 +417,21 @@
   </div>
 <div class="app">
   <aside class="side-icons">
-    <div class="side-badge" id="sideAvatarBtn" title="Mon profil"><i class="fa-solid fa-shield-halved"></i></div>
-    <div class="side-item" data-view="dashboard" title="Dashboard"><i class="fa-solid fa-house"></i><span>Dashboard</span></div>
-    <div class="side-item" data-view="mysessions" title="Mes seances"><i class="fa-solid fa-clipboard-check"></i><span>Mes seances</span></div>
-    <div class="side-item" data-view="roadmap" title="Roadmap de saison"><i class="fa-solid fa-calendar-days"></i><span>Roadmap</span></div>
+    <div class="side-badge" id="sideAvatarBtn" title="Mon profil"><i class="ti ti-shield-check"></i></div>
+    <div class="side-item" data-view="dashboard" title="Dashboard"><i class="ti ti-layout-dashboard"></i><span>Dashboard</span></div>
+    <div class="side-item" data-view="mysessions" title="Mes seances"><i class="ti ti-notebook"></i><span>Mes seances</span></div>
+    <div class="side-item" data-view="roadmap" title="Roadmap de saison"><i class="ti ti-route"></i><span>Roadmap</span></div>
     <div class="side-sep"></div>
-    <div class="side-item" data-view="profile" title="Manager Profile"><i class="fa-solid fa-user"></i><span>Profile</span></div>
-    <div class="side-item" data-view="favorites" title="Favoris"><i class="fa-solid fa-star"></i><span>Favoris</span></div>
-    <div class="side-item accent" id="sideGenBtn" title="Developper un principe"><i class="fa-solid fa-bolt"></i><span>Developper</span></div>
+    <div class="side-item" data-view="profile" title="Manager Profile"><i class="ti ti-user"></i><span>Mon profil</span></div>
+    <div class="side-item" data-view="model" title="Mon modele"><i class="ti ti-target-arrow"></i><span>Mon modele</span></div>
+    <div class="side-sep"></div>
+    <div class="side-item" data-view="library" title="Bibliotheque"><i class="ti ti-books"></i><span>Seances</span></div>
+    <div class="side-item accent" id="sideGenBtn" title="Developper un principe"><i class="ti ti-bolt"></i><span>Developper</span></div>
+    <div class="side-item" data-view="favorites" title="Favoris"><i class="ti ti-star"></i><span>Favoris</span></div>
     <div class="side-spacer"></div>
-    <div class="side-group">
-      <div class="side-item" data-view="model" title="Mon modele"><i class="fa-solid fa-bullseye"></i><span>Mon modele</span></div>
-      <div class="side-item" data-view="library" title="Bibliotheque"><i class="fa-solid fa-book-open"></i><span>Bibliotheque</span></div>
-    </div>
     <div class="side-bottom">
-      <div class="side-item" data-view="settings" title="Reglages"><i class="fa-solid fa-gear"></i><span>Reglages</span></div>
+      <div class="side-item" data-view="settings" title="Reglages"><i class="ti ti-settings"></i><span>Parametres</span></div>
+      <div class="side-item premium" id="sidePremiumBtn" title="Passer Premium"><i class="ti ti-diamond"></i><span>Passer Premium</span></div>
     </div>
   </aside>
 
@@ -839,6 +844,7 @@ document.querySelectorAll('.side-item[data-view]').forEach(function(it){ it.addE
 document.getElementById('sideGenBtn').addEventListener('click', function(){ openWizard(); });
 document.getElementById('dashGenBtn').addEventListener('click', function(){ openWizard(); });
 document.getElementById('sideAvatarBtn').addEventListener('click', function(){ showView('profile'); });
+document.getElementById('sidePremiumBtn').addEventListener('click', function(){ openOverlay('pricingOverlay'); });
 
 function isFav(id){ return favorites.indexOf(id) > -1; }
 async function toggleFavorite(id){
@@ -1435,6 +1441,11 @@ function refreshPremiumUI(){
   pill.textContent = isPremium ? 'PREMIUM' : 'FREE';
   pill.classList.toggle('free', !isPremium);
   pill.classList.toggle('premium', isPremium);
+  var premBtn = document.getElementById('sidePremiumBtn');
+  if(premBtn){
+    premBtn.querySelector('span').textContent = isPremium ? 'Premium actif' : 'Passer Premium';
+    premBtn.querySelector('i').className = isPremium ? 'ti ti-diamond' : 'ti ti-diamond';
+  }
 }
 document.getElementById('goPremiumBtn').addEventListener('click', async function(){ isPremium = true; await persistPremium(); refreshPremiumUI(); renderGrid(); closeOverlay('pricingOverlay'); showToast("Bienvenue dans MyPlaybook Premium !"); });
 
