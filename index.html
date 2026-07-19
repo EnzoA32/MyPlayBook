@@ -40,6 +40,7 @@
   .topbar-right{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
   .pill-badge{display:flex; align-items:center; gap:8px; padding:6px 16px 6px 6px; border-radius:100px; font-weight:600; font-size:12.5px; white-space:nowrap;}
   .pill-badge .pb-ic{width:26px;height:26px;border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; flex:none;}
+  .pill-badge .pb-ic svg{width:100%;height:100%; border-radius:50%; overflow:hidden;}
   .pill-badge.club{background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--glass-border); color:var(--ink);}
   .pill-badge.club .pb-ic{background:#fff;}
   .pill-badge.user{background:var(--forest); color:#fff; cursor:pointer;}
@@ -75,6 +76,7 @@
   .view-head > div{display:flex; flex-direction:column;}
   .btn{border:none; border-radius:10px; padding:10px 18px; font-weight:800; font-size:13.5px; cursor:pointer;}
   .btn-ghost{background:#f2f3f5; color:var(--ink);}
+  .btn-sm{padding:6px 12px; font-size:11.5px; border-radius:8px;}
   .btn-danger{background:#fde8e8; color:#d23c3c;}
   .btn-primary{background:var(--green); color:#08210f;}
   .btn-dark{background:var(--forest); color:#fff;}
@@ -131,15 +133,16 @@
   .pill-nav:hover{border-color:var(--green);}
   .dash-sub-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:16px; margin-top:16px;}
   .card-box{background:linear-gradient(165deg,#ffffff,#f7fbf8); border:1px solid var(--border); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow);}
-  .card-box.tint-forest{background:linear-gradient(150deg,#1A5140,#24704f); color:#fff; border:none;}
-  .card-box.tint-forest h3{color:#fff;}
-  .card-box.tint-forest .sub{color:rgba(255,255,255,.7);}
+  .card-box.tint-forest{background:linear-gradient(150deg,#3ecf74,#65EB8B); color:#0d2818; border:none;}
+  .card-box.tint-forest h3{color:#0d2818;}
+  .card-box.tint-forest .sub{color:rgba(13,40,24,.65);}
   .card-box.tint-pink{background:linear-gradient(150deg,#fff,var(--pill-pink)); border-color:#f6cfd3;}
   .card-box.tint-yellow{background:linear-gradient(150deg,#fff,#fbf3cf); border-color:#ecdf9e;}
   .card-box h3{margin:0 0 4px; font-size:14.5px; font-weight:800;}
   .card-box .sub{font-size:12px; color:var(--muted); margin-bottom:14px;}
   .profile-hero{display:flex; align-items:center; gap:16px; grid-column:1/-1;}
-  .avatar-big{width:64px;height:64px; border-radius:16px; background:var(--green-soft); display:flex; align-items:center; justify-content:center; font-size:30px; flex:none;}
+  .avatar-big{width:64px;height:64px; border-radius:16px; background:var(--green-soft); display:flex; align-items:center; justify-content:center; flex:none; overflow:hidden;}
+  .avatar-big svg{width:100%;height:100%;}
   .profile-hero-name{font-size:19px; font-weight:800;}
   .profile-hero-meta{font-size:12.5px; color:var(--muted); font-weight:600; margin-top:3px;}
   .profile-hero-tags{display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;}
@@ -219,6 +222,34 @@
   .empty{text-align:center; padding:70px 20px; color:var(--muted);}
   .empty svg{width:44px;height:44px; opacity:.35; margin-bottom:10px;}
   .roadmap-track{display:flex; flex-direction:column; gap:0;}
+  .cal-toolbar{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:12px;}
+  .cal-nav{display:flex; align-items:center; gap:10px;}
+  .cal-nav-btn{width:32px;height:32px;border-radius:9px; background:#fff; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--ink);}
+  .cal-nav-btn:hover{background:#f2f3f5;}
+  .cal-month-label{font-size:16px; font-weight:700; min-width:150px; text-align:center;}
+  .cal-legend{display:flex; gap:12px; flex-wrap:wrap;}
+  .cal-legend-item{display:flex; align-items:center; gap:6px; font-size:11.5px; font-weight:600; color:var(--muted);}
+  .cal-legend-dot{width:9px;height:9px;border-radius:50%; flex:none;}
+  .cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:6px;}
+  .cal-dayname{text-align:center; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); padding-bottom:4px;}
+  .cal-cell{background:#fff; border:1px solid var(--border); border-radius:12px; min-height:78px; padding:8px; cursor:pointer; transition:all .12s ease; display:flex; flex-direction:column; gap:4px;}
+  .cal-cell:hover{border-color:var(--green);}
+  .cal-cell.other-month{background:#fafafb; opacity:.5;}
+  .cal-cell.today{border-color:var(--ink); border-width:1.5px;}
+  .cal-cell.selected{border-color:var(--green); box-shadow:0 0 0 2px var(--green-soft);}
+  .cal-daynum{font-size:12.5px; font-weight:700;}
+  .cal-dots{display:flex; gap:3px; flex-wrap:wrap; margin-top:auto;}
+  .cal-dot{width:7px;height:7px;border-radius:50%; flex:none;}
+  .cal-dot.planned{border:1.5px solid; background:transparent !important;}
+  .cal-detail{margin-top:20px; background:#fff; border:1px solid var(--border); border-radius:18px; padding:18px 20px;}
+  .cal-detail-title{font-size:15px; font-weight:700; margin-bottom:12px;}
+  .cal-entry{display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); font-size:13px;}
+  .cal-entry:last-child{border-bottom:none;}
+  .cal-entry .dot{width:9px;height:9px;border-radius:50%; flex:none;}
+  .cal-entry .lbl{flex:1; font-weight:600;}
+  .cal-entry .tag{font-size:10.5px; font-weight:700; color:var(--muted); text-transform:uppercase;}
+  .cal-add-row{display:flex; gap:8px; margin-top:14px; flex-wrap:wrap;}
+  .cal-add-row select{flex:1; min-width:160px;}
   .rm-week{display:flex; gap:14px; cursor:pointer;}
   .rm-marker{display:flex; flex-direction:column; align-items:center; flex:none;}
   .rm-num{width:34px;height:34px;border-radius:50%; background:var(--forest); color:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; flex:none;}
@@ -364,7 +395,8 @@
   .ob-eyebrow .ob-logo{width:26px;height:26px;border-radius:8px;background:var(--forest);display:flex;align-items:center;justify-content:center;color:var(--green-pill);font-weight:900;font-size:11px;}
   .ob-title{font-size:25px; font-weight:800; margin:10px 0 22px; letter-spacing:-.01em;}
   .avatar-grid{display:flex; gap:8px; flex-wrap:wrap;}
-  .avatar-opt{width:46px; height:46px; border-radius:12px; background:#f2f3f5; display:flex; align-items:center; justify-content:center; font-size:21px; cursor:pointer; border:2px solid transparent;}
+  .avatar-opt{width:46px; height:46px; border-radius:12px; background:#f2f3f5; display:flex; align-items:center; justify-content:center; cursor:pointer; border:2px solid transparent; overflow:hidden;}
+  .avatar-opt svg{width:100%;height:100%;}
   .avatar-opt.selected{border-color:var(--green); background:var(--green-soft);}
   .coach-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:8px;}
   .coach-card{border:1.5px solid var(--border); border-radius:12px; padding:12px 8px; text-align:center; font-size:12.5px; font-weight:700; cursor:pointer; position:relative;}
@@ -380,10 +412,10 @@
   .ob-dot{flex:1; height:4px; border-radius:4px; background:var(--border);}
   .ob-dot.done{background:var(--green);}
   .ob-dot.current{background:var(--forest);}
-  .id-card-reveal{background:linear-gradient(160deg,#1A5140,#24704f); border-radius:18px; padding:26px; color:#fff;}
+  .id-card-reveal{background:linear-gradient(160deg,#3ecf74,#65EB8B); border-radius:18px; padding:26px; color:#0d2818;}
   .id-card-reveal .icr-name{font-size:20px; font-weight:800;}
-  .id-card-reveal .icr-sub{font-size:12px; color:#9aa0ab; margin-top:2px; font-weight:600;}
-  .id-card-reveal .icr-tag{display:inline-block; background:var(--green); color:#08210f; font-size:10.5px; font-weight:800; padding:4px 10px; border-radius:100px; margin-top:14px;}
+  .id-card-reveal .icr-sub{font-size:12px; color:rgba(13,40,24,.65); margin-top:2px; font-weight:600;}
+  .id-card-reveal .icr-tag{display:inline-block; background:#0d2818; color:#fff; font-size:10.5px; font-weight:800; padding:4px 10px; border-radius:100px; margin-top:14px;}
   .phase-block-title{font-size:13px; font-weight:800; margin:20px 0 10px; padding-top:16px; border-top:1px solid var(--border); display:flex; align-items:center; gap:8px;}
   .phase-block-title:first-child{margin-top:0; padding-top:0; border-top:none;}
   .phase-dot{width:8px;height:8px;border-radius:50%; background:var(--green);}
@@ -411,6 +443,7 @@
     <div class="side-item" data-view="dashboard" title="Dashboard"><i class="ti ti-layout-dashboard"></i><span>Dashboard</span></div>
     <div class="side-item" data-view="mysessions" title="Mes seances"><i class="ti ti-notebook"></i><span>Mes seances</span></div>
     <div class="side-item" data-view="roadmap" title="Roadmap de saison"><i class="ti ti-route"></i><span>Roadmap</span></div>
+    <div class="side-item" data-view="calendar" title="Calendrier"><i class="ti ti-calendar"></i><span>Calendrier</span></div>
     <div class="side-sep"></div>
     <div class="side-item" data-view="profile" title="Manager Profile"><i class="ti ti-user"></i><span>Mon profil</span></div>
     <div class="side-item" data-view="model" title="Mon modele"><i class="ti ti-target-arrow"></i><span>Mon modele</span></div>
@@ -464,6 +497,13 @@
         <button class="btn-gen" id="roadmapGenBtn"><i class="fa-solid fa-wand-magic-sparkles"></i>Generer ma roadmap</button>
       </div>
       <div id="roadmapBody"></div>
+    </div>
+
+    <div class="view" id="view-calendar">
+      <div class="view-head">
+        <div><h1 class="h1">Calendrier</h1><div class="h1-sub">Vue d'ensemble des principes travailles et a venir</div></div>
+      </div>
+      <div id="calendarBody"></div>
     </div>
 
     <div class="view" id="view-library">
@@ -656,8 +696,69 @@ const THEMES = {
 };
 const THEME_NAMES = Object.keys(THEMES);
 
-const AVATAR_OPTIONS = ["shield-halved","futbol","user-tie","chess-king","fire","bolt","star","dragon","hat-wizard","trophy","brain","dumbbell","compass","crown","paw"];
-function avatarIcon(a){ return '<i class="fa-solid fa-'+(a||'shield-halved')+'"></i>'; }
+const PIXEL_PATTERNS = {
+  short:[
+    "....HHHHHH....","...HHHHHHHH...","..HHHHHHHHHH..","..HHFFFFFFHH..",
+    "..HFFFFFFFFH..","..FFFFFFFFFF..","..FFFEFFEFFF..","..FFFFFFFFFF..",
+    "..FFFFMMFFFF..","..FFFFFFFFFF..","...FFFFFFFF...","....FFFFFF....",
+    "..............",".............."
+  ],
+  bald:[
+    "..............","..............","....FFFFFF....","..FFFFFFFFFF..",
+    "..FFFFFFFFFF..","..FFFFFFFFFF..","..FFFEFFEFFF..","..FFFFFFFFFF..",
+    "..FFFFMMFFFF..","..FFFFFFFFFF..","...FFFFFFFF...","....FFFFFF....",
+    "..............",".............."
+  ],
+  cap:[
+    "....AAAAAA....","...AAAAAAAA...",".AAAAAAAAAAAA.","..AAFFFFFFAA..",
+    "..FFFFFFFFFF..","..FFFFFFFFFF..","..FFFEFFEFFF..","..FFFFFFFFFF..",
+    "..FFFFMMFFFF..","..FFFFFFFFFF..","...FFFFFFFF...","....FFFFFF....",
+    "..............",".............."
+  ],
+  band:[
+    "....HHHHHH....","...HHHHHHHH...","..HHHHHHHHHH..","..AAAAAAAAAA..",
+    "..FFFFFFFFFF..","..FFFFFFFFFF..","..FFFEFFEFFF..","..FFFFFFFFFF..",
+    "..FFFFMMFFFF..","..FFFFFFFFFF..","...FFFFFFFF...","....FFFFFF....",
+    "..............",".............."
+  ],
+  curly:[
+    "....HHHHHH....","...HHHHHHHH...","..HHHHHHHHHH..",".HHHHFFFFHHHH.",
+    ".HHFFFFFFFFHH.","..HFFFFFFFFH..","..FFFEFFEFFF..","..FFFFFFFFFF..",
+    "..FFFFMMFFFF..","..FFFFFFFFFF..","...FFFFFFFF...","....FFFFFF....",
+    "..............",".............."
+  ]
+};
+const AVATAR_OPTIONS = ["p1","p2","p3","p4","p5","p6","p7","p8","p9","p10","p11","p12"];
+const AVATAR_DEFS = {
+  p1: {pattern:'short', skin:'#f4c9a0', hair:'#2b2b2b'},
+  p2: {pattern:'curly', skin:'#e0a878', hair:'#3b2a1a'},
+  p3: {pattern:'short', skin:'#8d5a3b', hair:'#1a1a1a'},
+  p4: {pattern:'curly', skin:'#5a3821', hair:'#1a1a1a'},
+  p5: {pattern:'band', skin:'#c78e5d', hair:'#8a5a2a'},
+  p6: {pattern:'band', skin:'#f4c9a0', hair:'#c9a15a'},
+  p7: {pattern:'cap', skin:'#e0a878', hair:'', acc:'#65EB8B'},
+  p8: {pattern:'cap', skin:'#5a3821', hair:'', acc:'#111113'},
+  p9: {pattern:'bald', skin:'#c78e5d', hair:''},
+  p10:{pattern:'bald', skin:'#f4c9a0', hair:''},
+  p11:{pattern:'curly', skin:'#f4c9a0', hair:'#d4d4d4'},
+  p12:{pattern:'short', skin:'#8d5a3b', hair:'#c9a15a'}
+};
+function pixelAvatarSVG(def){
+  var rows = PIXEL_PATTERNS[def.pattern] || PIXEL_PATTERNS.short;
+  var s = 10;
+  var rects = '';
+  var colors = { F: def.skin, H: def.hair||'#2b2b2b', A: def.acc||'#65EB8B', E:'#1c1c1c', M:'#1c1c1c' };
+  for(var y=0;y<rows.length;y++){
+    var row = rows[y];
+    for(var x=0;x<row.length;x++){
+      var c = row[x];
+      if(c==='.') continue;
+      rects += '<rect x="'+(x*s)+'" y="'+(y*s)+'" width="'+s+'" height="'+s+'" fill="'+colors[c]+'"/>';
+    }
+  }
+  return '<svg viewBox="0 0 140 140" shape-rendering="crispEdges">'+rects+'</svg>';
+}
+function avatarIcon(a){ var def = AVATAR_DEFS[a] || AVATAR_DEFS.p1; return pixelAvatarSVG(def); }
 const COACHES = ["Pep Guardiola","Mikel Arteta","Jurgen Klopp","Marcelo Bielsa","Jose Mourinho","Carlo Ancelotti","Hansi Flick","Enzo Maresca","Xabi Alonso","Diego Simeone","Luis Enrique","Thomas Tuchel","Unai Emery","Roberto De Zerbi","Arne Slot"];
 const COMMON_TRAITS = ["Intensite du pressing","Verticalite","Homme contre homme","Intensite mentale","Liberte offensive","Developpement des joueurs","Possession patiente","Bloc bas organise","Transitions rapides","Flexibilite tactique","Discipline defensive","Creativite individuelle"];
 const SYSTEME_OPTIONS = ["4-3-3","4-2-3-1","4-4-2","3-4-3","3-5-2","4-1-4-1","5-3-2","Peu importe"];
@@ -673,6 +774,26 @@ const CONTEXTE_OPTIONS = [
 ];
 const MATERIEL_OPTIONS = ["Ballons","Chasubles","Plots","Mini-buts","Grands buts","Echelle de rythme","Mannequins","Piquets"];
 const CHARGE_OPTIONS = ["legere","moyenne","elevee"];
+const COMPLEXITE_OPTIONS = ["Simple, facile a transmettre","Standard","Avance, tactique poussee"];
+const TACTICAL_QUESTIONS = {
+  "Construire depuis le gardien": {q:"Comment veux-tu que ton gardien participe a la relance ?", options:["Il est un vrai relayeur, tres implique","Il relance surtout en securite"]},
+  "Attirer le pressing": {q:"Quel type de superiorite veux-tu provoquer ?", options:["Superiorite numerique (plus de joueurs)","Superiorite positionnelle (mieux places)"]},
+  "Creer le joueur libre": {q:"Ou veux-tu creer ce joueur libre en priorite ?", options:["Entre les lignes adverses","Dans le dos du premier presseur"]},
+  "Jouer entre les lignes": {q:"Quelle reception veux-tu privilegier ?", options:["Dos au jeu puis remise","De face, pret a percuter"]},
+  "Utiliser le troisieme homme": {q:"Le troisieme homme doit surtout servir a...", options:["Casser une ligne de pressing","Accelerer vers l'avant"]},
+  "Fixer puis renverser": {q:"Quelle fonction veux-tu enseigner en priorite ?", options:["Fixer (retenir un adversaire)","Temporiser (ralentir pour reorganiser)"]},
+  "Desequilibrer un bloc bas": {q:"Comment veux-tu destabiliser un bloc bas ?", options:["Par la combinaison courte et rapide","Par le debordement exterieur"]},
+  "Creer des situations de centre": {q:"Quel type de centre veux-tu privilegier ?", options:["Centre en retrait (cut-back)","Centre au premier poteau"]},
+  "Creer des situations de finition": {q:"Quelle fonction veux-tu travailler dans la surface ?", options:["Attaquer l'espace libere","Temporiser pour permettre un soutien"]},
+  "Presser haut": {q:"Quel doit etre le declencheur principal du pressing ?", options:["Une passe laterale ou en retrait","Un mauvais controle adverse"]},
+  "Defendre vers l'avant": {q:"Quelle intensite veux-tu enseigner ?", options:["Agressivite immediate sur le porteur","Couverture avant l'engagement"]},
+  "Bloc median": {q:"Quelle est la priorite du bloc ?", options:["Compacite entre les lignes","Fermeture de l'axe central"]},
+  "Bloc bas": {q:"Quelle est la priorite du bloc ?", options:["Discipline positionnelle stricte","Patience avant l'engagement"]},
+  "Contre-pressing": {q:"Combien de temps veux-tu donner pour presser apres la perte ?", options:["Immediat, moins de 5 secondes","Un peu plus de temps, avec prudence"]},
+  "Repli": {q:"Quelle est la priorite du repli ?", options:["Vitesse de course pour se reorganiser","Communication et reperes collectifs"]},
+  "Contre-attaquer rapidement": {q:"Combien de passes veux-tu autoriser avant la transition ?", options:["Le moins possible, verticalite immediate","2 a 3 passes pour securiser"]}
+};
+const TACTICAL_EASY_OUT = "Peu importe, laisse l'assistant decider";
 const CATEGORIE_OPTIONS = ["U9","U10","U11","U12","U13","U14","U15","U16","U17","U18","U19","Seniors"];
 const NIVEAU_OPTIONS = ["Debutant","Intermediaire","Confirme","Elite"];
 const OBJECTIFS_SAISON_SUGGESTIONS = ["Construire depuis l'arriere","Developper le contre-pressing","Augmenter le nombre d'occasions creees","Ameliorer la maitrise du ballon","Stabiliser le bloc defensif","Progresser sur les transitions"];
@@ -782,6 +903,7 @@ async function loadState(){
   try{ var r3 = await window.storage.get('myplaybook:favorites', false); if(r3 && r3.value) favorites = JSON.parse(r3.value); }catch(e){}
   try{ var r4 = await window.storage.get('myplaybook:profile', false); if(r4 && r4.value) profile = JSON.parse(r4.value); }catch(e){ profile = null; }
   try{ var r5 = await window.storage.get('myplaybook:roadmap', false); if(r5 && r5.value) roadmap = JSON.parse(r5.value); }catch(e){ roadmap = null; }
+  await loadCalendarPlanned();
   sessions = SEED_SESSIONS.concat(customSessions);
   if(profile){ migrateProfileShape(); await persistProfile(); }
 }
@@ -837,6 +959,7 @@ function showView(id){
   if(id==='profile') renderProfileView();
   if(id==='model') renderModelView();
   if(id==='roadmap') renderRoadmapView();
+  if(id==='calendar') renderCalendarView();
   if(id==='library'){ buildThemeSelect(); buildPhaseChips(); renderGrid(); }
   if(id==='favorites') renderFavoritesView();
   if(id==='mysessions') renderMySessionsView();
@@ -922,7 +1045,7 @@ function computePhaseDistribution(){
 
 function newObState(){
   return {
-    prenom:'', nom:'', avatar:'shield-halved', club:'', categorie:'U13', niveau:'Intermediaire',
+    prenom:'', nom:'', avatar:'p1', club:'', categorie:'U13', niveau:'Intermediaire',
     systeme:'4-3-3', pied:'Peu importe', entrainementsSemaine:3, dureeMoyenne:75,
     coaches:[], traits:{},
     identity:{
@@ -1031,10 +1154,10 @@ function renderIdentityCardReveal(p){
   return '<div class="id-card-reveal"><div style="display:flex; align-items:center; gap:14px;"><div class="avatar-big" style="background:#1d1e21;">'+avatarIcon(p.avatar)+'</div><div><div class="icr-name">'+(p.prenom||'Coach')+' '+(p.nom||'')+'</div><div class="icr-sub">'+(p.club||'Club non renseigne')+' · '+p.categorie+' · '+p.niveau+' · '+(p.systeme||'—')+'</div></div></div>'
   + '<div class="icr-tag">Style '+style+'</div>'
   + '<div style="margin-top:16px; display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:11.5px; color:#c3c6cc;">'
-  + '<div>Relance : <b style="color:#fff;">'+p.identity.avecBallon.relance+'</b></div>'
-  + '<div>Bloc defensif : <b style="color:#fff;">'+p.identity.sansBallon.blocDefensif+'</b></div>'
-  + '<div>Transition off. : <b style="color:#fff;">'+p.identity.transitionOff.style+'</b></div>'
-  + '<div>A la perte : <b style="color:#fff;">'+p.identity.transitionDef.perte+'</b></div>'
+  + '<div>Relance : <b style="color:#0d2818;">'+p.identity.avecBallon.relance+'</b></div>'
+  + '<div>Bloc defensif : <b style="color:#0d2818;">'+p.identity.sansBallon.blocDefensif+'</b></div>'
+  + '<div>Transition off. : <b style="color:#0d2818;">'+p.identity.transitionOff.style+'</b></div>'
+  + '<div>A la perte : <b style="color:#0d2818;">'+p.identity.transitionDef.perte+'</b></div>'
   + '</div></div>';
 }
 
@@ -1220,7 +1343,7 @@ function renderProfileView(){
   var accentCycle = ["var(--phase-a)","var(--phase-c)","var(--phase-b)"];
   el.innerHTML = ''
     + '<div class="dash-grid" style="margin-bottom:16px;">'
-    + '<div class="card-box tint-forest profile-hero"><div class="avatar-big" style="background:rgba(255,255,255,.16);">'+avatarIcon(profile.avatar)+'</div><div><div class="profile-hero-name">'+profile.prenom+' '+profile.nom+'</div><div class="profile-hero-meta" style="color:rgba(255,255,255,.75);">'+(profile.club||'—')+' · '+profile.categorie+' · '+profile.niveau+'</div></div></div>'
+    + '<div class="card-box tint-forest profile-hero"><div class="avatar-big" style="background:rgba(13,40,24,.12);">'+avatarIcon(profile.avatar)+'</div><div><div class="profile-hero-name">'+profile.prenom+' '+profile.nom+'</div><div class="profile-hero-meta" style="color:rgba(13,40,24,.65);">'+(profile.club||'—')+' · '+profile.categorie+' · '+profile.niveau+'</div></div></div>'
     + '<div class="card-box"><h3>Ton identite en un coup d\'oeil</h3><div class="sub">Style dominant</div><div class="radar-wrap">'+radarSVG(computeIdentityScores(profile.identity))+'</div></div>'
     + '</div>'
     + '<div class="cv-grid">'
@@ -1279,7 +1402,7 @@ function renderModelView(){
   el.innerHTML = ''
     + '<div class="dash-grid" style="grid-template-columns:1fr 1.1fr; margin-bottom:18px;"><div class="card-box"><h3>Radar d\'identite</h3><div class="radar-wrap">' + radarSVG(computeIdentityScores(id)) + '</div></div>' + renderIdentityCardReveal(profile) + '</div>'
     + '<div class="id-sections">' + PHASES_ORDER.map(function(ph){ return '<div class="id-section" style="border-left:4px solid '+phaseColor(ph)+';"><h4 style="color:'+phaseColor(ph)+';">'+ph+'</h4>' + sections[ph].map(function(r){return '<div class="id-row"><span class="k">'+r[0]+'</span><span class="v">'+r[1]+'</span></div>';}).join('') + '</div>'; }).join('') + '</div>'
-    + '<div class="card-box tint-forest" style="margin-top:14px;"><h3>Principes prioritaires de la saison</h3><div class="id-chips">' + ((profile.principesPrioritaires||[]).map(function(p){return '<span class="id-chip" style="background:rgba(255,255,255,.16); color:#fff;">'+p+'</span>';}).join('') || '<span class="id-chip" style="background:rgba(255,255,255,.16); color:#fff;">Aucun principe prioritaire defini</span>') + '</div></div>';
+    + '<div class="card-box tint-forest" style="margin-top:14px;"><h3>Principes prioritaires de la saison</h3><div class="id-chips">' + ((profile.principesPrioritaires||[]).map(function(p){return '<span class="id-chip" style="background:rgba(13,40,24,.14); color:#0d2818;">'+p+'</span>';}).join('') || '<span class="id-chip" style="background:rgba(13,40,24,.14); color:#0d2818;">Aucun principe prioritaire defini</span>') + '</div></div>';
 }
 
 /* ================= ROADMAP DE SAISON ================= */
@@ -1328,6 +1451,128 @@ document.getElementById('roadmapGenBtn').addEventListener('click', async functio
     el.innerHTML = '<div class="empty-hint">Une erreur est survenue. Reessaie dans quelques instants.</div>';
   }
 });
+
+/* ================= CALENDRIER ================= */
+function isoDateToday(){ var d = new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+var calViewYear, calViewMonth, calSelectedDate = null;
+(function(){ var d = new Date(); calViewYear = d.getFullYear(); calViewMonth = d.getMonth(); })();
+var calendarPlanned = [];
+async function loadCalendarPlanned(){ try{ var r = await window.storage.get('myplaybook:calendar_planned', false); if(r && r.value) calendarPlanned = JSON.parse(r.value); }catch(e){ calendarPlanned = []; } }
+async function persistCalendarPlanned(){ try{ await window.storage.set('myplaybook:calendar_planned', JSON.stringify(calendarPlanned), false); }catch(e){} }
+
+function doneEntriesByDate(){
+  var map = {};
+  generatedSessionsList().forEach(function(s){
+    var d = s.createdAt || (s.id && s.id[0]==='g' ? null : null);
+    if(!d) return;
+    map[d] = map[d] || [];
+    (s.wizardAnswers.principes||[]).forEach(function(p){ map[d].push({principe:p, sessionId:s.id}); });
+  });
+  return map;
+}
+function plannedEntriesByDate(){
+  var map = {};
+  calendarPlanned.forEach(function(e){ map[e.date] = map[e.date] || []; map[e.date].push(e); });
+  return map;
+}
+const MONTH_NAMES = ["Janvier","Fevrier","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Decembre"];
+const DAY_NAMES = ["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"];
+
+function renderCalendarView(){
+  var el = document.getElementById('calendarBody');
+  var done = doneEntriesByDate();
+  var planned = plannedEntriesByDate();
+
+  var firstOfMonth = new Date(calViewYear, calViewMonth, 1);
+  var startOffset = (firstOfMonth.getDay()+6)%7; // Monday=0
+  var daysInMonth = new Date(calViewYear, calViewMonth+1, 0).getDate();
+  var daysInPrevMonth = new Date(calViewYear, calViewMonth, 0).getDate();
+  var todayStr = isoDateToday();
+
+  var cells = [];
+  for(var i=0;i<startOffset;i++){ cells.push({day: daysInPrevMonth-startOffset+i+1, otherMonth:true, date:null}); }
+  for(var d=1; d<=daysInMonth; d++){
+    var dateStr = calViewYear+'-'+String(calViewMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    cells.push({day:d, otherMonth:false, date:dateStr});
+  }
+  while(cells.length % 7 !== 0){ cells.push({day: cells.length - startOffset - daysInMonth + 1, otherMonth:true, date:null}); }
+
+  var legend = PHASES_ORDER.map(function(ph){ return '<div class="cal-legend-item"><span class="cal-legend-dot" style="background:'+phaseColor(ph)+';"></span>'+ph+'</div>'; }).join('');
+
+  var grid = DAY_NAMES.map(function(dn){ return '<div class="cal-dayname">'+dn+'</div>'; }).join('');
+  grid += cells.map(function(c){
+    if(c.otherMonth){ return '<div class="cal-cell other-month"><div class="cal-daynum">'+c.day+'</div></div>'; }
+    var dayDone = done[c.date] || [];
+    var dayPlanned = planned[c.date] || [];
+    var dots = dayDone.map(function(e){ var i = principleInfo(e.principe); return '<span class="cal-dot" style="background:'+phaseColor(i?i.phase:'')+';"></span>'; }).join('')
+      + dayPlanned.map(function(e){ var i = principleInfo(e.principe); return '<span class="cal-dot planned" style="border-color:'+phaseColor(i?i.phase:'')+';"></span>'; }).join('');
+    var cls = 'cal-cell' + (c.date===todayStr?' today':'') + (c.date===calSelectedDate?' selected':'');
+    return '<div class="'+cls+'" data-date="'+c.date+'"><div class="cal-daynum">'+c.day+'</div><div class="cal-dots">'+dots+'</div></div>';
+  }).join('');
+
+  el.innerHTML = '<div class="cal-toolbar">'
+    + '<div class="cal-nav"><div class="cal-nav-btn" id="calPrev"><i class="ti ti-chevron-left"></i></div><div class="cal-month-label">'+MONTH_NAMES[calViewMonth]+' '+calViewYear+'</div><div class="cal-nav-btn" id="calNext"><i class="ti ti-chevron-right"></i></div></div>'
+    + '<div class="cal-legend">'+legend+'</div>'
+    + '</div>'
+    + '<div class="cal-grid">'+grid+'</div>'
+    + '<div id="calDetailWrap"></div>';
+
+  document.getElementById('calPrev').addEventListener('click', function(){ calViewMonth--; if(calViewMonth<0){calViewMonth=11; calViewYear--;} renderCalendarView(); });
+  document.getElementById('calNext').addEventListener('click', function(){ calViewMonth++; if(calViewMonth>11){calViewMonth=0; calViewYear++;} renderCalendarView(); });
+  el.querySelectorAll('.cal-cell[data-date]').forEach(function(cell){
+    cell.addEventListener('click', function(){ calSelectedDate = cell.getAttribute('data-date'); renderCalendarView(); renderCalDetail(); });
+  });
+  if(calSelectedDate) renderCalDetail();
+}
+
+function renderCalDetail(){
+  var wrap = document.getElementById('calDetailWrap');
+  if(!wrap || !calSelectedDate) return;
+  var done = (doneEntriesByDate()[calSelectedDate]) || [];
+  var planned = (plannedEntriesByDate()[calSelectedDate]) || [];
+  var dateObj = new Date(calSelectedDate+'T00:00:00');
+  var label = dateObj.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long'});
+
+  var rows = done.map(function(e){ var i = principleInfo(e.principe); return '<div class="cal-entry"><span class="dot" style="background:'+phaseColor(i?i.phase:'')+';"></span><span class="lbl">'+e.principe+'</span><span class="tag">Travaille</span></div>'; }).join('')
+    + planned.map(function(e,idx){ var i = principleInfo(e.principe); return '<div class="cal-entry"><span class="dot" style="border:1.5px solid '+phaseColor(i?i.phase:'')+'; background:transparent;"></span><span class="lbl">'+e.principe+'</span><button class="btn btn-sm btn-primary" data-devplan="'+e.date+'|'+e.principe+'">Developper</button><button class="btn btn-sm btn-ghost" data-rmplan="'+e.date+'|'+e.principe+'">Retirer</button></div>'; }).join('');
+
+  wrap.innerHTML = '<div class="cal-detail">'
+    + '<div class="cal-detail-title" style="text-transform:capitalize;">'+label+'</div>'
+    + (rows || '<div class="empty-hint">Aucun principe travaille ou planifie ce jour-la.</div>')
+    + '<div class="cal-add-row">'
+    + '<select id="calAddPhase">' + PHASES_ORDER.map(function(ph){return '<option>'+ph+'</option>';}).join('') + '</select>'
+    + '<select id="calAddPrincipe"></select>'
+    + '<button class="btn btn-primary btn-sm" id="calAddBtn">Planifier</button>'
+    + '</div></div>';
+
+  function fillPrincipeSelect(){
+    var phase = document.getElementById('calAddPhase').value;
+    document.getElementById('calAddPrincipe').innerHTML = PRINCIPLE_TREE[phase].map(function(p){return '<option>'+p.nom+'</option>';}).join('');
+  }
+  document.getElementById('calAddPhase').addEventListener('change', fillPrincipeSelect);
+  fillPrincipeSelect();
+
+  document.getElementById('calAddBtn').addEventListener('click', async function(){
+    var principe = document.getElementById('calAddPrincipe').value;
+    calendarPlanned.push({date: calSelectedDate, principe: principe});
+    await persistCalendarPlanned();
+    renderCalendarView(); renderCalDetail();
+    showToast("Seance planifiee pour le "+calSelectedDate);
+  });
+  wrap.querySelectorAll('[data-devplan]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var parts = btn.getAttribute('data-devplan').split('|');
+      openWizard([parts[1]]);
+    });
+  });
+  wrap.querySelectorAll('[data-rmplan]').forEach(function(btn){
+    btn.addEventListener('click', async function(){
+      var parts = btn.getAttribute('data-rmplan').split('|');
+      var idx = calendarPlanned.findIndex(function(e){ return e.date===parts[0] && e.principe===parts.slice(1).join('|'); });
+      if(idx>-1){ calendarPlanned.splice(idx,1); await persistCalendarPlanned(); renderCalendarView(); renderCalDetail(); }
+    });
+  });
+}
 
 /* ================= LIBRARY / FAVORITES / MY SESSIONS ================= */
 function isLocked(s){ return s.premium && !isPremium; }
@@ -1574,7 +1819,7 @@ document.getElementById('saveBtn').addEventListener('click', async function(){
 /* ================= ASSISTANT : DEVELOPPER UN PRINCIPE ================= */
 function resetWizard(prefill){
   var suggested = profile ? (profile.principesPrioritaires||[]) : [];
-  wizardState = {step:1, principes: prefill||[], suggested: suggested, contexte:null, weakness:null, nbJoueurs:'', categorie: profile?profile.categorie:'U13', niveau: profile?profile.niveau:'Intermediaire', duree: profile?String(profile.dureeMoyenne||''):'', materiel:[], charge:'moyenne'};
+  wizardState = {step:1, principes: prefill||[], suggested: suggested, tactique:{}, complexite:'Standard', contexte:null, weakness:null, nbJoueurs:'', categorie: profile?profile.categorie:'U13', niveau: profile?profile.niveau:'Intermediaire', duree: profile?String(profile.dureeMoyenne||''):'', materiel:[], charge:'moyenne'};
   wizPhaseTab = "Avec ballon";
 }
 function openWizard(prefill){
@@ -1583,32 +1828,55 @@ function openWizard(prefill){
   renderWizard();
   openOverlay('genOverlay');
 }
-function wizTotalSteps(){ return wizardState.contexte==="Nous avons rencontre des difficultes en match." ? 5 : 4; }
+function wizStepSequence(){
+  var seq = ['principes','tactique','contexte'];
+  if(wizardState.contexte === "Nous avons rencontre des difficultes en match.") seq.push('difficulte');
+  seq.push('groupe','validation');
+  return seq;
+}
+function wizTotalSteps(){ return wizStepSequence().length; }
+function wizStepName(n){ return wizStepSequence()[n-1]; }
 function wizStepLabel(n){
-  var withWeak = ["Modele de jeu","Contexte","Quelle difficulte ?","Groupe","Validation"];
-  var noWeak = ["Modele de jeu","Contexte","Groupe","Validation"];
-  return wizTotalSteps()===5 ? withWeak[n-1] : noWeak[n-1];
+  var map = {principes:'Modele de jeu', tactique:'Precision tactique', contexte:'Contexte', difficulte:'Quelle difficulte ?', groupe:'Groupe', validation:'Validation'};
+  return map[wizStepName(n)] || '';
+}
+function selectedTacticalQuestions(){
+  return wizardState.principes.map(function(p){ return TACTICAL_QUESTIONS[p] ? {principe:p, q:TACTICAL_QUESTIONS[p].q, options:TACTICAL_QUESTIONS[p].options} : null; }).filter(Boolean);
 }
 function renderWizard(){
   var body = document.getElementById('genBody');
   var total = wizTotalSteps();
+  var stepName = wizStepName(wizardState.step);
   var dots=''; for(var i=1;i<=total;i++){ dots += '<div class="wiz-dot ' + (i<wizardState.step?'done':(i===wizardState.step?'current':'')) + '"></div>'; }
   var html = '<div class="wiz-progress">'+dots+'</div><div class="wiz-step-label">Etape '+wizardState.step+' / '+total+' · '+wizStepLabel(wizardState.step)+'</div>';
 
-  if(wizardState.step===1){
+  if(stepName==='principes'){
     html += '<div class="wiz-question">Quel comportement collectif souhaites-tu developper ?</div>'
     + '<div class="wiz-hint">Selectionne un ou plusieurs principes qui font partie du meme comportement collectif.' + (wizardState.suggested.length?' Les principes en vert sont tes principes prioritaires.':'') + '</div>'
     + '<div class="phase-tabs">' + PHASES_ORDER.map(function(ph){return '<div class="phase-tab '+(wizPhaseTab===ph?'active':'')+'" data-tab="'+ph+'">'+ph+'</div>';}).join('') + '</div>'
     + '<div class="chip-cloud">' + PRINCIPLE_TREE[wizPhaseTab].map(function(p){ return '<div class="cloud-chip ' + (wizardState.principes.indexOf(p.nom)>-1?'selected':'') + ' ' + (wizardState.suggested.indexOf(p.nom)>-1?'suggested':'') + '" data-val="'+p.nom+'">'+p.nom+'</div>'; }).join('') + '</div>';
-  } else if(wizardState.step===2){
+  } else if(stepName==='tactique'){
+    var tq = selectedTacticalQuestions();
+    html += '<div class="wiz-question">Un peu de precision tactique (optionnel)</div>'
+    + '<div class="wiz-hint">Reponds si tu as une preference. Sinon laisse l\'assistant decider — aucune reponse n\'est obligatoire ici.</div>';
+    tq.forEach(function(item, idx){
+      var current = wizardState.tactique[item.principe];
+      var opts = item.options.concat([TACTICAL_EASY_OUT]);
+      html += '<div class="ob-subq"><div class="q">'+item.principe+' — '+item.q+'</div>'
+        + '<div class="opt-grid">' + opts.map(function(o){ return '<div class="opt-card multi small ' + (current===o?'selected':'') + '" data-tacidx="'+idx+'" data-tacval="'+o+'">'+o+'<span class="opt-check">'+ICONS.check+'</span></div>'; }).join('') + '</div></div>';
+    });
+    if(tq.length===0){ html += '<div class="empty-hint">Aucune question specifique pour ce(s) principe(s) — passe directement a l\'etape suivante.</div>'; }
+    html += '<div class="ob-subq"><div class="q">Quel niveau de complexite tactique souhaites-tu pour cette seance ?</div>'
+      + '<div class="charge-row">' + COMPLEXITE_OPTIONS.map(function(c){return '<div class="charge-pill '+(wizardState.complexite===c?'selected':'')+'" data-complexite="'+c+'" style="font-size:11px;">'+c+'</div>';}).join('') + '</div></div>';
+  } else if(stepName==='contexte'){
     html += '<div class="wiz-question">Pourquoi travailles-tu ce comportement aujourd\'hui ?</div>'
     + '<div class="opt-grid">' + CONTEXTE_OPTIONS.map(function(o){return '<div class="opt-card '+(wizardState.contexte===o?'selected':'')+'" data-val="'+o+'">'+o+'<span class="opt-check">'+ICONS.check+'</span></div>';}).join('') + '</div>';
-  } else if(wizardState.step===3 && total===5){
+  } else if(stepName==='difficulte'){
     var p = wizardState.principes[0] || '';
     html += '<div class="wiz-question">Quelle difficulte as-tu rencontree ?</div>'
     + '<div class="wiz-hint">Reponses filtrees selon le principe « '+p+' ».</div>'
     + '<div class="opt-grid">' + observationsFor(p).map(function(o){return '<div class="opt-card multi '+(wizardState.weakness===o?'selected':'')+'" data-val="'+o+'">'+o+'<span class="opt-check">'+ICONS.check+'</span></div>';}).join('') + '</div>';
-  } else if(wizardState.step===(total-1)){
+  } else if(stepName==='groupe'){
     html += '<div class="wiz-question">Parle-moi de ton groupe</div>'
       + '<div class="wiz-grid4">'
       + '<div class="field"><label>Nombre de joueurs presents</label><input type="number" id="w_nb" value="'+(wizardState.nbJoueurs||'')+'" placeholder="16"></div>'
@@ -1618,10 +1886,13 @@ function renderWizard(){
       + '</div>'
       + '<div class="field"><label>Materiel disponible</label><div class="mat-grid">' + MATERIEL_OPTIONS.map(function(m){return '<div class="mat-item '+(wizardState.materiel.indexOf(m)>-1?'selected':'')+'" data-mat="'+m+'">'+m+'</div>';}).join('') + '</div></div>'
       + '<div class="field"><label>Charge souhaitee</label><div class="charge-row">' + CHARGE_OPTIONS.map(function(c){return '<div class="charge-pill '+(wizardState.charge===c?'selected':'')+'" data-charge="'+c+'">'+c+'</div>';}).join('') + '</div></div>';
-  } else if(wizardState.step===total){
+  } else if(stepName==='validation'){
+    var tqSummary = selectedTacticalQuestions().map(function(item){ return wizardState.tactique[item.principe]; }).filter(function(v){ return v && v!==TACTICAL_EASY_OUT; });
     html += '<div class="wiz-question">Recapitulatif</div>'
       + '<div class="wiz-summary">'
       + '<div class="wiz-summary-row"><span class="k">Comportement a developper</span><span class="v">'+(wizardState.principes.length?wizardState.principes.join(', '):'—')+'</span></div>'
+      + '<div class="wiz-summary-row"><span class="k">Complexite souhaitee</span><span class="v">'+(wizardState.complexite||'Standard')+'</span></div>'
+      + (tqSummary.length ? ('<div class="wiz-summary-row"><span class="k">Precisions tactiques</span><span class="v">'+tqSummary.join(' · ')+'</span></div>') : '')
       + '<div class="wiz-summary-row"><span class="k">Contexte</span><span class="v">'+(wizardState.contexte||'—')+'</span></div>'
       + (wizardState.weakness ? ('<div class="wiz-summary-row"><span class="k">Difficulte observee</span><span class="v">'+wizardState.weakness+'</span></div>') : '')
       + '<div class="wiz-summary-row"><span class="k">Joueurs presents</span><span class="v">'+(wizardState.nbJoueurs||'—')+'</span></div>'
@@ -1646,8 +1917,19 @@ function attachWizardListeners(){
       renderWizard();
     });
   });
-  document.querySelectorAll('#genBody .opt-card:not(.multi)').forEach(function(el){ el.addEventListener('click', function(){ wizardState.contexte = el.getAttribute('data-val'); wizardState.weakness=null; renderWizard(); }); });
-  document.querySelectorAll('#genBody .opt-card.multi').forEach(function(el){ el.addEventListener('click', function(){ wizardState.weakness = el.getAttribute('data-val'); renderWizard(); }); });
+  document.querySelectorAll('#genBody .opt-card[data-tacidx]').forEach(function(el){
+    el.addEventListener('click', function(){
+      var idx = el.getAttribute('data-tacidx'), val = el.getAttribute('data-tacval');
+      var item = selectedTacticalQuestions()[idx];
+      if(item) wizardState.tactique[item.principe] = val;
+      renderWizard();
+    });
+  });
+  document.querySelectorAll('#genBody .charge-pill[data-complexite]').forEach(function(el){
+    el.addEventListener('click', function(){ wizardState.complexite = el.getAttribute('data-complexite'); renderWizard(); });
+  });
+  document.querySelectorAll('#genBody .opt-card:not(.multi):not([data-tacidx])').forEach(function(el){ el.addEventListener('click', function(){ wizardState.contexte = el.getAttribute('data-val'); wizardState.weakness=null; renderWizard(); }); });
+  document.querySelectorAll('#genBody .opt-card.multi:not([data-tacidx])').forEach(function(el){ el.addEventListener('click', function(){ wizardState.weakness = el.getAttribute('data-val'); renderWizard(); }); });
   document.querySelectorAll('#genBody .mat-item').forEach(function(el){
     el.addEventListener('click', function(){
       var val = el.getAttribute('data-mat'); var idx = wizardState.materiel.indexOf(val);
@@ -1655,7 +1937,7 @@ function attachWizardListeners(){
       renderWizard();
     });
   });
-  document.querySelectorAll('#genBody .charge-pill').forEach(function(el){ el.addEventListener('click', function(){ wizardState.charge = el.getAttribute('data-charge'); renderWizard(); }); });
+  document.querySelectorAll('#genBody .charge-pill[data-charge]').forEach(function(el){ el.addEventListener('click', function(){ wizardState.charge = el.getAttribute('data-charge'); renderWizard(); }); });
   var wnb = document.getElementById('w_nb'); if(wnb) wnb.addEventListener('input', function(e){ wizardState.nbJoueurs=e.target.value; });
   var wcat = document.getElementById('w_cat'); if(wcat) wcat.addEventListener('change', function(e){ wizardState.categorie=e.target.value; });
   var wniv = document.getElementById('w_niv'); if(wniv) wniv.addEventListener('change', function(e){ wizardState.niveau=e.target.value; });
@@ -1663,11 +1945,11 @@ function attachWizardListeners(){
 }
 
 function wizCanProceed(){
-  var total = wizTotalSteps();
-  if(wizardState.step===1) return wizardState.principes.length>0;
-  if(wizardState.step===2) return !!wizardState.contexte;
-  if(wizardState.step===3 && total===5) return !!wizardState.weakness;
-  if(wizardState.step===(total-1)) return wizardState.nbJoueurs && wizardState.duree;
+  var stepName = wizStepName(wizardState.step);
+  if(stepName==='principes') return wizardState.principes.length>0;
+  if(stepName==='contexte') return !!wizardState.contexte;
+  if(stepName==='difficulte') return !!wizardState.weakness;
+  if(stepName==='groupe') return wizardState.nbJoueurs && wizardState.duree;
   return true;
 }
 function renderWizardFoot(){
@@ -1736,12 +2018,21 @@ async function runGeneration(){
   var loadingTimer = setInterval(function(){ i=(i+1)%steps.length; var el=document.getElementById('loadingText'); if(el) el.textContent = steps[i]; }, 1100);
 
   var principesInfo = wizardState.principes.map(function(p){ var info = principleInfo(p); return p + " (objectifs pedagogiques associes : " + (info?info.objectifs.join(', '):'') + " ; competences : " + (info?info.competences.join(', '):'') + ")"; }).join(' / ');
+  var tacPrecisions = Object.keys(wizardState.tactique||{}).map(function(p){ return wizardState.tactique[p] && wizardState.tactique[p]!==TACTICAL_EASY_OUT ? (p+" : "+wizardState.tactique[p]) : null; }).filter(Boolean).join(' / ');
+  var complexite = wizardState.complexite || 'Standard';
+  var complexiteInstruction = complexite==="Simple, facile a transmettre"
+    ? "Le coach se decrit comme peu experimente en tactique : utilise un vocabulaire simple et concret dans les notes et coaching points, evite le jargon tactique complexe (pas de termes comme 'supériorité positionnelle', 'troisieme homme', etc. sans les expliquer en une phrase simple), et privilegie des consignes tres actionnables sur le terrain."
+    : complexite==="Avance, tactique poussee"
+      ? "Le coach est experimente et veut de la profondeur tactique : utilise un vocabulaire tactique precis, mentionne les fonctions contextuelles (fixer, attirer, liberer, temporiser, deseqilibrer) quand pertinent, et affine les criteres de reussite avec exigence."
+      : "Le coach souhaite un niveau standard : vocabulaire clair mais tactique, sans excès de jargon.";
 
   var sys = "Tu es un assistant pedagogique pour entraineurs de football au sein de MyPlaybook.\n"
     + "REGLE ABSOLUE : tu ne dois JAMAIS inventer d'exercice. Tu dois uniquement selectionner des exercices parmi la bibliotheque JSON fournie, en te basant sur leur \"id\".\n"
     + "Le coach pense en COMPORTEMENTS COLLECTIFS, pas en exercices. Il a choisi un ou plusieurs principes de jeu qui, selon lui, font partie du meme comportement. Chaque principe est associe a des objectifs pedagogiques (niveau intermediaire de la hierarchie Principe -> Objectif -> Exercice) et a des competences individuelles a developper (lecture, reaction, coordination, etc.). Utilise ces objectifs pedagogiques pour filtrer les exercices pertinents dans la bibliotheque (champ \"objectif_pedagogique\" et \"principes\").\n"
     + "Compose la seance en respectant autant que possible cet ordre : Activation -> Exercice technique -> Jeu reduit -> Situation tactique -> Match dirige -> Retour au calme (tu peux omettre une etape si aucun exercice pertinent n'est disponible).\n"
     + "Tiens compte du modele de jeu du coach et, si une difficulte a ete identifiee, adapte particulierement les notes des exercices pour y repondre.\n"
+    + "Si des precisions tactiques ont ete donnees par le coach pour un principe, adapte les notes d'adaptation de l'exercice correspondant pour refleter ce choix precis.\n"
+    + complexiteInstruction + "\n"
     + "Respecte au mieux la duree totale, le nombre de joueurs, le materiel disponible, la charge souhaitee.\n"
     + "Reponds UNIQUEMENT avec un objet JSON strict, sans texte avant ni apres, sans balises markdown, au format exact suivant :\n"
     + "{\"titre\":\"...\", \"resume_coach\":\"2-3 phrases expliquant la logique de la seance, les competences travaillees et comment elle articule les principes choisis\", \"duree_totale\":90, \"blocs\":[{\"exercise_id\":\"e01\",\"duree_allouee\":10,\"note_adaptation\":\"phrase courte expliquant une adaptation eventuelle\"}]}";
@@ -1749,6 +2040,8 @@ async function runGeneration(){
   var userMsg = "Bibliotheque d'exercices disponibles (JSON) :\n" + JSON.stringify(slimLibrary())
     + "\n\nModele de jeu du coach : " + profileContextSummary()
     + "\n\nComportement collectif a developper : " + principesInfo
+    + (tacPrecisions ? ("\nPrecisions tactiques du coach : " + tacPrecisions) : "")
+    + "\nNiveau de complexite souhaite : " + complexite
     + "\nContexte : " + wizardState.contexte + (wizardState.weakness ? (" — Difficulte identifiee : " + wizardState.weakness) : "")
     + "\nNombre de joueurs presents : " + wizardState.nbJoueurs
     + "\nCategorie : " + wizardState.categorie
@@ -1784,7 +2077,7 @@ async function buildGeneratedSession(parsed){
     duree: totalDuree, joueurs: parseInt(wizardState.nbJoueurs)||0, terrain:"A definir selon les infrastructures",
     materiel: wizardState.materiel.length ? wizardState.materiel.join(', ') : 'Selon exercices selectionnes',
     premium: true, custom: true, type: 'generated', description: parsed.resume_coach || "", resume_coach: parsed.resume_coach || "",
-    blocks: blocks, wizardAnswers: Object.assign({}, wizardState), chatHistory: [], pdf: null
+    blocks: blocks, wizardAnswers: Object.assign({}, wizardState), chatHistory: [], pdf: null, createdAt: isoDateToday()
   };
   chatHistory = [];
   sessions.unshift(currentGenSession);
